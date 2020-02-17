@@ -1,7 +1,7 @@
-import {expect} from 'chai'
+import {expect} from 'chai';
 
-describe('lorem ipsum test suite', () => {
-  it('dolor sit amet test', () => {
-    expect(true).to.be.true;
-  });
+describe('lorem ipsum test suite', function() {
+    it('dolor sit amet test', function() {
+        expect(true).to.be.true;
+    });
 });
