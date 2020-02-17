@@ -7,10 +7,12 @@
     "prettier": "prettier",
     "prettier:check": "npm run prettier -- --list-different \"src/**/*.{js,jsx}\" && npm run prettier -- --list-different \"test/**/*.{js,jsx}\"",
     "prettier:write": "npm run prettier -- --write \"src/**/*.{js,jsx}\" && npm run prettier -- --write \"test/**/*.{js,jsx}\"",
+    "git-hook:pre-commit": "npm run prettier:write && npm run lint:write && npm run test",
     "--inspector": "jsinspector server --port 9543",
     "jscpd": "jscpd ./src --blame",
     "jscpd:html": "npm run jscpd -- --reporters html",
     "lint": "eslint ./{src,test}/**/*.test.js --fix",
+    "lint:write": "npm run lint -- --fix",
     "lint:watch": "nodemon --exec \"npm run lint\"",
     "test": "nyc --extension .js mocha --forbid-only \"test/**/*.test.js\"",
     "test:html": "nyc --reporter html --extension .js mocha --forbid-only \"test/**/*.test.js\"",
@@ -42,6 +44,10 @@
     "mocha": "^7.0.1",
     "nodemon": "^2.0.2",
     "nyc": "^15.0.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run git-hook:pre-commit && git add ."
   }
 }
