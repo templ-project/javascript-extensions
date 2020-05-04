@@ -1,5 +1,9 @@
 // .eslintrc.js
-module.exports = {
+
+const config = require('./.config');
+
+
+esConfig = {
   plugins: ['mocha'],
   env: {
     browser: true,
@@ -22,3 +26,25 @@ module.exports = {
     'space-unary-ops': 2,
   },
 };
+
+tsConfig = {
+  parser:  '@typescript-eslint/parser',
+  extends:  [
+    'plugin:@typescript-eslint/recommended',
+  ],
+  parserOptions:  {
+  ecmaVersion:  2018,
+  sourceType:  'module',
+  ecmaFeatures:  {
+    jsx:  true,
+  },
+  },
+  rules:  {},
+  settings:  {
+    react:  {
+      version:  'detect',
+    },
+  }
+};
+
+module.exports = (config.language === "typescript") ? tsConfig : esConfig;
