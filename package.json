@@ -39,7 +39,5 @@
     "release-it": "^13.5.8",
     "yorkie": "^2.0.0"
   },
-  "gitHooks": {
-    "//pre-commit": "npm run git-hook:pre-commit && git add ."
-  }
+  "gitHooks": {}
 }

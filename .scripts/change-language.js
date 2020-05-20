@@ -84,6 +84,7 @@ switch (language.toLowerCase()) {
     Object.getOwnPropertyNames(scripts.typescript).forEach((value, key) => {
       delete package.scripts[key];
     });
+    delete package.gitHooks["pre-commit"];
     break;
   case "javascript":
     package.devPackages = Object.assign(
@@ -93,6 +94,9 @@ switch (language.toLowerCase()) {
     );
     package.packages = Object.assign({}, package.packages, packages.javascript);
     package.scripts = Object.assign({}, package.scripts, scripts.javascript);
+    package.gitHooks = Object.assign({}, package.gitHooks, {
+      "pre-commit": "npm run git-hook:pre-commit && git add .",
+    });
     if (!noUnlink) {
       unlink(".babelrc.js");
     }
@@ -105,6 +109,9 @@ switch (language.toLowerCase()) {
     );
     package.packages = Object.assign({}, package.packages, packages.typescript);
     package.scripts = Object.assign({}, package.scripts, scripts.typescript);
+    package.gitHooks = Object.assign({}, package.gitHooks, {
+      "pre-commit": "npm run git-hook:pre-commit && git add .",
+    });
     if (!noUnlink) {
       unlink(".babelrc.js");
     }
