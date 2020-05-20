@@ -1,4 +1,4 @@
-const { unlink, writeFile } = require("fs");
+const { copyFile, unlink, writeFile } = require("fs").promises;
 const package = require("package.json");
 
 const args = process.argv.slice(2);
@@ -64,63 +64,85 @@ const scripts = {
   },
 };
 
-switch (language.toLowerCase()) {
-  case "none":
-    Object.getOwnPropertyNames(devPackages.javascript).forEach((value, key) => {
-      delete package.devPackages[key];
-    });
-    Object.getOwnPropertyNames(devPackages.typescript).forEach((value, key) => {
-      delete package.devPackages[key];
-    });
-    Object.getOwnPropertyNames(packages.javascript).forEach((value, key) => {
-      delete package.packages[key];
-    });
-    Object.getOwnPropertyNames(packages.typescript).forEach((value, key) => {
-      delete package.packages[key];
-    });
-    Object.getOwnPropertyNames(scripts.javascript).forEach((value, key) => {
-      delete package.scripts[key];
-    });
-    Object.getOwnPropertyNames(scripts.typescript).forEach((value, key) => {
-      delete package.scripts[key];
-    });
-    delete package.gitHooks["pre-commit"];
-    break;
-  case "javascript":
-    package.devPackages = Object.assign(
-      {},
-      package.devPackages,
-      devPackages.javascript
-    );
-    package.packages = Object.assign({}, package.packages, packages.javascript);
-    package.scripts = Object.assign({}, package.scripts, scripts.javascript);
-    package.gitHooks = Object.assign({}, package.gitHooks, {
-      "pre-commit": "npm run git-hook:pre-commit && git add .",
-    });
-    if (!noUnlink) {
-      unlink(".babelrc.js");
-    }
-    break;
-  case "typescript":
-    package.devPackages = Object.assign(
-      {},
-      package.devPackages,
-      devPackages.typescript
-    );
-    package.packages = Object.assign({}, package.packages, packages.typescript);
-    package.scripts = Object.assign({}, package.scripts, scripts.typescript);
-    package.gitHooks = Object.assign({}, package.gitHooks, {
-      "pre-commit": "npm run git-hook:pre-commit && git add .",
-    });
-    if (!noUnlink) {
-      unlink(".babelrc.js");
-    }
-    break;
-  default:
-    console.error(
-      "No language selected. Please chose between: javascript and typescrypt"
-    );
-    process.exit(1);
-}
+const config = async (): Promise<void> => {
+  switch (language.toLowerCase()) {
+    case "none":
+      Object.getOwnPropertyNames(devPackages.javascript).forEach(
+        (value, key) => {
+          delete package.devPackages[key];
+        }
+      );
+      Object.getOwnPropertyNames(devPackages.typescript).forEach(
+        (value, key) => {
+          delete package.devPackages[key];
+        }
+      );
+      Object.getOwnPropertyNames(packages.javascript).forEach((value, key) => {
+        delete package.packages[key];
+      });
+      Object.getOwnPropertyNames(packages.typescript).forEach((value, key) => {
+        delete package.packages[key];
+      });
+      Object.getOwnPropertyNames(scripts.javascript).forEach((value, key) => {
+        delete package.scripts[key];
+      });
+      Object.getOwnPropertyNames(scripts.typescript).forEach((value, key) => {
+        delete package.scripts[key];
+      });
+      delete package.gitHooks["pre-commit"];
+      break;
+    case "javascript":
+      package.devPackages = Object.assign(
+        {},
+        package.devPackages,
+        devPackages.javascript
+      );
+      package.packages = Object.assign(
+        {},
+        package.packages,
+        packages.javascript
+      );
+      package.scripts = Object.assign({}, package.scripts, scripts.javascript);
+      package.gitHooks = Object.assign({}, package.gitHooks, {
+        "pre-commit": "npm run git-hook:pre-commit && git add .",
+      });
+      await copyFile(".babelrc.javascript.js", ".babelrc.js");
+      await copyFile(".eslint.javascript.js", ".eslint.js");
+      if (!noUnlink) {
+        unlink(".babelrc.javascript.js");
+        unlink(".eslint.javascript.js");
+      }
+      break;
+    case "typescript":
+      package.devPackages = Object.assign(
+        {},
+        package.devPackages,
+        devPackages.typescript
+      );
+      package.packages = Object.assign(
+        {},
+        package.packages,
+        packages.typescript
+      );
+      package.scripts = Object.assign({}, package.scripts, scripts.typescript);
+      package.gitHooks = Object.assign({}, package.gitHooks, {
+        "pre-commit": "npm run git-hook:pre-commit && git add .",
+      });
+      await copyFile(".babelrc.typescript.js", ".babelrc.js");
+      await copyFile(".eslint.typescript.js", ".eslint.js");
+      if (!noUnlink) {
+        unlink(".babelrc.typescript.js");
+        unlink(".eslint.typescript.js");
+      }
+      break;
+    default:
+      console.error(
+        "No language selected. Please chose between: javascript and typescrypt"
+      );
+      process.exit(1);
+  }
 
-writeFile("package.json", JSON.stringify(package, 4), "utf-8");
+  writeFile("package.json", JSON.stringify(package, 4), "utf-8");
+};
+
+config();
