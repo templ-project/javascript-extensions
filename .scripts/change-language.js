@@ -1,5 +1,7 @@
 const { copyFile, unlink, writeFile } = require("fs").promises;
-const package = require("./package.json");
+const { readFileSync } = require("fs");
+
+const package = JSON.parse(readFileSync("./package.json"));
 
 const args = process.argv.slice(2);
 
