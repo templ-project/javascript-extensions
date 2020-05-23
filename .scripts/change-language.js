@@ -10,12 +10,12 @@ const noUnlink =
 
 const language = process.argv[2];
 
-const packages = {
+const dependencies = {
   javascript: {},
   typescript: {},
 };
 
-const devPackages = {
+const devDependencies = {
   javascript: {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
@@ -69,21 +69,21 @@ const scripts = {
 const config = async () => {
   switch (language.toLowerCase()) {
     case "none":
-      Object.getOwnPropertyNames(devPackages.javascript).forEach(
+      Object.getOwnPropertyNames(devDependencies.javascript).forEach(
         (value, key) => {
-          delete package.devPackages[key];
+          delete package.devDependencies[key];
         }
       );
-      Object.getOwnPropertyNames(devPackages.typescript).forEach(
+      Object.getOwnPropertyNames(devDependencies.typescript).forEach(
         (value, key) => {
-          delete package.devPackages[key];
+          delete package.devDependencies[key];
         }
       );
-      Object.getOwnPropertyNames(packages.javascript).forEach((value, key) => {
-        delete package.packages[key];
+      Object.getOwnPropertyNames(dependencies.javascript).forEach((value, key) => {
+        delete package.dependencies[key];
       });
-      Object.getOwnPropertyNames(packages.typescript).forEach((value, key) => {
-        delete package.packages[key];
+      Object.getOwnPropertyNames(dependencies.typescript).forEach((value, key) => {
+        delete package.dependencies[key];
       });
       Object.getOwnPropertyNames(scripts.javascript).forEach((value, key) => {
         delete package.scripts[key];
@@ -98,16 +98,8 @@ const config = async () => {
       await unlink(".prettierrc.js");
       break;
     case "javascript":
-      package.devPackages = Object.assign(
-        {},
-        package.devPackages,
-        devPackages.javascript
-      );
-      package.packages = Object.assign(
-        {},
-        package.packages,
-        packages.javascript
-      );
+      package.devDependencies = Object.assign({},  package.devDependencies, devDependencies.javascript);
+      package.dependencies = Object.assign({}, package.dependencies, dependencies.javascript);
       package.scripts = Object.assign({}, package.scripts, scripts.javascript);
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
@@ -125,16 +117,8 @@ const config = async () => {
       }
       break;
     case "typescript":
-      package.devPackages = Object.assign(
-        {},
-        package.devPackages,
-        devPackages.typescript
-      );
-      package.packages = Object.assign(
-        {},
-        package.packages,
-        packages.typescript
-      );
+      package.devDependencies = Object.assign({}, package.devDependencies, devDependencies.typescript);
+      package.dependencies = Object.assign({}, package.dependencies, dependencies.typescript);
       package.scripts = Object.assign({}, package.scripts, scripts.typescript);
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
@@ -147,7 +131,7 @@ const config = async () => {
         await unlink(".eslintrc.typescript.js");
         await unlink(".mocharc.typescript.js");
         await unlink(".prettierrc.typescript.js");
-        delete package.scripts['change:language']
+        delete package.scripts['change:language'];
       }
       break;
     default:
@@ -157,7 +141,7 @@ const config = async () => {
       process.exit(1);
   }
 
-  writeFile("package.json", JSON.stringify(package, 4), "utf-8");
+  writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
 };
 
 config();
