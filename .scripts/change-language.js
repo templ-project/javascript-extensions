@@ -124,9 +124,9 @@ const config = async () => {
       }
       break;
     case "typescript":
-      package.devDependencies = Object.assign({}, package.devDependencies, devDependencies.typescript);
-      package.dependencies = Object.assign({}, package.dependencies, dependencies.typescript);
-      package.scripts = Object.assign({}, package.scripts, scripts.typescript);
+      package.devDependencies = sortByKeys(Object.assign({}, package.devDependencies, devDependencies.typescript));
+      package.dependencies = sortByKeys(Object.assign({}, package.dependencies, dependencies.typescript));
+      package.scripts = sortByKeys(Object.assign({}, package.scripts, scripts.typescript));
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
