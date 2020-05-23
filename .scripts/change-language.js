@@ -140,7 +140,6 @@ const config = async () => {
         await unlink(".prettierrc.typescript.js");
         delete package.scripts['change:language'];
       }
-      console.log(package, package.scripts, scripts.typescript)
       break;
     default:
       console.error(
@@ -149,7 +148,7 @@ const config = async () => {
       process.exit(1);
   }
 
-  // writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
+  writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
 };
 
 config();
