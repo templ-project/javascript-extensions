@@ -13,6 +13,8 @@
     "prettier:write": "npm run prettier -- --write",
     "prerelease": "npm run build",
     "release": "release-it --ci --no-npm.publish",
+    "test:html": "npm run test -- --reporter html",
+    "test:junit": "npm run test -- --reporter mocha-junit-reporter --reporter-options mochaFile=./coverage/coverage.xml",
     "test:watch": "nodemon --exec 'npm run test'"
   },
   "repository": {

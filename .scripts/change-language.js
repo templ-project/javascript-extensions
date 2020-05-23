@@ -45,11 +45,8 @@ const scripts = {
     prettier: "prettier '{src,test}/**/*.{js,jsx}'",
     jscpd: "jscpd ./src --blame --format javascript",
     lint: "eslint ./{src,test}/**/*.{js,jsx}",
-    test: "nyc --extension .js mocha --forbid-only 'test/**/*.test.js'",
-    "test:html":
-      "nyc --reporter html --extension .js mocha --forbid-only 'test/**/*.test.js'",
-    "test:junit":
-      "nyc --reporter mocha-junit-reporter --reporter-options mochaFile=./coverage/coverage.xml --extension .js mocha --forbid-only 'test/**/*.test.js'",
+    test: "npm run test -- 'test/**/*.test.js'",
+    'test:single': 'nyc --extension .js mocha --forbid-only',
   },
   typescript: {
     build: "echo",
@@ -58,11 +55,8 @@ const scripts = {
     prettier: "prettier '{src,test}/**/*.{ts,tsx}'",
     jscpd: "jscpd ./src --blame --format typescript",
     lint: "eslint ./{src,test}/**/*.{ts,tsx}",
-    test: "nyc --extension .ts mocha --forbid-only 'test/**/*.test.ts'",
-    "test:html":
-      "nyc --reporter html --extension .js mocha --forbid-only 'test/**/*.test.ts'",
-    "test:html":
-      "nyc --reporter mocha-junit-reporter --reporter-options mochaFile=./coverage/coverage.xml --extension .js mocha --forbid-only 'test/**/*.test.ts'",
+    test: "npm run test:single -- 'test/**/*.test.ts'",
+    'test:single': 'nyc --extension .ts mocha --forbid-only',
   },
 };
 
@@ -133,6 +127,7 @@ const config = async () => {
         await unlink(".prettierrc.typescript.js");
         delete package.scripts['change:language'];
       }
+      console.log(package, package.scripts, scripts.typescript)
       break;
     default:
       console.error(
@@ -141,7 +136,7 @@ const config = async () => {
       process.exit(1);
   }
 
-  writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
+  // writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
 };
 
 config();
