@@ -108,11 +108,15 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
-      await copyFile(".babelrc.javascript.js", ".babelrc.js");
       await copyFile(".eslint.javascript.js", ".eslint.js");
+      await copyFile(".mocharc.javascript.js", ".mocharc.js");
+      await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
       if (!noUnlink) {
         unlink(".babelrc.javascript.js");
         unlink(".eslint.javascript.js");
+        unlink(".mocharc.javascript.js");
+        unlink("tsconfig.json");
+        unlink("test/tsconfig.json");
         delete package.scripts['change:language']
       }
       break;
@@ -131,11 +135,14 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
-      await copyFile(".babelrc.typescript.js", ".babelrc.js");
       await copyFile(".eslint.typescript.js", ".eslint.js");
+      await copyFile(".mocharc.typescript.js", ".mocharc.js");
+      await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
       if (!noUnlink) {
-        unlink(".babelrc.typescript.js");
+        unlink(".babelrc.js");
         unlink(".eslint.typescript.js");
+        unlink(".mocharc.typescript.js");
+        unlink(".prettierrc.typescript.js");
         delete package.scripts['change:language']
       }
       break;
