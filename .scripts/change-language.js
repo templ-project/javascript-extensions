@@ -60,6 +60,19 @@ const scripts = {
   },
 };
 
+const sortByKeys = (obj) => {
+  let keys = Object.getOwnPropertyNames(obj).sort();
+  const newObj = {};
+  for (key of keys) {
+    if (typeof obj[key] !== 'object' && !Array.isArray(obj[key])) {
+      newObj[key] = obj[key]
+    } else {
+      newObj[key] = sortByKeys(obj[key])
+    }
+  }
+  return newObj;
+}
+
 const config = async () => {
   switch (language.toLowerCase()) {
     case "none":
