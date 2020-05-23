@@ -1,5 +1,5 @@
 const { copyFile, unlink, writeFile } = require("fs").promises;
-const package = require("package.json");
+const package = require("./package.json");
 
 const args = process.argv.slice(2);
 
@@ -64,7 +64,7 @@ const scripts = {
   },
 };
 
-const config = async (): Promise<void> => {
+const config = async () => {
   switch (language.toLowerCase()) {
     case "none":
       Object.getOwnPropertyNames(devPackages.javascript).forEach(
@@ -111,6 +111,7 @@ const config = async (): Promise<void> => {
       if (!noUnlink) {
         unlink(".babelrc.javascript.js");
         unlink(".eslint.javascript.js");
+        delete package.scripts['change:language']
       }
       break;
     case "typescript":
@@ -133,6 +134,7 @@ const config = async (): Promise<void> => {
       if (!noUnlink) {
         unlink(".babelrc.typescript.js");
         unlink(".eslint.typescript.js");
+        delete package.scripts['change:language']
       }
       break;
     default:
