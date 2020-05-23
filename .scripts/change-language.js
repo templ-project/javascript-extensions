@@ -92,6 +92,10 @@ const config = async () => {
         delete package.scripts[key];
       });
       delete package.gitHooks["pre-commit"];
+
+      await unlink(".eslint.js");
+      await unlink(".mocharc.js");
+      await unlink(".prettierrc.js");
       break;
     case "javascript":
       package.devPackages = Object.assign(
@@ -112,11 +116,11 @@ const config = async () => {
       await copyFile(".mocharc.javascript.js", ".mocharc.js");
       await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
       if (!noUnlink) {
-        unlink(".babelrc.javascript.js");
-        unlink(".eslint.javascript.js");
-        unlink(".mocharc.javascript.js");
-        unlink("tsconfig.json");
-        unlink("test/tsconfig.json");
+        await unlink(".eslint.javascript.js");
+        await unlink(".mocharc.javascript.js");
+        await unlink(".prettierrc.javascript.js");
+        await unlink("tsconfig.json");
+        await unlink("test/tsconfig.json");
         delete package.scripts['change:language']
       }
       break;
@@ -139,10 +143,10 @@ const config = async () => {
       await copyFile(".mocharc.typescript.js", ".mocharc.js");
       await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
       if (!noUnlink) {
-        unlink(".babelrc.js");
-        unlink(".eslint.typescript.js");
-        unlink(".mocharc.typescript.js");
-        unlink(".prettierrc.typescript.js");
+        await unlink(".babelrc.js");
+        await unlink(".eslint.typescript.js");
+        await unlink(".mocharc.typescript.js");
+        await unlink(".prettierrc.typescript.js");
         delete package.scripts['change:language']
       }
       break;
