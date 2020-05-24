@@ -5,12 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "change:language": "node .scripts/change-language.js",
+    "clean": "rimraf dist",
     "inspector": "jsinspector server --port 9543",
     "jscpd:html": "npm run jscpd -- --reporters html",
     "lint:write": "npm run lint -- --fix",
     "lint:watch": "nodemon --exec 'npm run lint'",
     "prettier:check": "npm run prettier -- --list-different",
     "prettier:write": "npm run prettier -- --write",
+    "prebuild": "npm run clean",
     "prerelease": "npm run build",
     "release": "release-it --ci --no-npm.publish",
     "test:html": "npm run test -- --reporter html",
@@ -39,6 +41,7 @@
     "nyc": "^15.0.1",
     "prettier": "^2.0.5",
     "release-it": "^13.5.8",
+    "rimraf": "^3.0.2",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {}
