@@ -42,10 +42,10 @@ const scripts = {
     build: "echo",
     "git-hook:pre-commit":
       "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
-    prettier: "prettier '{src,test}/**/*.{js,jsx}'",
+    prettier: "prettier './{src,test}/**/*.{js,jsx}'",
     jscpd: "jscpd ./src --blame --format javascript",
     lint: "eslint ./{src,test}/**/*.{js,jsx}",
-    test: "npm run test -- 'test/**/*.test.js'",
+    test: "npm run test -- './test/**/*.test.js'",
     "test:single": "nyc --extension .js mocha --forbid-only",
   },
   typescript: {
