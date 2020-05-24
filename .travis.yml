@@ -32,7 +32,6 @@ scripts:
   - npm run lint:write
   - npm run jscpd
   - npm run test
-  - npm run test:html
   - npm run test:junit
   - npm run build
 # after_script:
