@@ -1,5 +1,6 @@
 const {copyFile, unlink, writeFile} = require('fs').promises;
 const {readFileSync} = require('fs');
+const path = require('path');
 
 const package = JSON.parse(readFileSync('./package.json'));
 
