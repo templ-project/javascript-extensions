@@ -22,7 +22,6 @@ const devDependencies = {
     '@babel/preset-env': '^7.9.6',
     '@babel/register': '^7.9.0',
     'babel-eslint': '^10.1.0',
-    'eslint-plugin-mocha': '^6.3.0',
   },
   typescript: {
     '@types/chai': '^4.2.11',
