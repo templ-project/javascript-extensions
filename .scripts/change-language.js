@@ -43,7 +43,7 @@ const scripts = {
     prettier: 'prettier ./{src,test}/**/*.{js,jsx}',
     jscpd: 'jscpd ./src --blame --format javascript',
     lint: 'eslint ./{src,test}/**/*.{js,jsx}',
-    test: "npm run test -- './test/**/*.test.js'",
+    test: "npm run test:single -- './test/**/*.test.js'",
     'test:single': 'nyc --extension .js mocha --forbid-only',
   },
   typescript: {
