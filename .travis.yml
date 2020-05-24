@@ -1,7 +1,7 @@
 language: node_js
 env:
   - LANGUAGE=javascript
-  - LANGUAGE=typescript
+  # - LANGUAGE=typescript
 node_js: # a good example: https://github.com/pillarjs/router/blob/master/.travis.yml
   # - "0.8"
   # - "0.10"
@@ -30,6 +30,7 @@ scripts:
   - npm i
   - npm run prettier:write
   - npm run lint:write
+  - npm run jscpd
   - npm run test
   - npm run test:html
   - npm run test:junit
