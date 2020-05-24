@@ -69,3 +69,6 @@ typings/
 
 # jscpd
 .report
+
+# mocha
+.junit.xml

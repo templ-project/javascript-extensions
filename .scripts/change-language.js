@@ -45,7 +45,8 @@ const scripts = {
     jscpd: "jscpd ./src --blame --format javascript",
     lint: "eslint ./{src,test}/**/*.{js,jsx}",
     test: "npm run test:single -- './test/**/*.test.js'",
-    "test:single": "nyc --extension .js mocha --forbid-only",
+    "test:single":
+      "nyc --reporter=hmtl --reporter=text --extension .js mocha --forbid-only",
   },
   typescript: {
     build: "echo",
@@ -55,7 +56,8 @@ const scripts = {
     jscpd: "jscpd ./src --blame --format typescript",
     lint: "eslint ./{src,test}/**/*.{ts,tsx}",
     test: "npm run test:single -- 'test/**/*.test.ts'",
-    "test:single": "nyc --extension .ts mocha --forbid-only",
+    "test:single":
+      "nyc --reporter=hmtl --reporter=text --extension .ts mocha --forbid-only",
   },
 };
 
