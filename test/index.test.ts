@@ -1,7 +1,9 @@
-import {expect} from 'chai';
+import { expect } from "chai";
 
-describe('ts :: lorem ipsum test suite', function () {
-  it('dolor sit amet test', function () {
-    expect(true).to.be.true;
+import { hello } from "../src";
+
+describe("hello", function () {
+  it('hello("World") to return "Hello World!"', function () {
+    expect(hello("World")).to.equal("Hello World!");
   });
 });
