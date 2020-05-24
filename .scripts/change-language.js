@@ -49,7 +49,7 @@ const scripts = {
   typescript: {
     build: 'echo',
     'git-hook:pre-commit': 'npm run prettier:write && npm run lint:write && npm run jscpd && npm run test',
-    prettier: "prettier '{src,test}/**/*.{ts,tsx}'",
+    prettier: 'prettier ./{src,test}/**/*.{ts,tsx}',
     jscpd: 'jscpd ./src --blame --format typescript',
     lint: 'eslint ./{src,test}/**/*.{ts,tsx}',
     test: "npm run test:single -- 'test/**/*.test.ts'",
