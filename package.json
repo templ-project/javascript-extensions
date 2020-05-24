@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "change:language": "node .scripts/change-language.js",
-    "clean": "rimraf dist",
+    "clean": "rimraf coverage dist",
     "inspector": "jsinspector server --port 9543",
     "jscpd:html": "npm run jscpd -- --reporters html",
     "lint:write": "npm run lint -- --fix",
@@ -14,6 +14,7 @@
     "prettier:write": "npm run prettier -- --write",
     "prebuild": "npm run clean",
     "prerelease": "npm run build",
+    "pretest": "npm run clean",
     "release": "release-it --ci --no-npm.publish",
     "test:html": "npm run test -- --reporter html",
     "test:junit": "npm run test -- --reporter mocha-junit-reporter --reporter-options mochaFile=./coverage/coverage.xml",
