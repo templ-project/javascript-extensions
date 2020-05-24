@@ -145,6 +145,7 @@ const config = async () => {
         await unlink(".eslintrc.javascript.js");
         await unlink(".mocharc.javascript.js");
         await unlink(".prettierrc.javascript.js");
+        await unlink(path.join("test", "intex.test.ts"));
         await unlink("tsconfig.json");
         await unlink("test/tsconfig.json");
         delete package.scripts["change:language"];
@@ -171,6 +172,7 @@ const config = async () => {
         await unlink(".eslintrc.typescript.js");
         await unlink(".mocharc.typescript.js");
         await unlink(".prettierrc.typescript.js");
+        await unlink(path.join("test", "intex.test.js"));
         delete package.scripts["change:language"];
       }
       break;
