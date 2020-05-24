@@ -46,7 +46,7 @@ const scripts = {
     jscpd: "jscpd ./src --blame --format javascript",
     lint: "eslint ./{src,test}/**/*.{js,jsx}",
     test: "npm run test -- 'test/**/*.test.js'",
-    'test:single': 'nyc --extension .js mocha --forbid-only',
+    "test:single": "nyc --extension .js mocha --forbid-only",
   },
   typescript: {
     build: "echo",
@@ -56,7 +56,7 @@ const scripts = {
     jscpd: "jscpd ./src --blame --format typescript",
     lint: "eslint ./{src,test}/**/*.{ts,tsx}",
     test: "npm run test:single -- 'test/**/*.test.ts'",
-    'test:single': 'nyc --extension .ts mocha --forbid-only',
+    "test:single": "nyc --extension .ts mocha --forbid-only",
   },
 };
 
@@ -64,49 +64,76 @@ const sortByKeys = (obj) => {
   let keys = Object.getOwnPropertyNames(obj).sort();
   const newObj = {};
   for (key of keys) {
-    if (typeof obj[key] !== 'object' && !Array.isArray(obj[key])) {
-      newObj[key] = obj[key]
+    if (typeof obj[key] !== "object" && !Array.isArray(obj[key])) {
+      newObj[key] = obj[key];
     } else {
-      newObj[key] = sortByKeys(obj[key])
+      newObj[key] = sortByKeys(obj[key]);
     }
   }
   return newObj;
-}
+};
+
+/**
+ * @param {{}} obj
+ * @param {string[]} keys
+ */
+const removeKeys = (obj, keys) => {
+  const newObj = {};
+  const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
+    keys.find((lkey) => lkey === key)
+  );
+  for (const okey of okeys) {
+    newObj[okey] = obj[okey];
+  }
+  return newObj;
+};
 
 const config = async () => {
   switch (language.toLowerCase()) {
     case "none":
-      Object.getOwnPropertyNames(devDependencies.javascript).forEach(
-        (value, key) => {
-          delete package.devDependencies[key];
-        }
+      package.devDependencies = removeKeys(
+        package.devDependencies,
+        Object.getOwnPropertyNames(devDependencies.javascript)
       );
-      Object.getOwnPropertyNames(devDependencies.typescript).forEach(
-        (value, key) => {
-          delete package.devDependencies[key];
-        }
+      package.devDependencies = removeKeys(
+        package.devDependencies,
+        Object.getOwnPropertyNames(devDependencies.typescript)
       );
-      Object.getOwnPropertyNames(dependencies.javascript).forEach((value, key) => {
-        delete package.dependencies[key];
-      });
-      Object.getOwnPropertyNames(dependencies.typescript).forEach((value, key) => {
-        delete package.dependencies[key];
-      });
-      Object.getOwnPropertyNames(scripts.javascript).forEach((value, key) => {
-        delete package.scripts[key];
-      });
-      Object.getOwnPropertyNames(scripts.typescript).forEach((value, key) => {
-        delete package.scripts[key];
-      });
-      delete package.gitHooks["pre-commit"];
+      package.dependencies = removeKeys(
+        package.dependencies,
+        Object.getOwnPropertyNames(dependencies.javascript)
+      );
+      package.dependencies = removeKeys(
+        package.dependencies,
+        Object.getOwnPropertyNames(dependencies.typescript)
+      );
+      package.scripts = removeKeys(
+        package.scripts,
+        Object.getOwnPropertyNames(scripts.javascript)
+      );
+      package.scripts = removeKeys(
+        package.scripts,
+        Object.getOwnPropertyNames(scripts.typescript)
+      );
+      package.gitHooks = removeKeys(package.gitHooks, ["pre-commit"]);
 
-      await unlink(".eslintrc.js");
-      await unlink(".mocharc.js");
-      await unlink(".prettierrc.js");
+      if (!noUnlink) {
+        await unlink(".eslintrc.js");
+        await unlink(".mocharc.js");
+        await unlink(".prettierrc.js");
+      }
       break;
     case "javascript":
-      package.devDependencies = Object.assign({},  package.devDependencies, devDependencies.javascript);
-      package.dependencies = Object.assign({}, package.dependencies, dependencies.javascript);
+      package.devDependencies = Object.assign(
+        {},
+        package.devDependencies,
+        devDependencies.javascript
+      );
+      package.dependencies = Object.assign(
+        {},
+        package.dependencies,
+        dependencies.javascript
+      );
       package.scripts = Object.assign({}, package.scripts, scripts.javascript);
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
@@ -120,13 +147,19 @@ const config = async () => {
         await unlink(".prettierrc.javascript.js");
         await unlink("tsconfig.json");
         await unlink("test/tsconfig.json");
-        delete package.scripts['change:language']
+        delete package.scripts["change:language"];
       }
       break;
     case "typescript":
-      package.devDependencies = sortByKeys(Object.assign({}, package.devDependencies, devDependencies.typescript));
-      package.dependencies = sortByKeys(Object.assign({}, package.dependencies, dependencies.typescript));
-      package.scripts = sortByKeys(Object.assign({}, package.scripts, scripts.typescript));
+      package.devDependencies = sortByKeys(
+        Object.assign({}, package.devDependencies, devDependencies.typescript)
+      );
+      package.dependencies = sortByKeys(
+        Object.assign({}, package.dependencies, dependencies.typescript)
+      );
+      package.scripts = sortByKeys(
+        Object.assign({}, package.scripts, scripts.typescript)
+      );
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
@@ -138,7 +171,7 @@ const config = async () => {
         await unlink(".eslintrc.typescript.js");
         await unlink(".mocharc.typescript.js");
         await unlink(".prettierrc.typescript.js");
-        delete package.scripts['change:language'];
+        delete package.scripts["change:language"];
       }
       break;
     default:
