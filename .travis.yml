@@ -1,4 +1,7 @@
 language: node_js
+env:
+  - LANGUAGE=javascript
+  - LANGUAGE=typescript
 node_js: # a good example: https://github.com/pillarjs/router/blob/master/.travis.yml
   # - "0.8"
   # - "0.10"
@@ -23,13 +26,13 @@ cache:
   directories:
     - node_modules
 scripts:
-  - npm run change:language -- javascript
+  - npm run change:language -- $LANGUAGE
   - npm i
+  - npm run prettier:write
+  - npm run lint:write
   - npm run test
-  - npm run build
-  - git checkout .
-  - npm run change:language -- typescript
-  - npm run test
+  - npm run test:html
+  - npm run test:junit
   - npm run build
 # after_script:
 #   - test $TRAVIS_NODE_VERSION == '10' && sonar-scanner
