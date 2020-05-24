@@ -9,6 +9,6 @@ module.exports = {
   },
   extends: ['plugin:mocha/recommended', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['mocha', '@typescript-eslint',
+  plugins: ['mocha', '@typescript-eslint'],
   root: true,
 };
