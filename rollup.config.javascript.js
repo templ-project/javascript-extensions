@@ -1,6 +1,6 @@
-import dts from "rollup-plugin-dts";
+// import dts from "rollup-plugin-dts";
 
-import typescript from "rollup-plugin-typescript2";
+// import typescript from "rollup-plugin-typescript2";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -8,25 +8,25 @@ const entryName = "index";
 
 const name = "gw.common";
 
-const ts = (target = "es2015") =>
-  typescript({
-    cacheRoot: ".rollupcache",
-    // tsconfigDefaults: defaultCfg,
-    // tsconfig: undefined,
-    tsconfigOverride: {
-      compilerOptions: {
-        module: "es2015",
-        target: target,
-      },
-      exclude: [],
-      include: ["src"],
-    },
-    useTsconfigDeclarationDir: true,
-  });
+// const ts = (target = "es2015") =>
+//   typescript({
+//     cacheRoot: ".rollupcache",
+//     // tsconfigDefaults: defaultCfg,
+//     // tsconfig: undefined,
+//     tsconfigOverride: {
+//       compilerOptions: {
+//         module: "es2015",
+//         target: target,
+//       },
+//       exclude: [],
+//       include: ["src"],
+//     },
+//     useTsconfigDeclarationDir: true,
+//   });
 
 export default [
   {
-    input: `src/${entryName}.ts`,
+    input: `src/${entryName}.js`,
     output: [
       {
         file: `dist/es2015/${entryName}.js`,
@@ -38,28 +38,28 @@ export default [
         name: name,
       },
     ],
-    plugins: [ts()],
+    // plugins: [ts()],
   },
-  {
-    input: "./src/index.ts",
-    output: [{ file: "dist/index.d.ts", format: "es" }],
-    plugins: [dts()],
-  },
+  // {
+  //   input: "./src/index.js",
+  //   output: [{ file: "dist/index.d.js", format: "es" }],
+  //   plugins: [dts()],
+  // },
 ].concat(
   !isProduction
     ? []
     : [
         {
-          input: `src/${entryName}.ts`,
+          input: `src/${entryName}.js`,
           output: {
             // @ts-ignore
             file: `dist/es2017/${entryName}.js`,
             format: "es",
           },
-          plugins: [ts("es2017")],
+          // plugins: [ts("es2017")],
         },
         {
-          input: `src/${entryName}.ts`,
+          input: `src/${entryName}.js`,
           output: [
             { file: `dist/commonjs/${entryName}.js`, format: "cjs" },
             {
@@ -71,7 +71,7 @@ export default [
             { file: `dist/umd/${entryName}.js`, format: "umd", name: name },
             { file: `dist/system/${entryName}.js`, format: "system" },
           ],
-          plugins: [ts("es5")],
+          // plugins: [ts("es5")],
         },
       ]
 );
