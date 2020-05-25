@@ -31,6 +31,8 @@ const devDependencies = {
     "@types/node": "^13.13.4",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
+    "rollup-plugin-dts": "^1.4.7",
+    "rollup-plugin-typescript2": "^0.27.1",
     "ts-node": "^8.10.1",
     typescript: "^3.8.3",
   },
@@ -144,10 +146,12 @@ const config = async () => {
       await copyFile(".eslintrc.javascript.js", ".eslintrc.js");
       await copyFile(".mocharc.javascript.js", ".mocharc.js");
       await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
+      await copyFile("rollup.config.javascript.js", "rollup.config.js");
       if (!noUnlink) {
         await unlink(".eslintrc.javascript.js");
         await unlink(".mocharc.javascript.js");
         await unlink(".prettierrc.javascript.js");
+        await unlink("rollup.config.typescript.js");
         await unlink(path.join("src", "index.ts"));
         await unlink(path.join("test", "index.test.ts"));
         await unlink(path.join("test", "tsconfig.json"));
@@ -171,11 +175,13 @@ const config = async () => {
       await copyFile(".eslintrc.typescript.js", ".eslintrc.js");
       await copyFile(".mocharc.typescript.js", ".mocharc.js");
       await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
+      await copyFile("rollup.config.typescript.js", "rollup.config.js");
       if (!noUnlink) {
         await unlink(".babelrc.js");
         await unlink(".eslintrc.typescript.js");
         await unlink(".mocharc.typescript.js");
         await unlink(".prettierrc.typescript.js");
+        await unlink("rollup.config.javascript.js");
         await unlink(path.join("src", "index.js"));
         await unlink(path.join("test", "index.test.js"));
         delete package.scripts["change:language"];
