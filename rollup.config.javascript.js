@@ -1,18 +1,23 @@
-import babel from '@rollup/plugin-babel';
+/**
+ * If you're writing a multi package application, https://lerna.js.org/ should
+ * be the solution for you.
+ */
 
-const isProduction = process.env.NODE_ENV === 'production';
+import babel from "@rollup/plugin-babel";
 
-const entryName = 'index';
+const isProduction = process.env.NODE_ENV === "production";
+
+const entryName = "index";
 
 /**
  * Replace this with the name of your module
  */
-const name = 'javascript-template';
+const name = "javascript-template";
 
 const bab = () =>
   babel({
     // cacheRoot: '.rollupcache',
-    babelHelpers: 'bundled',
+    babelHelpers: "bundled",
   });
 
 export default [
@@ -21,11 +26,11 @@ export default [
     output: [
       {
         file: `dist/es2015/${entryName}.js`,
-        format: 'es',
+        format: "es",
       },
       {
         file: `dist/umd-es2015/${entryName}.js`,
-        format: 'umd',
+        format: "umd",
         name: name,
       },
     ],
@@ -40,24 +45,24 @@ export default [
           output: {
             // @bab-ignore
             file: `dist/es2017/${entryName}.js`,
-            format: 'es',
+            format: "es",
           },
-          plugins: [bab('es2017')],
+          plugins: [bab("es2017")],
         },
         {
           input: `src/${entryName}.js`,
           output: [
-            {file: `dist/commonjs/${entryName}.js`, format: 'cjs'},
+            { file: `dist/commonjs/${entryName}.js`, format: "cjs" },
             {
               file: `dist/amd/${entryName}.js`,
-              format: 'amd',
-              amd: {id: entryName},
+              format: "amd",
+              amd: { id: entryName },
             },
-            {file: `dist/native-modules/${entryName}.js`, format: 'es'},
-            {file: `dist/umd/${entryName}.js`, format: 'umd', name: name},
-            {file: `dist/system/${entryName}.js`, format: 'system'},
+            { file: `dist/native-modules/${entryName}.js`, format: "es" },
+            { file: `dist/umd/${entryName}.js`, format: "umd", name: name },
+            { file: `dist/system/${entryName}.js`, format: "system" },
           ],
-          plugins: [bab('es5')],
+          plugins: [bab("es5")],
         },
-      ],
+      ]
 );

@@ -1,5 +1,9 @@
-import dts from "rollup-plugin-dts";
+/**
+ * If you're writing a multi package application, https://lerna.js.org/ should
+ * be the solution for you.
+ */
 
+import dts from "rollup-plugin-dts";
 import typescript from "rollup-plugin-typescript2";
 
 const isProduction = process.env.NODE_ENV === "production";
