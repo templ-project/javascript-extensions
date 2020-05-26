@@ -1,3 +1,5 @@
+import babel from "@rollup/plugin-babel";
+
 const isProduction = process.env.NODE_ENV === "production";
 
 const entryName = "index";
@@ -7,9 +9,15 @@ const entryName = "index";
  */
 const name = "javascript-template";
 
+const bab = (target = "es2015") =>
+  babel({
+    cacheRoot: ".rollupcache",
+    babelHelpers: "bundled",
+  });
+
 export default [
   {
-    input: `src/${entryName}.js`,
+    input: `src/${entryName}.bab`,
     output: [
       {
         file: `dist/es2015/${entryName}.js`,
@@ -21,20 +29,28 @@ export default [
         name: name,
       },
     ],
+    plugins: [bab()],
+  },
+  {
+    input: "./src/index.bab",
+    output: [{ file: "dist/index.d.bab", format: "es" }],
+    plugins: [dbab()],
   },
 ].concat(
   !isProduction
     ? []
     : [
         {
-          input: `src/${entryName}.js`,
+          input: `src/${entryName}.bab`,
           output: {
+            // @bab-ignore
             file: `dist/es2017/${entryName}.js`,
             format: "es",
           },
+          plugins: [bab("es2017")],
         },
         {
-          input: `src/${entryName}.js`,
+          input: `src/${entryName}.bab`,
           output: [
             { file: `dist/commonjs/${entryName}.js`, format: "cjs" },
             {
@@ -46,6 +62,7 @@ export default [
             { file: `dist/umd/${entryName}.js`, format: "umd", name: name },
             { file: `dist/system/${entryName}.js`, format: "system" },
           ],
+          plugins: [bab("es5")],
         },
       ]
 );
