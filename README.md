@@ -1,7 +1,7 @@
 # Project Title
 
-<img alt="JavaScript Logo" src="https://github.com/templ-project/go/blob/master/javascript.svg?raw=true" width="20%" align="right" />
-<img alt="TypeScript Logo" src="https://github.com/templ-project/go/blob/master/typescript.svg?raw=true" width="20%" align="right" />
+<img alt="JavaScript Logo" src="https://github.com/templ-project/javascript/blob/master/javascript.svg?raw=true" width="20%" align="right" />
+<img alt="TypeScript Logo" src="https://github.com/templ-project/javascript/blob/master/typescript.svg?raw=true" width="20%" align="right" />
 
 > **javascript** is a template project, designed by [Templ Project](http://templ-project.github.io).
 >
