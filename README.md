@@ -15,6 +15,8 @@
 > - [prettier](https://prettier.io/) for code formatting
 > - [eslint](https://eslint.org/) for linting
 >
+> By default, this implementation uses [npm](https://www.npmjs.com/), but you can easily change it to [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.js.org/).
+>
 > **To use the template**, delete the content above, and fill in the following sections of this readme.
 > Also rune one of the following, to activate your desired language:
 
