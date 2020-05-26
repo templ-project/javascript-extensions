@@ -20,11 +20,11 @@ node_js: # a good example: https://github.com/pillarjs/router/blob/master/.travi
   # - "8.17"
   # - "9.11"
   - "10"
-  # - "11"
-  # - "12"
-  # - "13"
-  # - lts/*
-  # - node
+  - "11"
+  - "12"
+  - "13"
+  - lts/*
+  - node
 sudo: false
 cache:
   directories:
