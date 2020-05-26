@@ -47,7 +47,7 @@ export default [
             file: `dist/es2017/${entryName}.js`,
             format: "es",
           },
-          plugins: [bab("es2017")],
+          plugins: [bab()],
         },
         {
           input: `src/${entryName}.js`,
@@ -62,7 +62,7 @@ export default [
             { file: `dist/umd/${entryName}.js`, format: "umd", name: name },
             { file: `dist/system/${entryName}.js`, format: "system" },
           ],
-          plugins: [bab("es5")],
+          plugins: [bab()],
         },
       ]
 );
