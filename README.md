@@ -26,6 +26,9 @@ or
 npm run change:language -- typescript # to use typescript
 ```
 
+<hr>
+<!-- > TODO: -->
+
 Set of shield/badges explaining where to find more information about the project (i.e. Where to look for unit test reports, where to see code coverage and code scans, etc.). You can find a lot of them on https://shields.io/)
 
 <!-- [![Npm Version](https://img.shields.io/npm/v/frameworks.svg)](https://www.npmjs.com/package/frameworks) -->
