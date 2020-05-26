@@ -6,7 +6,10 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const entryName = "index";
 
-const name = "gw.common";
+/**
+ * Replace this with the name of your module
+ */
+const name = "javascript-template";
 
 const ts = (target = "es2015") =>
   typescript({

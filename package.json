@@ -4,6 +4,7 @@
   "description": "Javascript Project Template",
   "main": "dist/index.js",
   "scripts": {
+    "build": "vrollup -c --environment NODE_ENV:production",
     "change:language": "node .scripts/change-language.js",
     "clean": "rimraf coverage dist",
     "inspector": "jsinspector server --port 9543",
