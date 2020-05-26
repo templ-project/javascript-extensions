@@ -1,18 +1,43 @@
 # Project Title
 
+<img alt="JavaScript Logo" src="https://github.com/templ-project/go/blob/master/javascript.svg?raw=true" width="20%" align="right" />
+<img alt="TypeScript Logo" src="https://github.com/templ-project/go/blob/master/typescript.svg?raw=true" width="20%" align="right" />
+
+> **javascript** is a template project, designed by [Templ Project](http://templ-project.github.io).
+>
+> **javascript** includes instructions for initializing a new
+> **JavaScript/[TypeScript](https://www.typescriptlang.org/)** project, and configuring it for development, unit
+> testing as well as code linting and analysis.
+>
+> **javascript** implements:
+>
+> - [jscpd](https://github.com/kucherenko/jscpd) for code analisys
+> - [prettier](https://prettier.io/) for code formatting
+> - [eslint](https://eslint.org/) for linting
+>
+> **To use the template**, delete the content above, and fill in the following sections of this readme.
+> Also rune one of the following, to activate your desired language:
+
+```powershell
+npm run change:language -- javascript # to use javascript
+or
+npm run change:language -- typescript # to use typescript
+```
+
 Set of shield/badges explaining where to find more information about the project (i.e. Where to look for unit test reports, where to see code coverage and code scans, etc.). You can find a lot of them on https://shields.io/)
 
 <!-- [![Npm Version](https://img.shields.io/npm/v/frameworks.svg)](https://www.npmjs.com/package/frameworks) -->
-<!-- [![HitCount](http://hits.dwyl.io/dragoscirjan/template.svg)](http://hits.dwyl.io/dragoscirjan/template) -->
-<!-- [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dragoscirjan/template/issues) -->
+<!-- [![HitCount](http://hits.dwyl.io/templ-project/javascript.svg)](http://hits.dwyl.io/templ-project/javascript) -->
 
-[![TravisCI](https://travis-ci.org/dragoscirjan/template.svg?branch=master)](https://travis-ci.org/dragoscirjan/template)
-<!-- [![CircleCI](https://circleci.com/gh/dragoscirjan/template.svg?style=shield)](https://circleci.com/gh/dragoscirjan/template) -->
+[![TravisCI](https://travis-ci.org/templ-project/javascript.svg?branch=master)](https://travis-ci.org/templ-project/javascript)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript/issues)
 
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=dragoscirjan_template&metric=alert_status)](https://sonarcloud.io/dashboard?id=dragoscirjan_template) 
- [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=dragoscirjan_template&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=dragoscirjan_template)
- [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=dragoscirjan_template&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=dragoscirjan_template)
- [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dragoscirjan_template&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=dragoscirjan_template)
+<!-- [![CircleCI](https://circleci.com/gh/templ-project/javascript.svg?style=shield)](https://circleci.com/gh/templ-project/javascript) -->
+
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=alert_status)](https://sonarcloud.io/dashboard?id=templ-project_javascript)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=templ-project_javascript)
+[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=templ-project_javascript)
+[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=templ-project_javascript)
 
 <!--
 [![Donate to this project using Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/dragoscirjan)
@@ -32,8 +57,8 @@ One Paragraph of project description goes here
 
 <!--
 Insert Table of Contents Here
-This can be done using [AlanWalk.markdown-toc](https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc) plugin, 
-which is also included in 
+This can be done using [AlanWalk.markdown-toc](https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc) plugin,
+which is also included in
 [itmcdev.generic-extension-pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.generic-extension-pack) extension pack.
 -->
 <!-- TOC -->
@@ -48,6 +73,7 @@ which is also included in
       - [Say what the step will be](#say-what-the-step-will-be)
       - [And repeat](#and-repeat)
     - [Development](#development)
+      - [Requirements](#requirements)
     - [Testing](#testing)
       - [Break down into (at least) unit tests](#break-down-into-at-least-unit-tests)
       - [and end to end tests](#and-end-to-end-tests)
@@ -64,14 +90,15 @@ which is also included in
 
 ### Prereqiusites / Dependencies
 
-What things you need to install the software and how to install them (based on each OS type). 
+What things you need to install the software and how to install them (based on each OS type).
 
 #### For Windows
+
 ```bash
 # Give Examples
 
 npm install -g node-gyp windows-build-tools
-# Warning: Please note windows-build-tools will install MSVS which takes a 
+# Warning: Please note windows-build-tools will install MSVS which takes a
 # LONG amount of time.
 ```
 
@@ -91,7 +118,6 @@ Describe a list of known issues, and how to bypass them.
 ### Installation
 
 A step by step series of examples that tell you how to get a development env running
-
 
 #### Say what the step will be
 
@@ -115,12 +141,21 @@ Explain any development process for the project, if necesary
 give examples
 ```
 
-### Testing
+#### Requirements
 
+- Please install [NodeJs](https://nodejs.org/en/). We support version 10.x and above.
+- Please instal a JavaScript/TypeScript IDE
+  - [Visual Studio Code](https://code.visualstudio.com/) with [ITMCDev Babel Extension Pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.node-babel-extension-pack) or [ITMCDev TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.node-typescript-extension-pack)
+  - [Jetbrains WebStorm](https://www.jetbrains.com/webstorm/)
+  - [Vim](https://www.vim.org/) with [neoclide/coc.nvim](https://github.com/neoclide/coc.nvim) and [HerringtonDarkholme/yats.vim](https://github.com/HerringtonDarkholme/yats.vim) extensions.
+  - Any other IDE you trust.
+
+### Testing
 
 Explain how to run the automated tests for this system
 
 #### Break down into (at least) unit tests
+
 Explain what these tests test and why
 
 ```
@@ -128,6 +163,7 @@ Give an example
 ```
 
 #### and end to end tests
+
 Explain what these tests test and why
 
 ```
@@ -147,13 +183,14 @@ Give an example
 Add additional notes about how to deploy this on a live system
 
 ## Authors
-* [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [PurpleBooth](#link-to-change)
+
+- [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [Go Template](/templ-project/javascript)
 
 See also the list of contributors who participated in this project.
 
 ## Issues / Support
 
-Add a set of links to the [issues](/dragoscirjan/template/issues) page/website, so people can know where to add issues/bugs or ask for support.
+Add a set of links to the [issues](/templ-project/javascript/issues) page/website, so people can know where to add issues/bugs or ask for support.
 
 ## License
 
