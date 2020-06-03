@@ -25,6 +25,9 @@ const devDependencies = {
     "@babel/register": "^7.9.0",
     "@rollup/plugin-babel": "^5.0.2",
     "babel-eslint": "^10.1.0",
+    documentation: "^13.0.0",
+    // esdoc: "^1.1.0",
+    // "esdoc-standard-plugin": "^1.0.0",
   },
   typescript: {
     "@types/chai": "^4.2.11",
@@ -35,12 +38,16 @@ const devDependencies = {
     "rollup-plugin-dts": "^1.4.7",
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-node": "^8.10.1",
+    typedoc: "^0.17.7",
     typescript: "^3.8.3",
   },
 };
 
 const scripts = {
   javascript: {
+    docs:
+      "documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json",
+    // esdocs: "esdoc; documentation build src/** -f json -o docs.json",
     "git-hook:pre-commit":
       "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
     prettier: "prettier ./{src,test}/**/*.js",
@@ -50,9 +57,11 @@ const scripts = {
     // lint: 'eslint ./{src,test}/**/*.{js,jsx}',
     test: "npm run test:single -- './test/**/*.test.js'",
     "test:single":
-      "nyc --reporter=html --reporter=text --extension .js mocha --forbid-only",
+      "nyc --reporter=html,lcov,text --reporter=text --extension .js mocha --forbid-only",
   },
   typescript: {
+    docs:
+      "npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src",
     "git-hook:pre-commit":
       "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
     prettier: "prettier ./{src,test}/**/*.ts",
@@ -62,7 +71,7 @@ const scripts = {
     // lint: 'eslint ./{src,test}/**/*.{ts,tsx}',
     test: "npm run test:single -- 'test/**/*.test.ts'",
     "test:single":
-      "nyc --reporter=html --reporter=text --extension .ts mocha --forbid-only",
+      "nyc --reporter=html,lcov,text --reporter=text --extension .ts mocha --forbid-only",
   },
 };
 
