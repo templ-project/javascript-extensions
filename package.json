@@ -20,7 +20,14 @@
     "pretest": "npm run clean",
     "release": "release-it --ci --no-npm.publish",
     "test:junit": "npm run test -- --reporter mocha-junit-reporter --reporter-options mochaFile=.junit.xml",
-    "test:watch": "nodemon --exec 'npm run test'"
+    "test:watch": "nodemon --exec 'npm run test'",
+    "docs": "documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json",
+    "git-hook:pre-commit": "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
+    "prettier": "prettier ./{src,test}/**/*.js",
+    "jscpd": "jscpd ./src --blame --format javascript",
+    "lint": "eslint ./{src,test}/**/*.js",
+    "test": "npm run test:single -- './test/**/*.test.js'",
+    "test:single": "nyc --reporter=html --reporter=lcov --reporter=text --extension .js mocha --forbid-only"
   },
   "repository": {
     "type": "git",
@@ -48,7 +55,18 @@
     "release-it": "^13.5.8",
     "rimraf": "^3.0.2",
     "rollup": "^2.10.9",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/register": "^7.9.0",
+    "@rollup/plugin-babel": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "documentation": "^13.0.0"
   },
-  "gitHooks": {}
+  "gitHooks": {
+    "pre-commit": "npm run git-hook:pre-commit && git add ."
+  },
+  "dependencies": {}
 }
