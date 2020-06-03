@@ -35,6 +35,7 @@ Set of shield/badges explaining where to find more information about the project
 <!-- [![HitCount](http://hits.dwyl.io/templ-project/javascript.svg)](http://hits.dwyl.io/templ-project/javascript) -->
 
 [![TravisCI](https://travis-ci.org/templ-project/javascript.svg?branch=master)](https://travis-ci.org/templ-project/javascript)
+![JSCPD](.jscpd/jscpd-badge.svg?raw=true)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript/issues)
 
 <!-- [![CircleCI](https://circleci.com/gh/templ-project/javascript.svg?style=shield)](https://circleci.com/gh/templ-project/javascript) -->
