@@ -30,18 +30,20 @@ sudo: false
 cache:
   directories:
     - node_modules
-scripts:
+before_script:
   - npm run change:language -- $LANGUAGE
+scripts:
   - npm i
   - npm run prettier:write
   - npm run lint:write
   - npm run jscpd
   - npm run test
   - npm run test:junit
-  - if [[ $TRAVIS_NODE_VERSION == '12' ]] && [[ $TRAVIS_OS_NAME == 'linux' ]]; then npm run docs; fi
   - npm run build
 after_script:
-  - test $TRAVIS_NODE_VERSION == '12' && test $TRAVIS_OS_NAME == 'linux' && sonar-scanner
+  - if [[ $TRAVIS_NODE_VERSION == '12' ]] && [[ $TRAVIS_OS_NAME == 'linux' ]]; then npm run docs;
+    if [[ $LANGUAGE == 'typescript' ]]; then sonar-scanner; fi;
+    fi
 notifications:
   email:
     recipients:
