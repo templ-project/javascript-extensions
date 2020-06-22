@@ -153,6 +153,7 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
+      await copyFile(".dependency-cruiser.javascript.js", ".dependency-cruiser.js");
       await copyFile(".eslintrc.javascript.js", ".eslintrc.js");
       await copyFile(".mocharc.javascript.js", ".mocharc.js");
       await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
@@ -178,6 +179,7 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
+      await copyFile(".dependency-cruiser.typescript.js", ".dependency-cruiser.js");
       await copyFile(".eslintrc.typescript.js", ".eslintrc.js");
       await copyFile(".mocharc.typescript.js", ".mocharc.js");
       await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
@@ -198,6 +200,7 @@ const config = async () => {
   if (!noUnlink) {
     for (const lang of Object.getOwnPropertyNames(scripts)) {
       await unlink(`.eslintrc.${lang}.js`);
+      await unlink(`.dependency-cruiser.${lang}.js`);
       await unlink(`.mocharc.${lang}.js`);
       await unlink(`.prettierrc.${lang}.js`);
       await unlink(`rollup.config.${lang}.js`);
