@@ -49,7 +49,7 @@ const scripts = {
       "documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json",
     // esdocs: "esdoc; documentation build src/** -f json -o docs.json",
     "git-hook:pre-commit":
-      "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
+      "npm run prettier:write && npm run lint:write && npm run jscpd && npm run depcruise && npm run test",
     prettier: "prettier ./{src,test}/**/*.js",
     // prettier: 'prettier ./{src,test}/**/*.{js,jsx}',
     jscpd: "jscpd ./src --blame --format javascript",
@@ -63,7 +63,7 @@ const scripts = {
     docs:
       "npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src",
     "git-hook:pre-commit":
-      "npm run prettier:write && npm run lint:write && npm run jscpd && npm run test",
+      "npm run prettier:write && npm run lint:write && npm run jscpd && npm run depcruise && npm run test",
     prettier: "prettier ./{src,test}/**/*.ts",
     // prettier: 'prettier ./{src,test}/**/*.{ts,tsx}',
     jscpd: "jscpd ./src --blame --format typescript",
@@ -153,6 +153,7 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
+      await copyFile(".dependency-cruiser.javascript.js", ".dependency-cruiser.js");
       await copyFile(".eslintrc.javascript.js", ".eslintrc.js");
       await copyFile(".mocharc.javascript.js", ".mocharc.js");
       await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
@@ -178,6 +179,7 @@ const config = async () => {
       package.gitHooks = Object.assign({}, package.gitHooks, {
         "pre-commit": "npm run git-hook:pre-commit && git add .",
       });
+      await copyFile(".dependency-cruiser.typescript.js", ".dependency-cruiser.js");
       await copyFile(".eslintrc.typescript.js", ".eslintrc.js");
       await copyFile(".mocharc.typescript.js", ".mocharc.js");
       await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
@@ -198,6 +200,7 @@ const config = async () => {
   if (!noUnlink) {
     for (const lang of Object.getOwnPropertyNames(scripts)) {
       await unlink(`.eslintrc.${lang}.js`);
+      await unlink(`.dependency-cruiser.${lang}.js`);
       await unlink(`.mocharc.${lang}.js`);
       await unlink(`.prettierrc.${lang}.js`);
       await unlink(`rollup.config.${lang}.js`);
@@ -205,6 +208,10 @@ const config = async () => {
 
     delete package.scripts["change:language"];
   }
+
+  await unlink('README.md');
+  await copyFile("README_TEMPLATE.md", "README.md");
+  await unlink('README_TEMPLATE.md');
 
   writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
 };
