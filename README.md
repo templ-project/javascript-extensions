@@ -73,10 +73,6 @@ npm run change:language -- typescript # to use typescript
 
 ```bash
 npm i
-# or
-# yarn install
-# or 
-# pnpm install
 ```
 
 ### Development
@@ -114,7 +110,7 @@ npm run release
 
 ## Authors
 
-- [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [Go Template](/templ-project/javascript)
+- [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [JavaScript Template](/templ-project/javascript)
 
 See also the list of contributors who participated in this project.
 
