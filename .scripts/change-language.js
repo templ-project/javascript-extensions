@@ -209,10 +209,6 @@ const config = async () => {
     delete package.scripts["change:language"];
   }
 
-  await unlink('README.md');
-  await copyFile("README_TEMPLATE.md", "README.md");
-  await unlink('README_TEMPLATE.md');
-
   writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
 };
 
