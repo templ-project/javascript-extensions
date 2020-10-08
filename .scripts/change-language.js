@@ -58,35 +58,14 @@ const eslintrc = (answers) => {
   return template;
 };
 
-const to_rc = (obj, label = ".prettierrc") => {
-  fs.writeFileSync(
-    `${label}.js`,
-    `// ${label}.js
-module.exports = ${JSON.stringify(obj, null, 2)};`
-  );
-};
-
-const to_package = (obj, label = "prettier") => {
-  package[label] = obj;
-  return package;
-};
-
-const srcCode = (answers) => {
-  fs.mkdirSync(answers.src, { recursive: true })
-
-  let template = ''
-  let ext = 'js'
-  switch (answers.language) {
-    case LANG_COFFEE:
-      ext = 'coffee'
-    case LANG_TS:
-      ext = 'ts'
-      template = 'export const hello = (name: string): string => `Hello ${name}!`;'
-    case LANG_FLOW:
-    default:
-      template = 'export const hello = (name) => `Hello ${name}!`;'
+const jscpd = (answers) => {
+  if (!answers.includes('jscpd')) {
+    return;
   }
-  fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
+  package.devDependencies = Object.assign({}, package.devDependencies, {
+    "jscpd": "^2.0.16",
+    "jscpd-badge-reporter": "^1.1.3",
+  })
 }
 
 const prettierrc = (answers) => {
@@ -108,6 +87,37 @@ const prettierrc = (answers) => {
   }
   return template
 }
+
+const srcCode = (answers) => {
+  fs.mkdirSync(answers.src, { recursive: true })
+
+  let template = ''
+  let ext = 'js'
+  switch (answers.language) {
+    case LANG_COFFEE:
+      ext = 'coffee'
+    case LANG_TS:
+      ext = 'ts'
+      template = 'export const hello = (name: string): string => `Hello ${name}!`;'
+    case LANG_FLOW:
+    default:
+      template = 'export const hello = (name) => `Hello ${name}!`;'
+  }
+  fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
+}
+
+const to_rc = (obj, label = ".prettierrc") => {
+  fs.writeFileSync(
+    `${label}.js`,
+    `// ${label}.js
+module.exports = ${JSON.stringify(obj, null, 2)};`
+  );
+};
+
+const to_package = (obj, label = "prettier") => {
+  package[label] = obj;
+  return package;
+};
 
 // const sortByKeys = (obj) => {
 //   let keys = Object.getOwnPropertyNames(obj).sort();
@@ -319,13 +329,14 @@ const questions = [
 const init = (answers) => {
   // srcCode(answers);
 
-  // .eslintrc
-  (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
+  // // .eslintrc
+  // (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
 
-  // .prettierrc
+  // // .prettierrc
   // to_rc(prettierrc(answers), '.prettierrc');
 
-
+  // .jscpd
+  jscpd(answers);
 
 
 
@@ -373,14 +384,10 @@ const init = (answers) => {
   //     }
   // }
 
-  // // .jscpd
-  // // if (answers.inspectors.includes('jscpd')) {
-  // //   package.devDependencies = Object.assign({}, package.devDependencies, {
-  // //     "jscpd": "^2.0.16",
-  // //     "jscpd-badge-reporter": "^1.1.3",
-  // //   })
-  // //   to_rc(configs[answers.language].jscpd, '.jscpd');
-  // // }
+
+
+
+
 
   // switch (answers.repository) {
   //   case 'bitbucket':
@@ -426,7 +433,7 @@ const init = (answers) => {
   // //   removeKeys(package.devDependencies, ['dependency-cruiser']);
   // // }
 
-  // console.log(package);
+  console.log(package);
   // // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
 
