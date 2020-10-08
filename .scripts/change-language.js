@@ -4,9 +4,59 @@ const path = require("path");
 
 const package = JSON.parse(fs.readFileSync("./package.json").toString());
 
+const LANG_COFFEE = 'coffee'
+const LANG_FLOW = 'flow'
+const LANG_JS = 'javascript'
+const LANG_TS = 'typescript'
+
+const TEST_JASMINE = 'jasmine'
+const TEST_JEST = 'test'
+const TEST_MOCHA = 'mocha'
+
 /****************************************************************************
  * Methods
  ****************************************************************************/
+
+const eslintrc = (answers) => {
+  const template = {
+    env: {
+      browser: true,
+      es6: true,
+      node: true,
+      mocha: true,
+    },
+    extends: ["eslint:recommended"],
+    plugins: [],
+    root: true,
+    rules: {
+      "consistent-return": 2,
+      indent: [1, 2],
+      "no-else-return": 1,
+      semi: [1, "always"],
+      "space-unary-ops": 2,
+    },
+  };
+
+  if (answers.language === LANG_COFFEE) {}
+  if (answers.language === LANG_FLOW) {}
+  if (answers.language === LANG_JS) {
+    template.parserOptions = {
+      parser: "babel-eslint",
+      ecmaVersion: 2018,
+      sourceType: "module",
+    }
+  }
+  if (answers.language === LANG_TS) {
+    template.extends.push("plugin:@typescript-eslint/recommended");
+    template.parser = "@typescript-eslint/parser";
+    template.plugins.push("@typescript-eslint");
+  }
+  if (answers.testing === TEST_MOCHA) {
+    template.extends.push("plugin:mocha/recommended")
+    template.plugins.push("mocha")
+  }
+  return template;
+};
 
 const to_rc = (obj, label = ".prettierrc") => {
   fs.writeFileSync(
@@ -27,16 +77,36 @@ const srcCode = (answers) => {
   let template = ''
   let ext = 'js'
   switch (answers.language) {
-    case 'coffee':
+    case LANG_COFFEE:
       ext = 'coffee'
-    case 'typescript':
+    case LANG_TS:
       ext = 'ts'
       template = 'export const hello = (name: string): string => `Hello ${name}!`;'
-    case 'flow':
+    case LANG_FLOW:
     default:
       template = 'export const hello = (name) => `Hello ${name}!`;'
   }
   fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
+}
+
+const prettierrc = (answers) => {
+  const template = {
+    parser: "babel",
+    printWidth: 120,
+    semi: true,
+    singleQuote: true,
+    tabWidth: 2,
+    trailingComma: "all",
+    bracketSpacing: false,
+  };
+  if (answers.language === LANG_COFFEE) {
+    template.parser = 'coffee'
+    package.devDependencies = Object.assign({}, package.devDependencies, {"prettier-plugin-coffeescript": "^0.1.5"})
+  }
+  if (answers.language === LANG_TS) {
+    template.parser = 'typescript'
+  }
+  return template
 }
 
 // const sortByKeys = (obj) => {
@@ -96,49 +166,7 @@ const srcCode = (answers) => {
 //   return alter ? alter(template) : template;
 // };
 
-// const eslintrc = (
-//   alter = (tpl) =>
-//     Object.assign({}, tpl, {
-//       parserOptions: {
-//         parser: "babel-eslint",
-//         ecmaVersion: 2018,
-//         sourceType: "module",
-//       },
-//     })
-// ) => {
-//   const template = {
-//     env: {
-//       browser: true,
-//       es6: true,
-//       node: true,
-//       mocha: true,
-//     },
-//     extends: ["plugin:mocha/recommended", "eslint:recommended"],
-//     plugins: ["mocha"],
-//     root: true,
-//     rules: {
-//       "consistent-return": 2,
-//       indent: [1, 2],
-//       "no-else-return": 1,
-//       semi: [1, "always"],
-//       "space-unary-ops": 2,
-//     },
-//   };
-//   return alter ? alter(template) : template;
-// };
 
-// const prettierrc = (alter = (tpl) => tpl) => {
-//   const template = {
-//     parser: "babel",
-//     printWidth: 120,
-//     semi: true,
-//     singleQuote: true,
-//     tabWidth: 2,
-//     trailingComma: "all",
-//     bracketSpacing: false,
-//   };
-//   return alter ? alter(template) : template;
-// };
 
 /****************************************************************************
  * Settings
@@ -289,16 +317,23 @@ const questions = [
 // };
 
 const init = (answers) => {
-  srcCode(answers);
+  // srcCode(answers);
+
+  // .eslintrc
+  (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
+
+  // .prettierrc
+  // to_rc(prettierrc(answers), '.prettierrc');
 
 
-  // // let writer = null;
 
-  // // // .eslintrc
-  // // (answers.to === 'rc') ? to_rc(configs[answers.language].eslintrc, '.eslintrc') : to_package(configs[answers.language].eslintrc, 'eslint');
 
-  // // // .prettierrc
-  // // (answers.to === 'rc') ? to_rc(configs[answers.language].prettierrc, '.prettierrc') : to_package(configs[answers.language].prettierrc, 'prettier');
+
+
+
+
+
+
 
   // switch (answers.testing) {
   //   case "jasmine":
