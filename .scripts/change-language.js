@@ -20,108 +20,6 @@ const to_package = (obj, label = "prettier") => {
   return package;
 };
 
-const sortByKeys = (obj) => {
-  let keys = Object.getOwnPropertyNames(obj).sort();
-  const newObj = {};
-  for (key of keys) {
-    if (typeof obj[key] !== "object" && !Array.isArray(obj[key])) {
-      newObj[key] = obj[key];
-    } else {
-      newObj[key] = sortByKeys(obj[key]);
-    }
-  }
-  return newObj;
-};
-
-const removeKeys = (obj, keys) => {
-  const newObj = {};
-  const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
-    keys.find((lkey) => lkey === key)
-  );
-  for (const okey of okeys) {
-    newObj[okey] = obj[okey];
-  }
-  return newObj;
-};
-
-const mocharc = (
-  alter = (tpl) => {
-    tpl.require.push("@babel/register");
-    return tpl;
-  }
-) => {
-  const template = {
-    recursive: true,
-    reporter: "spec",
-    timeout: 5000,
-    require: [
-      "chai/register-assert", // Using Assert style
-      "chai/register-expect", // Using Expect style
-      "chai/register-should", // Using Should style
-    ],
-  };
-  return alter ? alter(template) : template;
-};
-
-const jestrc = (alter = (tpl) => tpl) => {
-  const template = {
-    moduleFileExtensions: ["js", "json", "ts"],
-    rootDir: "src",
-    testRegex: ".spec.ts$",
-    transform: {
-      "^.+\\.(t|j)s$": "ts-jest",
-    },
-    coverageDirectory: "../coverage",
-    testEnvironment: "node",
-  };
-  return alter ? alter(template) : template;
-};
-
-const eslintrc = (
-  alter = (tpl) =>
-    Object.assign({}, tpl, {
-      parserOptions: {
-        parser: "babel-eslint",
-        ecmaVersion: 2018,
-        sourceType: "module",
-      },
-    })
-) => {
-  const template = {
-    env: {
-      browser: true,
-      es6: true,
-      node: true,
-      mocha: true,
-    },
-    extends: ["plugin:mocha/recommended", "eslint:recommended"],
-    plugins: ["mocha"],
-    root: true,
-    rules: {
-      "consistent-return": 2,
-      indent: [1, 2],
-      "no-else-return": 1,
-      semi: [1, "always"],
-      "space-unary-ops": 2,
-    },
-  };
-  return alter ? alter(template) : template;
-};
-
-const prettierrc = (alter = (tpl) => tpl) => {
-  const template = {
-    parser: "babel",
-    printWidth: 120,
-    semi: true,
-    singleQuote: true,
-    tabWidth: 2,
-    trailingComma: "all",
-    bracketSpacing: false,
-  };
-  return alter ? alter(template) : template;
-};
-
-
 const srcCode = (answers) => {
   fs.mkdirSync(answers.src, { recursive: true })
 
@@ -140,71 +38,172 @@ const srcCode = (answers) => {
   fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
 }
 
+// const sortByKeys = (obj) => {
+//   let keys = Object.getOwnPropertyNames(obj).sort();
+//   const newObj = {};
+//   for (key of keys) {
+//     if (typeof obj[key] !== "object" && !Array.isArray(obj[key])) {
+//       newObj[key] = obj[key];
+//     } else {
+//       newObj[key] = sortByKeys(obj[key]);
+//     }
+//   }
+//   return newObj;
+// };
+
+// const removeKeys = (obj, keys) => {
+//   const newObj = {};
+//   const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
+//     keys.find((lkey) => lkey === key)
+//   );
+//   for (const okey of okeys) {
+//     newObj[okey] = obj[okey];
+//   }
+//   return newObj;
+// };
+
+// const mocharc = (
+//   alter = (tpl) => {
+//     tpl.require.push("@babel/register");
+//     return tpl;
+//   }
+// ) => {
+//   const template = {
+//     recursive: true,
+//     reporter: "spec",
+//     timeout: 5000,
+//     require: [
+//       "chai/register-assert", // Using Assert style
+//       "chai/register-expect", // Using Expect style
+//       "chai/register-should", // Using Should style
+//     ],
+//   };
+//   return alter ? alter(template) : template;
+// };
+
+// const jestrc = (alter = (tpl) => tpl) => {
+//   const template = {
+//     moduleFileExtensions: ["js", "json", "ts"],
+//     rootDir: "src",
+//     testRegex: ".spec.ts$",
+//     transform: {
+//       "^.+\\.(t|j)s$": "ts-jest",
+//     },
+//     coverageDirectory: "../coverage",
+//     testEnvironment: "node",
+//   };
+//   return alter ? alter(template) : template;
+// };
+
+// const eslintrc = (
+//   alter = (tpl) =>
+//     Object.assign({}, tpl, {
+//       parserOptions: {
+//         parser: "babel-eslint",
+//         ecmaVersion: 2018,
+//         sourceType: "module",
+//       },
+//     })
+// ) => {
+//   const template = {
+//     env: {
+//       browser: true,
+//       es6: true,
+//       node: true,
+//       mocha: true,
+//     },
+//     extends: ["plugin:mocha/recommended", "eslint:recommended"],
+//     plugins: ["mocha"],
+//     root: true,
+//     rules: {
+//       "consistent-return": 2,
+//       indent: [1, 2],
+//       "no-else-return": 1,
+//       semi: [1, "always"],
+//       "space-unary-ops": 2,
+//     },
+//   };
+//   return alter ? alter(template) : template;
+// };
+
+// const prettierrc = (alter = (tpl) => tpl) => {
+//   const template = {
+//     parser: "babel",
+//     printWidth: 120,
+//     semi: true,
+//     singleQuote: true,
+//     tabWidth: 2,
+//     trailingComma: "all",
+//     bracketSpacing: false,
+//   };
+//   return alter ? alter(template) : template;
+// };
+
 /****************************************************************************
  * Settings
  ****************************************************************************/
 
-// const question = [
-//   {
-//     type: "select",
-//     name: "language",
-//     message: "Choose JavaScript Flavor",
-//     choices: [
-//       "javascript",
-//       "typescript",
-//       { name: "flow", disabled: true },
-//       { name: "coffee", disabled: true },
-//     ],
-//   },
-//   {
-//     type: "select",
-//     name: "src",
-//     message: "Choose Src Folder",
-//     choices: ["app", "src"],
-//     initial: "src",
-//   },
-//   {
-//     type: "select",
-//     name: "dist",
-//     message: "Choose Dist Folder",
-//     choices: ["dist", "lib"],
-//     initial: "dist",
-//   },
-//   {
-//     type: "select",
-//     name: "testing",
-//     message: "Choose Testing Framework",
-//     choices: [{ name: "jasmine", disabled: true }, "jest", "mocha"],
-//     initial: "mocha",
-//   },
-//   {
-//     type: "multiselect",
-//     name: "inspectors",
-//     message: "Choose Code Inspectors",
-//     choices: ["jscpd", "dependency-cruiser"],
-//     initial: ["jscpd"],
-//   },
-//   {
-//     type: "select",
-//     name: "repository",
-//     message: "Choose Git Repository Manager",
-//     choices: [
-//       { name: "bitbucket", disabled: true },
-//       { name: "gitea", disabled: true },
-//       { name: "gitee", disabled: true },
-//       "github",
-//       "gitlab",
-//     ],
-//     initial: ["github"],
-//   },
-//   {
-//     type: "select",
-//     name: "to",
-//     message: "Write configs to",
-//     choices: [{ name: "rc", message: "Separate Files" }, { name: "package" }],
-//     initial: ["rc"],
-//   },
-// ];
+const questions = [
+  {
+    type: "select",
+    name: "language",
+    message: "Choose JavaScript Flavor",
+    choices: [
+      "javascript",
+      "typescript",
+      { name: "flow", disabled: true },
+      { name: "coffee", disabled: true },
+    ],
+  },
+  {
+    type: "select",
+    name: "src",
+    message: "Choose Src Folder",
+    choices: ["app", "src"],
+    initial: "src",
+  },
+  {
+    type: "select",
+    name: "dist",
+    message: "Choose Dist Folder",
+    choices: ["dist", "lib"],
+    initial: "dist",
+  },
+  {
+    type: "select",
+    name: "testing",
+    message: "Choose Testing Framework",
+    choices: [{ name: "jasmine", disabled: true }, "jest", "mocha"],
+    initial: "mocha",
+  },
+  {
+    type: "multiselect",
+    name: "inspectors",
+    message: "Choose Code Inspectors",
+    choices: ["jscpd", "dependency-cruiser"],
+    initial: ["jscpd"],
+  },
+  {
+    type: "select",
+    name: "repository",
+    message: "Choose Git Repository Manager",
+    choices: [
+      { name: "bitbucket", disabled: true },
+      { name: "gitea", disabled: true },
+      { name: "gitee", disabled: true },
+      "github",
+      "gitlab",
+    ],
+    initial: ["github"],
+  },
+  {
+    type: "select",
+    name: "to",
+    message: "Write configs to",
+    choices: [{ name: "rc", message: "Separate Files" }, { name: "package" }],
+    initial: ["rc"],
+  },
+];
 
 // const configs = {
 //   coffee: {
@@ -396,6 +395,6 @@ const init = (answers) => {
 };
 
 console.clear();
-prompt(question)
+prompt(questions)
   .then((answers) => init(answers))
   .catch(console.error);
