@@ -1,5 +1,6 @@
 const { prompt } = require("enquirer");
 const fs = require("fs");
+const path = require("path");
 
 const package = JSON.parse(fs.readFileSync("./package.json").toString());
 
