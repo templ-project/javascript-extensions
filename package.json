@@ -43,8 +43,6 @@
     "enquirer": "^2.3.6",
     "eslint": "^7.4.0",
     "eslint-plugin-mocha": "^7.0.1",
-    "jscpd": "^2.0.16",
-    "jscpd-badge-reporter": "^1.1.3",
     "jsinspector": "^2.0.4",
     "mocha": "^8.0.1",
     "mocha-junit-reporter": "^2.0.0",

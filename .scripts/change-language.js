@@ -30,10 +30,6 @@ const sortByKeys = (obj) => {
   return newObj;
 };
 
-/**
- * @param {{}} obj
- * @param {string[]} keys
- */
 const removeKeys = (obj, keys) => {
   const newObj = {};
   const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
@@ -240,25 +236,35 @@ const init = (answers) => {
   // // .prettierrc
   // (answers.to === 'rc') ? to_rc(configs[answers.language].prettierrc, '.prettierrc') : to_package(configs[answers.language].prettierrc, 'prettier');
 
-  // switch (answers.testing) {
-  //   case 'jasmine':
-  //   case 'jest':
-  //     // .mocharc
-  //     (answers.to === 'rc') ? to_rc(configs[answers.language].jestrc, 'jest.config') : to_package(configs[answers.language].jestrc, 'jest');
-  //     break;
-  //   default: // mocha
-  //     // .mocharc
-  //     (answers.to === 'rc') ? to_rc(configs[answers.language].mocharc, '.mocharc') : to_package(configs[answers.language].mocharc, 'mocha');
-  // }
+  switch (answers.testing) {
+    case 'jasmine':
+    case 'jest':
+      // .mocharc
+      (answers.to === 'rc') ? to_rc(configs[answers.language].jestrc, 'jest.config') : to_package(configs[answers.language].jestrc, 'jest');
+      break;
+    default: // mocha
+      // .mocharc
+      (answers.to === 'rc') ? to_rc(configs[answers.language].mocharc, '.mocharc') : to_package(configs[answers.language].mocharc, 'mocha');
+  }
 
-  // // .jscpd
+  // .jscpd
   // if (answers.inspectors.includes('jscpd')) {
+  //   package.devDependencies = Object.assign({}, package.devDependencies, {
+  //     "jscpd": "^2.0.16",
+  //     "jscpd-badge-reporter": "^1.1.3",
+  //   })
   //   to_rc(configs[answers.language].jscpd, '.jscpd');
   // }
 
 
   package.dependencies = Object.assign({}, package.dependencies, configs[answers.language].dependencies)
+  sortByKeys(package.dependencies)
   package.devDependencies = Object.assign({}, package.devDependencies, configs[answers.language].devDependencies)
+  sortByKeys(package.devDependencies)
+  removeKeys(package.devDependencies, ['enquirer'])
+
+  package.scripts = Object.assign({}, package.scripts, configs[answers.language].scripts)
+  sortByKeys(package.scripts)
 
   // if (answers.inspectors.includes('dependency-cruiser')) {
   //   console.clear();
@@ -267,129 +273,15 @@ const init = (answers) => {
   //   program.init = true;
   //   const cli = require('dependency-cruiser/src/cli');
   //   cli([], program);
+  // } else {
+  //   removeKeys(package.devDependencies, ['dependency-cruiser']);
   // }
+
+  console.log(package)
+  // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
 
 console.clear();
 prompt(question)
   .then(answers => init(answers))
   .catch(console.error);
-
-// const { copyFile, unlink, writeFile } = require("fs").promises;
-// const { readFileSync } = require("fs");
-// const path = require("path");
-
-// const package = JSON.parse(readFileSync("./package.json"));
-
-
-
-// const config = async () => {
-//   switch (language.toLowerCase()) {
-//     case "none":
-//       package.devDependencies = removeKeys(
-//         package.devDependencies,
-//         Object.getOwnPropertyNames(devDependencies.javascript)
-//       );
-//       package.devDependencies = removeKeys(
-//         package.devDependencies,
-//         Object.getOwnPropertyNames(devDependencies.typescript)
-//       );
-//       package.dependencies = removeKeys(
-//         package.dependencies,
-//         Object.getOwnPropertyNames(dependencies.javascript)
-//       );
-//       package.dependencies = removeKeys(
-//         package.dependencies,
-//         Object.getOwnPropertyNames(dependencies.typescript)
-//       );
-//       package.scripts = removeKeys(
-//         package.scripts,
-//         Object.getOwnPropertyNames(scripts.javascript)
-//       );
-//       package.scripts = removeKeys(
-//         package.scripts,
-//         Object.getOwnPropertyNames(scripts.typescript)
-//       );
-//       package.gitHooks = removeKeys(package.gitHooks, ["pre-commit"]);
-
-//       if (!noUnlink) {
-//         await unlink(".eslintrc.js");
-//         await unlink(".mocharc.js");
-//         await unlink(".prettierrc.js");
-//       }
-//       break;
-//     case "javascript":
-//       package.devDependencies = Object.assign(
-//         {},
-//         package.devDependencies,
-//         devDependencies.javascript
-//       );
-//       package.dependencies = Object.assign(
-//         {},
-//         package.dependencies,
-//         dependencies.javascript
-//       );
-//       package.scripts = Object.assign({}, package.scripts, scripts.javascript);
-//       package.gitHooks = Object.assign({}, package.gitHooks, {
-//         "pre-commit": "npm run git-hook:pre-commit && git add .",
-//       });
-//       await copyFile(".dependency-cruiser.javascript.js", ".dependency-cruiser.js");
-//       await copyFile(".eslintrc.javascript.js", ".eslintrc.js");
-//       await copyFile(".mocharc.javascript.js", ".mocharc.js");
-//       await copyFile(".prettierrc.javascript.js", ".prettierrc.js");
-//       await copyFile("rollup.config.javascript.js", "rollup.config.js");
-//       if (!noUnlink) {
-//         await unlink(path.join("src", "index.ts"));
-//         await unlink(path.join("test", "index.test.ts"));
-//         await unlink(path.join("test", "tsconfig.json"));
-//         await unlink("tsconfig.json");
-//         delete package.scripts["change:language"];
-//       }
-//       break;
-//     case "typescript":
-//       package.devDependencies = sortByKeys(
-//         Object.assign({}, package.devDependencies, devDependencies.typescript)
-//       );
-//       package.dependencies = sortByKeys(
-//         Object.assign({}, package.dependencies, dependencies.typescript)
-//       );
-//       package.scripts = sortByKeys(
-//         Object.assign({}, package.scripts, scripts.typescript)
-//       );
-//       package.gitHooks = Object.assign({}, package.gitHooks, {
-//         "pre-commit": "npm run git-hook:pre-commit && git add .",
-//       });
-//       await copyFile(".dependency-cruiser.typescript.js", ".dependency-cruiser.js");
-//       await copyFile(".eslintrc.typescript.js", ".eslintrc.js");
-//       await copyFile(".mocharc.typescript.js", ".mocharc.js");
-//       await copyFile(".prettierrc.typescript.js", ".prettierrc.js");
-//       await copyFile("rollup.config.typescript.js", "rollup.config.js");
-//       if (!noUnlink) {
-//         await unlink(".babelrc.js");
-//         await unlink(path.join("src", "index.js"));
-//         await unlink(path.join("test", "index.test.js"));
-//         delete package.scripts["change:language"];
-//       }
-//       break;
-//     default:
-//       console.error(
-//         "No language selected. Please chose between: javascript and typescrypt"
-//       );
-//       process.exit(1);
-//   }
-//   if (!noUnlink) {
-//     for (const lang of Object.getOwnPropertyNames(scripts)) {
-//       await unlink(`.eslintrc.${lang}.js`);
-//       await unlink(`.dependency-cruiser.${lang}.js`);
-//       await unlink(`.mocharc.${lang}.js`);
-//       await unlink(`.prettierrc.${lang}.js`);
-//       await unlink(`rollup.config.${lang}.js`);
-//     }
-
-//     delete package.scripts["change:language"];
-//   }
-
-//   writeFile("package.json", JSON.stringify(package, null, 2), "utf-8");
-// };
-
-// config();
