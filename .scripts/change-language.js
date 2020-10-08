@@ -59,7 +59,7 @@ const eslintrc = (answers) => {
 };
 
 const jscpd = (answers) => {
-  if (!answers.includes('jscpd')) {
+  if (!answers.inspectors.includes('jscpd')) {
     return;
   }
   package.devDependencies = Object.assign({}, package.devDependencies, {
@@ -119,29 +119,29 @@ const to_package = (obj, label = "prettier") => {
   return package;
 };
 
-// const sortByKeys = (obj) => {
-//   let keys = Object.getOwnPropertyNames(obj).sort();
-//   const newObj = {};
-//   for (key of keys) {
-//     if (typeof obj[key] !== "object" && !Array.isArray(obj[key])) {
-//       newObj[key] = obj[key];
-//     } else {
-//       newObj[key] = sortByKeys(obj[key]);
-//     }
-//   }
-//   return newObj;
-// };
+const sortByKeys = (obj) => {
+  let keys = Object.getOwnPropertyNames(obj).sort();
+  const newObj = {};
+  for (key of keys) {
+    if (typeof obj[key] !== "object" && !Array.isArray(obj[key])) {
+      newObj[key] = obj[key];
+    } else {
+      newObj[key] = sortByKeys(obj[key]);
+    }
+  }
+  return newObj;
+};
 
-// const removeKeys = (obj, keys) => {
-//   const newObj = {};
-//   const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
-//     keys.find((lkey) => lkey === key)
-//   );
-//   for (const okey of okeys) {
-//     newObj[okey] = obj[okey];
-//   }
-//   return newObj;
-// };
+const removeKeys = (obj, keys) => {
+  const newObj = {};
+  const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
+    keys.find((lkey) => lkey === key)
+  );
+  for (const okey of okeys) {
+    newObj[okey] = obj[okey];
+  }
+  return newObj;
+};
 
 // const mocharc = (
 //   alter = (tpl) => {
@@ -401,27 +401,6 @@ const init = (answers) => {
   //     rimraf.sync('.gitlab');
   // }
 
-  // package.dependencies = Object.assign(
-  //   {},
-  //   package.dependencies,
-  //   configs[answers.language].dependencies
-  // );
-  // sortByKeys(package.dependencies);
-  // package.devDependencies = Object.assign(
-  //   {},
-  //   package.devDependencies,
-  //   configs[answers.language].devDependencies
-  // );
-  // sortByKeys(package.devDependencies);
-  // removeKeys(package.devDependencies, ["enquirer"]);
-
-  // package.scripts = Object.assign(
-  //   {},
-  //   package.scripts,
-  //   configs[answers.language].scripts
-  // );
-  // sortByKeys(package.scripts);
-
   // // if (answers.inspectors.includes('dependency-cruiser')) {
   // //   console.clear();
   // //   console.log('Proceding to configuring `dependency-cruiser`');
@@ -433,6 +412,9 @@ const init = (answers) => {
   // //   removeKeys(package.devDependencies, ['dependency-cruiser']);
   // // }
 
+  // sortByKeys(package.dependencies);
+  package.devDependencies = sortByKeys(package.devDependencies);
+  package.scripts = sortByKeys(package.scripts);
   console.log(package);
   // // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
