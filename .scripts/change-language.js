@@ -66,6 +66,10 @@ const jscpd = (answers) => {
     "jscpd": "^2.0.16",
     "jscpd-badge-reporter": "^1.1.3",
   })
+  package.scripts = Object.assign({}, package.scripts, {
+    jscpd: `jscpd ./${answers.src} --blame --format ${answers.language !== LANG_FLOW ? answers.language : LANG_JS}`,
+    "jscpd:html": "npm run jscpd -- --reporters html"
+  })
 }
 
 const prettierrc = (answers) => {
@@ -78,13 +82,21 @@ const prettierrc = (answers) => {
     trailingComma: "all",
     bracketSpacing: false,
   };
+  let ext = '{js,jsx}'
   if (answers.language === LANG_COFFEE) {
+    ext = '{coffee,js}'
     template.parser = 'coffee'
     package.devDependencies = Object.assign({}, package.devDependencies, {"prettier-plugin-coffeescript": "^0.1.5"})
   }
   if (answers.language === LANG_TS) {
+    ext = '{ts,tsx}'
     template.parser = 'typescript'
   }
+  package.scripts = Object.assign({}, package.scripts, {
+    prettier: `prettier ./{${answers.src},test}/**/*.{ext}`,
+    "prettier:check": "npm run prettier -- --list-different",
+    "prettier:write": "npm run prettier -- --write",
+  })
   return template
 }
 
