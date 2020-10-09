@@ -67,6 +67,23 @@ const eslintrc = (answers) => {
   return template;
 };
 
+const depcruise = (answers) => {
+  if (answers.inspectors.includes('dependency-cruiser')) {
+    package.scripts = Object.assign({}, package.scripts, {
+      depcruise: `depcruise --config .dependency-cruiser.js ${answers.src}`,
+    })
+
+    console.clear();
+    console.log('Proceding to configuring `dependency-cruiser`');
+    const program = require("commander");
+    program.init = true;
+    const cli = require('dependency-cruiser/src/cli');
+    cli([], program);
+  } else {
+    package.devDependencies = removeKeys(package.devDependencies, ['dependency-cruiser']);
+  }
+}
+
 const jscpd = (answers) => {
   if (!answers.inspectors.includes('jscpd')) {
     return;
@@ -163,6 +180,17 @@ const removeKeys = (obj, keys) => {
   }
   return newObj;
 };
+
+const repository = (answers) => {
+  repositories = {
+    bitbucket: '',
+    gitea: '.github',
+    gitee: '',
+    github: '.github',
+    gitlab: '.gitlab',
+  }
+  rimraf.sync(Object.getOwnPropertyNames(repositories).filter(item => item !== answers.reository).map(item => repositories[item]));
+}
 
 // const mocharc = (
 //   alter = (tpl) => {
@@ -399,28 +427,9 @@ const init = (answers) => {
   //     }
   // }
 
-  // switch (answers.repository) {
-  //   case 'bitbucket':
-  //   case 'gitea':
-  //   case 'gitee':
-  //     break;
-  //   case 'gitlab':
-  //     rimraf.sync('.github');
-  //     break;
-  //   default: // github
-  //     rimraf.sync('.gitlab');
-  // }
+  depcruise(answers);
 
-  // // if (answers.inspectors.includes('dependency-cruiser')) {
-  // //   console.clear();
-  // //   console.log('Proceding to configuring `dependency-cruiser`');
-  // //   const program = require("commander");
-  // //   program.init = true;
-  // //   const cli = require('dependency-cruiser/src/cli');
-  // //   cli([], program);
-  // // } else {
-  // //   removeKeys(package.devDependencies, ['dependency-cruiser']);
-  // // }
+  repository(answers);
 
   // sortByKeys(package.dependencies);
   package.devDependencies = sortByKeys(package.devDependencies);
