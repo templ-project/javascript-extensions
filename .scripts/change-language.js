@@ -36,8 +36,11 @@ const eslintrc = (answers) => {
       "space-unary-ops": 2,
     },
   };
+  let ext = '{js,jsx}'
 
-  if (answers.language === LANG_COFFEE) {}
+  if (answers.language === LANG_COFFEE) {
+    ext = 'coffee'
+  }
   if (answers.language === LANG_FLOW) {}
   if (answers.language === LANG_JS) {
     template.parserOptions = {
@@ -47,6 +50,7 @@ const eslintrc = (answers) => {
     }
   }
   if (answers.language === LANG_TS) {
+    ext = '{ts,tsx}'
     template.extends.push("plugin:@typescript-eslint/recommended");
     template.parser = "@typescript-eslint/parser";
     template.plugins.push("@typescript-eslint");
@@ -55,6 +59,11 @@ const eslintrc = (answers) => {
     template.extends.push("plugin:mocha/recommended")
     template.plugins.push("mocha")
   }
+  package.scripts = Object.assign({}, package.scripts, {
+    lint: `eslint ./{${answers.src},test}/**/*.${ext}`,
+    "lint:write": "npm run lint -- --fix",
+    "lint:watch": "nodemon --exec 'npm run lint'",
+  })
   return template;
 };
 
@@ -352,12 +361,6 @@ const init = (answers) => {
 
 
 
-
-
-
-
-
-
   // switch (answers.testing) {
   //   case "jasmine":
   //   case "jest":
@@ -395,11 +398,6 @@ const init = (answers) => {
   //       });
   //     }
   // }
-
-
-
-
-
 
   // switch (answers.repository) {
   //   case 'bitbucket':

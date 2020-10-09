@@ -11,8 +11,6 @@
     "doc:watch": "nodemon --exec 'npm run doc'",
     "git-hook:pre-commit": "npm run prettier:write && npm run lint:write && npm run jscpd && npm run depcruise && npm run test",
     "inspector": "jsinspector server --port 9543",
-    "lint:write": "npm run lint -- --fix",
-    "lint:watch": "nodemon --exec 'npm run lint'",
     "prebuild": "npm run clean",
     "predocs": "rimraf docs",
     "prerelease": "npm run build",
