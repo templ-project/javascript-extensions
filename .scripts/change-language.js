@@ -339,13 +339,13 @@ const questions = [
 // };
 
 const init = (answers) => {
-  // srcCode(answers);
+  srcCode(answers);
 
-  // // .eslintrc
-  // (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
+  // .eslintrc
+  (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
 
-  // // .prettierrc
-  // to_rc(prettierrc(answers), '.prettierrc');
+  // .prettierrc
+  to_rc(prettierrc(answers), '.prettierrc');
 
   // .jscpd
   jscpd(answers);
