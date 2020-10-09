@@ -93,7 +93,7 @@ const prettierrc = (answers) => {
     template.parser = 'typescript'
   }
   package.scripts = Object.assign({}, package.scripts, {
-    prettier: `prettier ./{${answers.src},test}/**/*.{ext}`,
+    prettier: `prettier ./{${answers.src},test}/**/*.${ext}`,
     "prettier:check": "npm run prettier -- --list-different",
     "prettier:write": "npm run prettier -- --write",
   })
