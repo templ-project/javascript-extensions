@@ -88,6 +88,16 @@ const jscpd = (answers) => {
   if (!answers.inspectors.includes('jscpd')) {
     return;
   }
+
+  const template = {
+    "absolute": true,
+    "blame": true,
+    "ignore": ["**/__snapshots__/**", "**/*.min.js", "**/*.map"],
+    "output": ".jscpd",
+    "reporters": ["console", "badge"],
+    "threshold": 0.1
+  }
+  fs.writeFileSync('.jscpd.json', JSON.stringify(template, null, 2));
   package.devDependencies = Object.assign({}, package.devDependencies, {
     jscpd: "^2.0.16",
     "jscpd-badge-reporter": "^1.1.3",
@@ -192,24 +202,37 @@ const repository = (answers) => {
   rimraf.sync(Object.getOwnPropertyNames(repositories).filter(item => item !== answers.reository).map(item => repositories[item]));
 }
 
-// const mocharc = (
-//   alter = (tpl) => {
-//     tpl.require.push("@babel/register");
-//     return tpl;
-//   }
-// ) => {
-//   const template = {
-//     recursive: true,
-//     reporter: "spec",
-//     timeout: 5000,
-//     require: [
-//       "chai/register-assert", // Using Assert style
-//       "chai/register-expect", // Using Expect style
-//       "chai/register-should", // Using Should style
-//     ],
-//   };
-//   return alter ? alter(template) : template;
-// };
+const mocharc = (answers) => {
+  if (!answers.testing !== TEST_MOCHA) {
+    return
+  }
+  const template = {
+    recursive: true,
+    reporter: "spec",
+    timeout: 5000,
+    require: [
+      "chai/register-assert", // Using Assert style
+      "chai/register-expect", // Using Expect style
+      "chai/register-should", // Using Should style
+    ],
+  };
+  // .mocharc
+  answers.to === "rc" ? to_rc(configs[answers.language].mocharc, ".mocharc") : to_package(configs[answers.language].mocharc, "mocha");
+
+  package.devDependencies = Object.assign({}, package.devDependencies, {
+    "@babel/register": "^7.12.1",
+    "eslint-plugin-mocha": "^7.0.1",
+    mocha: "^8.0.1",
+    "mocha-junit-reporter": "^2.0.0",
+  });
+
+  if (answers.language === "typescript") {
+    package.devDependencies = Object.assign({}, package.devDependencies, {
+      "@types/chai": "^4.2.11",
+      "@types/mocha": "^7.0.2",
+    });
+  }
+};
 
 // const jestrc = (alter = (tpl) => tpl) => {
 //   const template = {
@@ -376,13 +399,20 @@ const questions = [
 // };
 
 const init = (answers) => {
-  srcCode(answers);
+  console.log(answers);
 
   // .eslintrc
   (answers.to === 'rc') ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
 
   // .prettierrc
   to_rc(prettierrc(answers), '.prettierrc');
+
+  // src & dist
+  srcCode(answers);
+
+  // testing
+  mocharc(answers);
+  jestrc(answers);
 
   // .jscpd
   jscpd(answers);
@@ -405,25 +435,6 @@ const init = (answers) => {
   //         "@types/jest": "^26.0.4",
   //       });
   //     }
-  //     break;
-  //   default:
-  //     // mocha
-  //     // .mocharc
-  //     answers.to === "rc"
-  //       ? to_rc(configs[answers.language].mocharc, ".mocharc")
-  //       : to_package(configs[answers.language].mocharc, "mocha");
-  //     package.devDependencies = Object.assign({}, package.devDependencies, {
-  //       "eslint-plugin-mocha": "^7.0.1",
-  //       mocha: "^8.0.1",
-  //       "mocha-junit-reporter": "^2.0.0",
-  //     });
-  //     if (answers.language === "typescript") {
-  //       package.devDependencies = Object.assign({}, package.devDependencies, {
-  //         "@types/chai": "^4.2.11",
-  //         "@types/mocha": "^7.0.2",
-  //       });
-  //     }
-  // }
 
   // depcruise(answers);
 
