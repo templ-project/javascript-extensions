@@ -89,7 +89,7 @@ const jscpd = (answers) => {
     return;
   }
   package.devDependencies = Object.assign({}, package.devDependencies, {
-    "jscpd": "^2.0.16",
+    jscpd: "^2.0.16",
     "jscpd-badge-reporter": "^1.1.3",
   })
   package.scripts = Object.assign({}, package.scripts, {
@@ -387,8 +387,6 @@ const init = (answers) => {
   // .jscpd
   jscpd(answers);
 
-
-
   // switch (answers.testing) {
   //   case "jasmine":
   //   case "jest":
@@ -427,18 +425,23 @@ const init = (answers) => {
   //     }
   // }
 
-  depcruise(answers);
+  // depcruise(answers);
 
-  repository(answers);
+  // repository(answers);
 
-  // sortByKeys(package.dependencies);
-  package.devDependencies = sortByKeys(package.devDependencies);
-  package.scripts = sortByKeys(package.scripts);
-  console.log(package);
-  // // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
+  // // sortByKeys(package.dependencies);
+  // package.devDependencies = sortByKeys(package.devDependencies);
+  // package.scripts = sortByKeys(package.scripts);
+  // console.log(package);
+  // // // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
 
 console.clear();
-prompt(questions)
-  .then((answers) => init(answers))
-  .catch(console.error);
+if (process.env.TEMPLATE_ANSWERS) {
+  init(JSON.parse(process.env.TEMPLATE_ANSWERS))
+} else {
+  prompt(questions)
+    .then((answers) => init(answers))
+    .catch(console.error);
+}
+
