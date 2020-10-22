@@ -212,29 +212,31 @@ const to_package = (obj, label = 'prettier') => {
 //   }
 // };
 
-// const jscpd = (answers) => {
-//   if (!answers.inspectors.includes('jscpd')) {
-//     return;
-//   }
+const jscpd = (answers) => {
+  if (!answers.inspectors.includes('jscpd')) {
+    return;
+  }
 
-//   const template = {
-//     absolute: true,
-//     blame: true,
-//     ignore: ['**/__snapshots__/**', '**/*.min.js', '**/*.map'],
-//     output: '.jscpd',
-//     reporters: ['console', 'badge'],
-//     threshold: 0.1,
-//   };
-//   fs.writeFileSync('.jscpd.json', JSON.stringify(template, null, 2));
-//   package.devDependencies = Object.assign({}, package.devDependencies, {
-//     jscpd: '^2.0.16',
-//     'jscpd-badge-reporter': '^1.1.3',
-//   });
-//   package.scripts = Object.assign({}, package.scripts, {
-//     jscpd: `jscpd ./${answers.src} --blame --format ${answers.language !== LANG_FLOW ? answers.language : LANG_JS}`,
-//     'jscpd:html': 'npm run jscpd -- --reporters html',
-//   });
-// };
+  const template = {
+    absolute: true,
+    blame: true,
+    ignore: ['**/__snapshots__/**', '**/*.min.js', '**/*.map'],
+    output: '.jscpd',
+    reporters: ['console', 'badge'],
+    threshold: 0.1,
+  };
+
+  fs.writeFileSync('.jscpd.json', JSON.stringify(template, null, 2));
+
+  package.devDependencies = Object.assign({}, package.devDependencies, {
+    jscpd: '^2.0.16',
+    'jscpd-badge-reporter': '^1.1.3',
+  });
+  package.scripts = Object.assign({}, package.scripts, {
+    jscpd: `jscpd ./${answers.src} --blame --format ${answers.language !== LANG_FLOW ? answers.language === LANG_COFFEE ? 'cofeescript' : answers.language : LANG_JS}`,
+    'jscpd:html': 'npm run jscpd -- --reporters html',
+  });
+};
 
 // const sortByKeys = (obj) => {
 //   let keys = Object.getOwnPropertyNames(obj).sort();
@@ -435,8 +437,8 @@ const init = (answers) => {
   // mocharc(answers);
   // jestrc(answers);
 
-  // // .jscpd
-  // jscpd(answers);
+  // .jscpd
+  jscpd(answers);
 
   // // depcruise(answers);
 
@@ -457,85 +459,3 @@ if (process.env.TEMPLATE_ANSWERS) {
     .then((answers) => init(answers))
     .catch(console.error);
 }
-
-// const configs = {
-//   coffee: {
-//     mocharc: mocharc((tpl) => {
-//       tpl.require.push("coffee-script/register");
-//       return tpl;
-//     }),
-//   },
-//   flow: {
-//     mocharc: mocharc(),
-//   },
-//   javascript: {
-//     dependencies: {},
-//     // dependencyCruiser: depcruise(),
-//     devDependencies: {
-//       "@babel/cli": "^7.8.4",
-//       "@babel/core": "^7.9.6",
-//       "@babel/node": "^7.8.7",
-//       "@babel/preset-env": "^7.9.6",
-//       "@babel/register": "^7.9.0",
-//       "@rollup/plugin-babel": "^5.0.2",
-//       "babel-eslint": "^10.1.0",
-//       documentation: "^13.0.0",
-//     },
-//     ext: 'js',
-//     eslintrc: eslintrc(),
-//     index: `export const hello = (name) => \`Hello \${name}!\`;`,
-//     jestrc: jestrc(),
-//     mocharc: mocharc(),
-//     prettierrc: prettierrc(),
-//     scripts: {
-//       docs:
-//         "documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json",
-//       prettier: "prettier ./{src,test}/**/*.{js,jsx}",
-//       jscpd: "jscpd ./src --blame --format javascript",
-//       lint: "eslint ./{src,test}/**/*.{js,jsx}",
-//       test: "npm run test:single -- './test/**/*.test.js'",
-//       "test:single":
-//         "nyc --reporter=html --reporter=lcov --reporter=text --extension .js mocha --forbid-only",
-//     },
-//   },
-//   typescript: {
-//     dependencies: {},
-//     devDependencies: {
-//       "@types/node": "^13.13.4",
-//       "@typescript-eslint/eslint-plugin": "^2.30.0",
-//       "@typescript-eslint/parser": "^2.30.0",
-//       "rollup-plugin-dts": "^1.4.7",
-//       "rollup-plugin-typescript2": "^0.27.1",
-//       "ts-node": "^8.10.1",
-//       typedoc: "^0.17.7",
-//       typescript: "^3.8.3",
-//     },
-//     eslintrc: eslintrc((tpl) => {
-//       tpl.extends.push("plugin:@typescript-eslint/recommended");
-//       tpl.parser = "@typescript-eslint/parser";
-//       tpl.plugins.push("@typescript-eslint");
-//       return tpl;
-//     }),
-//     ext: 'ts',
-//     index: `export const hello = (name: string): string => \`Hello \${name}!\`;`,
-//     jestrc: jestrc(),
-//     mocharc: mocharc((tpl) => {
-//       tpl.require.push("ts-node/register");
-//       return tpl;
-//     }),
-//     prettierrc: prettierrc((tpl) => {
-//       tpl.parser = "typescript";
-//       return tpl;
-//     }),
-//     scripts: {
-//       docs:
-//         "npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src",
-//       prettier: "prettier ./{src,test}/**/*.{ts,tsx}",
-//       jscpd: "jscpd ./src --blame --format typescript",
-//       lint: "eslint ./{src,test}/**/*.{ts,tsx}",
-//       test: "npm run test:single -- 'test/**/*.test.ts'",
-//       "test:single":
-//         "nyc --reporter=html --reporter=lcov --reporter=text --extension .ts mocha --forbid-only",
-//     },
-//   },
-// };

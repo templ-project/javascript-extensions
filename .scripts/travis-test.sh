@@ -57,29 +57,29 @@ npm i
 npm run prettier
 npm run lint
 # npm test
-do_clean
+# do_clean
 
-do_test flow src dist mocha github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-# npm test
-do_clean
+# do_test flow src dist mocha github rc eslint
+# node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
+# npm i
+# npm run prettier
+# npm run lint
+# # npm test
+# do_clean
 
-do_test javascript src dist mocha github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "babel") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-# npm test
-do_clean
+# do_test javascript src dist mocha github rc eslint
+# node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "babel") process.exit(1);'
+# npm i
+# npm run prettier
+# npm run lint
+# # npm test
+# do_clean
 
-do_test typescript src dist mocha github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "typescript") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-# npm test
-do_clean
+# do_test typescript src dist mocha github rc eslint
+# node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "typescript") process.exit(1);'
+# npm i
+# npm run prettier
+# npm run lint
+# # npm test
+# do_clean
 
