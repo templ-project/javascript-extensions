@@ -2,7 +2,7 @@
 set -xe
 
 function do_clean() {
-  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src
+  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test
   git checkout .github .gitlab package.json package-lock.json
 }
 
@@ -51,14 +51,14 @@ function do_test() {
 
 }
 
-do_test coffee src dist mocha github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-npm run jscpd
-# npm test
-do_clean
+# do_test coffee src dist mocha github rc eslint
+# node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
+# npm i
+# npm run prettier
+# npm run lint
+# npm run jscpd
+# # npm test
+# do_clean
 
 do_test flow src dist mocha github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
