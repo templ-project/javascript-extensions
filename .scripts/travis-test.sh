@@ -1,17 +1,85 @@
 #! /bin/bash
 set -xe
 
-TEMPLATE_ANSWERS='{"language":"javascript","src":"src","dist":"dist","testing":"mocha","inspectors":["jscpd","dependency-cruiser"],"repository":"github","to":"rc"}' \
+function do_clean() {
+  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src
+  git checkout .github .gitlab package.json package-lock.json
+}
+
+VAL_SRC="src app"
+
+VAL_TEST=".mocharc.js jest"
+
+VAL_REPO=".github .gitlab"
+
+function do_test() {
+  TEMPLATE_ANSWERS="{\"language\":\"$1\",\"src\":\"$2\",\"dist\":\"$3\",\"testing\":\"$4\",\
+\"inspectors\":[\"jscpd\",\"dependency-cruiser\"],\"repository\":\"$5\",\"to\":\"$6\",\"lintRules\":\"$7\"}" \
   node ./.scripts/change-language.js
 
-[ -f .eslintrc.js ] || exit 1
-[ -f .prettierrc.js ] || exit 1
-[ -f .jscpd.json ] || exit 1
+  if [ ! -f .eslintrc.js ]; then exit 1; fi
+  if [ ! -f .prettierrc.js ]; then exit 1; fi
 
-# [ -d .github ] || exit 1
-# [ -d .gitlab ] && exit 1
+  # src
+  for d in $VAL_SRC; do
+    if [ $2 != $d ]; then
+      if [ -d $d ]; then exit 1; fi
+    else
+      if [ ! -d $d ]; then exit 1; fi
+    fi
+  done
 
-[ -d src ] || exit 1
-[ -d dist ] || exit 1
-[ -d app ] && exit 1
-[ -d lib ] && exit 1
+  # # testing
+  # for f in $VAL_TEST; do
+  #   if [[ $f != *"$4"* ]]; then
+  #     if [ -f $f ]; then exit 1; fi
+  #   else
+  #     if [ ! -f $f ]; then exit 1; fi
+  #   fi
+  # done
+
+  # if [ ! -f .jscpd.json ]; then exit 1; fi
+
+  # # repository
+  # for d in $VAL_REPO; do
+  #   if [[ $d != *"$5"* ]]; then
+  #     if [ -d $d ]; then exit 1; fi
+  #   else
+  #     if [ ! -d $d ]; then exit 1; fi
+  #   fi
+  # done
+
+}
+
+do_test coffee src dist mocha github rc eslint
+node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
+npm i
+npm run prettier
+npm run lint
+# npm test
+do_clean
+
+do_test flow src dist mocha github rc eslint
+node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
+npm i
+npm run prettier
+npm run lint
+# npm test
+do_clean
+
+do_test javascript src dist mocha github rc eslint
+node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "babel") process.exit(1);'
+npm i
+npm run prettier
+npm run lint
+# npm test
+do_clean
+
+do_test typescript src dist mocha github rc eslint
+node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "typescript") process.exit(1);'
+npm i
+npm run prettier
+npm run lint
+# npm test
+do_clean
+
