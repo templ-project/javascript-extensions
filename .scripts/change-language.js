@@ -1,21 +1,24 @@
-const {prompt} = require('enquirer');
+const { prompt } = require('enquirer');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
+const {
+  LANG_COFFEE,
+  LANG_FLOW,
+  LANG_JS,
+  LANG_TS,
+  LINT_AIRBNB,
+  LINT_ESLINT,
+  TEST_JASMINE,
+  TEST_JEST,
+  TEST_MOCHA,
+} = require('./cl/const');
+const languagerc = require('./cl/languagerc');
+const srcCode = require('./cl/src-code');
+const testCode = require('./cl/test-code');
+const mocharc = require('./cl/mocharc');
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
-
-const LANG_COFFEE = 'coffee';
-const LANG_FLOW = 'flow';
-const LANG_JS = 'javascript';
-const LANG_TS = 'typescript';
-
-const LINT_ESLINT = 'eslint';
-const LINT_AIRBNB = 'airbnb';
-
-const TEST_JASMINE = 'jasmine';
-const TEST_JEST = 'test';
-const TEST_MOCHA = 'mocha';
 
 /****************************************************************************
  * Methods
@@ -42,7 +45,11 @@ const eslintrc = (answers) => {
   };
 
   let ext = '{js,jsx}';
-  template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb');
+  template.extends.push(
+    answers.lintRules === LINT_ESLINT
+      ? 'eslint:recommended'
+      : 'eslint-config-airbnb'
+  );
 
   if (answers.language === LANG_COFFEE) {
     // https://www.npmjs.com/package/eslint-plugin-coffee
@@ -50,7 +57,9 @@ const eslintrc = (answers) => {
     template.parser = 'eslint-plugin-coffee';
     template.plugins.push('coffee');
     template.extends.push(
-      answers.lintRules === LINT_ESLINT ? 'plugin:coffee/eslint-recommended' : 'plugin:coffee/airbnb-base',
+      answers.lintRules === LINT_ESLINT
+        ? 'plugin:coffee/eslint-recommended'
+        : 'plugin:coffee/airbnb-base'
     );
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'eslint-plugin-coffee': '^0.1.13',
@@ -69,7 +78,11 @@ const eslintrc = (answers) => {
       sourceType: 'module',
     };
     template.plugins.push('flowtype');
-    template.extends.push(answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb');
+    template.extends.push(
+      answers.lintRules === LINT_ESLINT
+        ? 'plugin:flowtype/recommended'
+        : 'eslint-config-airbnb'
+    );
     if (answers.lintRules === LINT_AIRBNB) {
       template.extends.push('eslint-config-airbnb-flow');
     }
@@ -87,7 +100,11 @@ const eslintrc = (answers) => {
       ecmaVersion: 2018,
       sourceType: 'module',
     };
-    template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb');
+    template.extends.push(
+      answers.lintRules === LINT_ESLINT
+        ? 'eslint:recommended'
+        : 'eslint-config-airbnb'
+    );
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'babel-eslint': '^10.1.0',
       'eslint-config-airbnb': '^1.0.2',
@@ -99,7 +116,9 @@ const eslintrc = (answers) => {
     template.parser = '@typescript-eslint/parser';
     template.plugins.push('@typescript-eslint');
     template.extends.push(
-      answers.lintRules === LINT_ESLINT ? 'plugin:@typescript-eslint/recommended' : 'eslint-config-airbnb-typescript',
+      answers.lintRules === LINT_ESLINT
+        ? 'plugin:@typescript-eslint/recommended'
+        : 'eslint-config-airbnb-typescript'
     );
     package.devDependencies = Object.assign({}, package.devDependencies, {
       '@typescript-eslint/eslint-plugin': '^2.30.0',
@@ -109,10 +128,10 @@ const eslintrc = (answers) => {
     });
   }
 
-  // if (answers.testing === TEST_MOCHA) {
-  //   template.extends.push("plugin:mocha/recommended");
-  //   template.plugins.push("mocha");
-  // }
+  if (answers.testing === TEST_MOCHA) {
+    template.extends.push('plugin:mocha/recommended');
+    template.plugins.push('mocha');
+  }
 
   package.scripts = Object.assign({}, package.scripts, {
     lint: `eslint ./{${answers.src},test}/**/*.${ext}`,
@@ -158,88 +177,11 @@ const prettierrc = (answers) => {
   return template;
 };
 
-const srcCode = (answers) => {
-  fs.mkdirSync(answers.src, {recursive: true});
-
-  let template = '';
-  let ext = 'js';
-  switch (answers.language) {
-    case LANG_COFFEE:
-      ext = 'coffee';
-      template = 'export hello = (name) -> "Hello " + name + "!"';
-      break;
-    case LANG_TS:
-      ext = 'ts';
-      template = 'export const hello = (name: string): string => `Hello ${name}!`;';
-      break;
-    case LANG_FLOW:
-      template = `// @flow
-export const hello = (name: string): string => \`Hello \${name}!\`;`;
-      break;
-    default:
-      template = 'export const hello = (name) => `Hello ${name}!`;';
-  }
-  fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
-};
-
-const testCode = (answers) => {
-  fs.mkdirSync('test', {recursive: true});
-
-  let template = `
-import {expect} from 'chai';
-import {it, describe} from 'mocha';
-
-import {hello} from '../src';
-`;
-  let ext = 'js';
-
-  switch (answers.language) {
-    case LANG_COFFEE:
-      // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
-      ext = 'coffee';
-      template = `
-{expect} = require 'chai'
-{describe, it} = require 'mocha'
-
-describe "hello", ->
-  it 'hello("World") to return "Hello World!"', ->
-    expect(hello("World")).to.equal "Hello World!"
-`;
-      break;
-    case LANG_TS:
-      ext = 'ts';
-    case LANG_FLOW:
-    default:
-      template += `
-describe('hello', function () {
-  it('hello("World") to return "Hello World!"', function () {
-    expect(hello('World')).to.equal('Hello World!');
-  });
-});
-`;
-  }
-  fs.writeFileSync(path.join('test', `index.test.${ext}`), template);
-
-  if (answers.language === LANG_TS) {
-    fs.writeFileSync(path.join('test', `tsconfig.json`), JSON.stringify({
-      "extends": "../tsconfig",
-      "compilerOptions": {
-          "noEmit": true
-      },
-      "references": [
-          {
-              "path": ".."
-          }
-      ]
-    }, null, 2));
-  }
-};
-
 const to_rc = (obj, label = '.prettierrc') => {
   fs.writeFileSync(
     `${label}.js`,
     `// ${label}.js
-module.exports = ${JSON.stringify(obj, null, 2)};`,
+module.exports = ${JSON.stringify(obj, null, 2)};`
   );
 };
 
@@ -286,93 +228,57 @@ const jscpd = (answers) => {
     'jscpd-badge-reporter': '^1.1.3',
   });
   package.scripts = Object.assign({}, package.scripts, {
-    jscpd: `jscpd ./${answers.src} --blame --format ${answers.language !== LANG_FLOW ?
-      answers.language === LANG_COFFEE ? 'coffeescript' : answers.language : LANG_JS}`,
+    jscpd: `jscpd ./${answers.src} --blame --format ${
+      answers.language !== LANG_FLOW
+        ? answers.language === LANG_COFFEE
+          ? 'coffeescript'
+          : answers.language
+        : LANG_JS
+    }`,
     'jscpd:html': 'npm run jscpd -- --reporters html',
   });
 };
 
-// const sortByKeys = (obj) => {
-//   let keys = Object.getOwnPropertyNames(obj).sort();
-//   const newObj = {};
-//   for (key of keys) {
-//     if (typeof obj[key] !== 'object' && !Array.isArray(obj[key])) {
-//       newObj[key] = obj[key];
-//     } else {
-//       newObj[key] = sortByKeys(obj[key]);
-//     }
-//   }
-//   return newObj;
-// };
+const sortByKeys = (obj) => {
+  let keys = Object.getOwnPropertyNames(obj).sort();
+  const newObj = {};
+  for (key of keys) {
+    if (typeof obj[key] !== 'object' && !Array.isArray(obj[key])) {
+      newObj[key] = obj[key];
+    } else {
+      newObj[key] = sortByKeys(obj[key]);
+    }
+  }
+  return newObj;
+};
 
-// const removeKeys = (obj, keys) => {
-//   const newObj = {};
-//   const okeys = Object.getOwnPropertyNames(obj).filter((key) => keys.find((lkey) => lkey === key));
-//   for (const okey of okeys) {
-//     newObj[okey] = obj[okey];
-//   }
-//   return newObj;
-// };
+const removeKeys = (obj, keys) => {
+  const newObj = {};
+  const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
+    keys.find((lkey) => lkey === key)
+  );
+  for (const okey of okeys) {
+    newObj[okey] = obj[okey];
+  }
+  return newObj;
+};
 
-// const repository = (answers) => {
-//   repositories = {
-//     bitbucket: '',
-//     gitea: '.github',
-//     gitee: '',
-//     github: '.github',
-//     gitlab: '.gitlab',
-//   };
-//   Object
-//     .getOwnPropertyNames(repositories)
-//     .filter((item) => repositories[item] !== repositories[answers.repository] && repositories[item].length)
-//     .forEach((item) => rimraf.sync(repositories[item]))
-// };
-
-// const mocharc = (answers) => {
-//   if (!answers.testing === TEST_MOCHA) {
-//     return;
-//   }
-//   const template = {
-//     recursive: true,
-//     reporter: 'spec',
-//     timeout: 5000,
-//     require: [
-//       'chai/register-assert', // Using Assert style
-//       'chai/register-expect', // Using Expect style
-//       'chai/register-should', // Using Should style
-//     ],
-//   };
-
-//   if (answers.language === LANG_JS) {
-//     template.require.unshift('@babel/register');
-//   }
-//   if (answers.language === LANG_TS) {
-//     template.require.unshift('ts-node/register');
-//   }
-
-//   answers.to === 'rc'
-//     ? to_rc(template, '.mocharc')
-//     : to_package(template, 'mocha');
-
-//   package.devDependencies = Object.assign({}, package.devDependencies, {
-//     'eslint-plugin-mocha': '^7.0.1',
-//     mocha: '^8.0.1',
-//     'mocha-junit-reporter': '^2.0.0',
-//   });
-
-//   if (answers.language === LANG_JS) {
-//     package.devDependencies = Object.assign({}, package.devDependencies, {
-//       '@babel/register': '^7.12.1',
-//     })
-//   }
-
-//   if (answers.language === LANG_TS) {
-//     package.devDependencies = Object.assign({}, package.devDependencies, {
-//       '@types/chai': '^4.2.11',
-//       '@types/mocha': '^7.0.2',
-//     });
-//   }
-// };
+const repository = (answers) => {
+  repositories = {
+    bitbucket: '',
+    gitea: '.github',
+    gitee: '',
+    github: '.github',
+    gitlab: '.gitlab',
+  };
+  Object.getOwnPropertyNames(repositories)
+    .filter(
+      (item) =>
+        repositories[item] !== repositories[answers.repository] &&
+        repositories[item].length
+    )
+    .forEach((item) => rimraf.sync(repositories[item]));
+};
 
 // const jestrc = (answers) => {
 //   if (!answers.testing !== TEST_JEST) {
@@ -413,15 +319,20 @@ const questions = [
     type: 'select',
     name: 'language',
     message: 'Choose JavaScript Flavor',
-    choices: ['javascript', 'typescript', {name: 'flow', disabled: true}, {name: 'coffee', disabled: true}],
+    choices: [
+      'javascript',
+      'typescript',
+      { name: 'flow', disabled: true },
+      { name: 'coffee', disabled: true },
+    ],
   },
   {
     type: 'select',
     name: 'lintRules',
     message: 'Choose Linting Rules',
     choices: [
-      {name: 'airbnb', label: 'Airbnb'},
-      {name: 'eslint', label: 'ESLint Recommended'},
+      { name: 'airbnb', label: 'Airbnb' },
+      { name: 'eslint', label: 'ESLint Recommended' },
     ],
     initial: 'eslint',
   },
@@ -429,7 +340,7 @@ const questions = [
     type: 'select',
     name: 'testing',
     message: 'Choose Testing Framework',
-    choices: [{name: 'jasmine', disabled: true}, 'jest', 'mocha'],
+    choices: [{ name: 'jasmine', disabled: true }, 'jest', 'mocha'],
     initial: 'mocha',
   },
   {
@@ -444,9 +355,9 @@ const questions = [
     name: 'repository',
     message: 'Choose Git Repository Manager',
     choices: [
-      {name: 'bitbucket', disabled: true},
-      {name: 'gitea', disabled: true},
-      {name: 'gitee', disabled: true},
+      { name: 'bitbucket', disabled: true },
+      { name: 'gitea', disabled: true },
+      { name: 'gitee', disabled: true },
       'github',
       'gitlab',
     ],
@@ -470,7 +381,7 @@ const questions = [
     type: 'select',
     name: 'to',
     message: 'Write configs to',
-    choices: [{name: 'rc', message: 'Separate Files'}, {name: 'package'}],
+    choices: [{ name: 'rc', message: 'Separate Files' }, { name: 'package' }],
     initial: ['rc'],
   },
 ];
@@ -478,8 +389,12 @@ const questions = [
 const init = (answers) => {
   console.log(answers);
 
+  languagerc(answers, package);
+
   // .eslintrc
-  answers.to === 'rc' ? to_rc(eslintrc(answers), '.eslintrc') : to_package(eslintrc(answers), 'eslint');
+  answers.to === 'rc'
+    ? to_rc(eslintrc(answers), '.eslintrc')
+    : to_package(eslintrc(answers), 'eslint');
 
   // .prettierrc
   to_rc(prettierrc(answers), '.prettierrc');
@@ -488,20 +403,21 @@ const init = (answers) => {
   srcCode(answers);
   testCode(answers);
 
-  // // testing
-  // mocharc(answers);
+  // testing
+  mocharc(answers);
   // jestrc(answers);
 
   // .jscpd
   jscpd(answers);
 
-  // // depcruise(answers);
+  // .dependency-cruise.js
+  // depcruise(answers);
 
-  // repository(answers);
+  repository(answers);
 
-  // // sortByKeys(package.dependencies);
-  // package.devDependencies = sortByKeys(package.devDependencies);
-  // package.scripts = sortByKeys(package.scripts);
+  package.dependencies = sortByKeys(package.dependencies || {});
+  package.devDependencies = sortByKeys(package.devDependencies || {});
+  package.scripts = sortByKeys(package.scripts || {});
 
   fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
