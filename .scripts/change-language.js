@@ -17,6 +17,7 @@ const languagerc = require('./cl/languagerc');
 const srcCode = require('./cl/src-code');
 const testCode = require('./cl/test-code');
 const mocharc = require('./cl/mocharc');
+const {to_rc, to_package} = require('./cl/to');
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
 
@@ -175,19 +176,6 @@ const prettierrc = (answers) => {
     'prettier:write': 'npm run prettier -- --write',
   });
   return template;
-};
-
-const to_rc = (obj, label = '.prettierrc') => {
-  fs.writeFileSync(
-    `${label}.js`,
-    `// ${label}.js
-module.exports = ${JSON.stringify(obj, null, 2)};`
-  );
-};
-
-const to_package = (obj, label = 'prettier') => {
-  package[label] = obj;
-  return package;
 };
 
 // const depcruise = (answers) => {
@@ -394,7 +382,7 @@ const init = (answers) => {
   // .eslintrc
   answers.to === 'rc'
     ? to_rc(eslintrc(answers), '.eslintrc')
-    : to_package(eslintrc(answers), 'eslint');
+    : to_package(eslintrc(answers), package, 'eslint');
 
   // .prettierrc
   to_rc(prettierrc(answers), '.prettierrc');
@@ -404,7 +392,7 @@ const init = (answers) => {
   testCode(answers);
 
   // testing
-  mocharc(answers);
+  mocharc(answers, package);
   // jestrc(answers);
 
   // .jscpd

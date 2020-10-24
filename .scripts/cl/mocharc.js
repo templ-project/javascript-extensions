@@ -1,4 +1,7 @@
-const mocharc = (answers) => {
+const { LANG_COFFEE, LANG_FLOW, LANG_TS, TEST_MOCHA } = require('./const');
+const { to_rc, to_package } = require('./to');
+
+const mocharc = (answers, package) => {
   if (!answers.testing === TEST_MOCHA) {
     return;
   }
@@ -33,7 +36,7 @@ const mocharc = (answers) => {
 
   answers.to === 'rc'
     ? to_rc(template, '.mocharc')
-    : to_package(template, 'mocha');
+    : to_package(template, package, 'mocha');
 
   package.devDependencies = Object.assign({}, package.devDependencies, {
     chai: '^4.2.0',

@@ -51,7 +51,7 @@ function do_test() {
 
 }
 
-do_test coffee src dist mocha github rc eslint
+do_test coffee src dist $1 github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
 npm i
 npm run prettier
@@ -60,7 +60,7 @@ npm run jscpd
 npm test
 do_clean
 
-do_test flow src dist mocha github rc eslint
+do_test flow src dist $1 github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
 npm i
 npm run prettier
@@ -69,7 +69,7 @@ npm run jscpd
 npm test
 do_clean
 
-do_test javascript src dist mocha github rc eslint
+do_test javascript src dist $1 github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "babel") process.exit(1);'
 npm i
 npm run prettier
@@ -78,7 +78,7 @@ npm run jscpd
 npm test
 do_clean
 
-do_test typescript src dist mocha github rc eslint
+do_test typescript src dist $1 github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "typescript") process.exit(1);'
 npm i
 npm run prettier
