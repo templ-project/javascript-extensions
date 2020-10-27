@@ -7,7 +7,7 @@ const LINT_ESLINT = 'eslint';
 const LINT_AIRBNB = 'airbnb';
 
 const TEST_JASMINE = 'jasmine';
-const TEST_JEST = 'test';
+const TEST_JEST = 'jest';
 const TEST_MOCHA = 'mocha';
 
 module.exports = {

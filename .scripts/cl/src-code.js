@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const { LANG_COFFEE, LANG_FLOW, LANG_TS } = require('./const');
+const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
 
 const srcCode = (answers) => {
-  fs.mkdirSync(answers.src, { recursive: true });
+  fs.mkdirSync(answers.src, {recursive: true});
 
   let template = '';
   let ext = 'js';
@@ -18,8 +18,7 @@ module.exports = {
       break;
     case LANG_TS:
       ext = 'ts';
-      template =
-        'export const hello = (name: string): string => `Hello ${name}!`;';
+      template = 'export const hello = (name: string): string => `Hello ${name}!`;';
       break;
     case LANG_FLOW:
       template = `// @flow

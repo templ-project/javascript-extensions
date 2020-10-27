@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { LANG_COFFEE, LANG_FLOW, LANG_TS } = require('./const');
+const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
 
 const languagerc = (answers, package) => {
   if (answers.language === LANG_COFFEE) {
@@ -18,8 +18,7 @@ const languagerc = (answers, package) => {
       typescript: '^3.8.3',
     });
     package.scripts = Object.assign({}, package.scripts, {
-      docs:
-        'npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src',
+      docs: 'npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src',
     });
   } else {
     const template = {
@@ -39,8 +38,7 @@ const languagerc = (answers, package) => {
     });
 
     package.scripts = Object.assign({}, package.scripts, {
-      docs:
-        'documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json',
+      docs: 'documentation build src/** -f html -o docs; documentation build src/** -f json -o docs.json',
       // esdocs: "esdoc; documentation build src/** -f json -o docs.json",
     });
 
@@ -55,7 +53,7 @@ const languagerc = (answers, package) => {
     fs.writeFileSync(
       `.babelrc.js`,
       `// .babelrc.js
-module.exports = ${JSON.stringify(template, null, 2)};`
+module.exports = ${JSON.stringify(template, null, 2)};`,
     );
   }
 };

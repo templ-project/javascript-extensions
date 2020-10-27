@@ -1,4 +1,4 @@
-const { prompt } = require('enquirer');
+const {prompt} = require('enquirer');
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -15,8 +15,10 @@ const {
 } = require('./cl/const');
 const languagerc = require('./cl/languagerc');
 const srcCode = require('./cl/src-code');
-const testCode = require('./cl/test-code');
 const mocharc = require('./cl/mocharc');
+const jestrc = require('./cl/jestrc');
+const eslintrc = require('./cl/eslintrc');
+const prettierrc = require('./cl/prettierrc');
 const {to_rc, to_package} = require('./cl/to');
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
@@ -25,158 +27,9 @@ const package = JSON.parse(fs.readFileSync('./package.json').toString());
  * Methods
  ****************************************************************************/
 
-const eslintrc = (answers) => {
-  const template = {
-    env: {
-      browser: true,
-      es6: true,
-      node: true,
-      mocha: true,
-    },
-    extends: [],
-    plugins: [],
-    root: true,
-    rules: {
-      'consistent-return': 2,
-      indent: [1, 2],
-      'no-else-return': 1,
-      // semi: [1, "always"],
-      'space-unary-ops': 2,
-    },
-  };
 
-  let ext = '{js,jsx}';
-  template.extends.push(
-    answers.lintRules === LINT_ESLINT
-      ? 'eslint:recommended'
-      : 'eslint-config-airbnb'
-  );
 
-  if (answers.language === LANG_COFFEE) {
-    // https://www.npmjs.com/package/eslint-plugin-coffee
-    ext = 'coffee';
-    template.parser = 'eslint-plugin-coffee';
-    template.plugins.push('coffee');
-    template.extends.push(
-      answers.lintRules === LINT_ESLINT
-        ? 'plugin:coffee/eslint-recommended'
-        : 'plugin:coffee/airbnb-base'
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'eslint-plugin-coffee': '^0.1.13',
-    });
-  } else {
-    template.rules = Object.assign({}, template.rules, {
-      indent: [1, 2],
-    });
-  }
 
-  if (answers.language === LANG_FLOW) {
-    // https://www.npmjs.com/package/eslint-plugin-flowtype
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
-      ecmaVersion: 2018,
-      sourceType: 'module',
-    };
-    template.plugins.push('flowtype');
-    template.extends.push(
-      answers.lintRules === LINT_ESLINT
-        ? 'plugin:flowtype/recommended'
-        : 'eslint-config-airbnb'
-    );
-    if (answers.lintRules === LINT_AIRBNB) {
-      template.extends.push('eslint-config-airbnb-flow');
-    }
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'babel-eslint': '^10.1.0',
-      'eslint-config-airbnb': '^1.0.2',
-      'eslint-config-airbnb-flow': '^1.0.2',
-      'eslint-plugin-flowtype': '^5.2.0',
-    });
-  }
-
-  if (answers.language === LANG_JS) {
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
-      ecmaVersion: 2018,
-      sourceType: 'module',
-    };
-    template.extends.push(
-      answers.lintRules === LINT_ESLINT
-        ? 'eslint:recommended'
-        : 'eslint-config-airbnb'
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'babel-eslint': '^10.1.0',
-      'eslint-config-airbnb': '^1.0.2',
-    });
-  }
-
-  if (answers.language === LANG_TS) {
-    ext = '{ts,tsx}';
-    template.parser = '@typescript-eslint/parser';
-    template.plugins.push('@typescript-eslint');
-    template.extends.push(
-      answers.lintRules === LINT_ESLINT
-        ? 'plugin:@typescript-eslint/recommended'
-        : 'eslint-config-airbnb-typescript'
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      '@typescript-eslint/eslint-plugin': '^2.30.0',
-      '@typescript-eslint/parser': '^2.30.0',
-      'eslint-config-airbnb-typescript': '^12.0.0',
-      typescript: '^3.8.3',
-    });
-  }
-
-  if (answers.testing === TEST_MOCHA) {
-    template.extends.push('plugin:mocha/recommended');
-    template.plugins.push('mocha');
-  }
-
-  package.scripts = Object.assign({}, package.scripts, {
-    lint: `eslint ./{${answers.src},test}/**/*.${ext}`,
-    'lint:write': 'npm run lint -- --fix',
-    'lint:watch': "nodemon --exec 'npm run lint'",
-  });
-  return template;
-};
-
-const prettierrc = (answers) => {
-  const template = {
-    parser: 'babel',
-    printWidth: 120,
-    semi: true,
-    singleQuote: true,
-    tabWidth: 2,
-    trailingComma: 'all',
-    bracketSpacing: false,
-  };
-  let ext = '{js,jsx}';
-  if (answers.language === LANG_COFFEE) {
-    ext = 'coffee';
-    template.parser = 'coffeescript';
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'prettier-plugin-coffeescript': '^0.1.5',
-    });
-  }
-  if (answers.language === LANG_FLOW) {
-    template.parser = 'flow';
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'flow-parser': '^0.136.0',
-    });
-  }
-  if (answers.language === LANG_TS) {
-    ext = '{ts,tsx}';
-    template.parser = 'typescript';
-  }
-  package.scripts = Object.assign({}, package.scripts, {
-    prettier: `prettier ./{${answers.src},test}/**/*.${ext}`,
-    'prettier:check': 'npm run prettier -- --list-different',
-    'prettier:write': 'npm run prettier -- --write',
-  });
-  return template;
-};
 
 // const depcruise = (answers) => {
 //   if (answers.inspectors.includes('dependency-cruiser')) {
@@ -217,11 +70,7 @@ const jscpd = (answers) => {
   });
   package.scripts = Object.assign({}, package.scripts, {
     jscpd: `jscpd ./${answers.src} --blame --format ${
-      answers.language !== LANG_FLOW
-        ? answers.language === LANG_COFFEE
-          ? 'coffeescript'
-          : answers.language
-        : LANG_JS
+      answers.language !== LANG_FLOW ? (answers.language === LANG_COFFEE ? 'coffeescript' : answers.language) : LANG_JS
     }`,
     'jscpd:html': 'npm run jscpd -- --reporters html',
   });
@@ -242,9 +91,7 @@ const sortByKeys = (obj) => {
 
 const removeKeys = (obj, keys) => {
   const newObj = {};
-  const okeys = Object.getOwnPropertyNames(obj).filter((key) =>
-    keys.find((lkey) => lkey === key)
-  );
+  const okeys = Object.getOwnPropertyNames(obj).filter((key) => keys.find((lkey) => lkey === key));
   for (const okey of okeys) {
     newObj[okey] = obj[okey];
   }
@@ -260,11 +107,7 @@ const repository = (answers) => {
     gitlab: '.gitlab',
   };
   Object.getOwnPropertyNames(repositories)
-    .filter(
-      (item) =>
-        repositories[item] !== repositories[answers.repository] &&
-        repositories[item].length
-    )
+    .filter((item) => repositories[item] !== repositories[answers.repository] && repositories[item].length)
     .forEach((item) => rimraf.sync(repositories[item]));
 };
 
@@ -307,20 +150,15 @@ const questions = [
     type: 'select',
     name: 'language',
     message: 'Choose JavaScript Flavor',
-    choices: [
-      'javascript',
-      'typescript',
-      { name: 'flow', disabled: true },
-      { name: 'coffee', disabled: true },
-    ],
+    choices: [LANG_JS, LANG_TS, LANG_FLOW, LANG_COFFEE],
   },
   {
     type: 'select',
     name: 'lintRules',
     message: 'Choose Linting Rules',
     choices: [
-      { name: 'airbnb', label: 'Airbnb' },
-      { name: 'eslint', label: 'ESLint Recommended' },
+      {name: 'airbnb', label: 'Airbnb'},
+      {name: 'eslint', label: 'ESLint Recommended'},
     ],
     initial: 'eslint',
   },
@@ -328,7 +166,7 @@ const questions = [
     type: 'select',
     name: 'testing',
     message: 'Choose Testing Framework',
-    choices: [{ name: 'jasmine', disabled: true }, 'jest', 'mocha'],
+    choices: [/*{name: 'jasmine', disabled: true},*/TEST_JEST, TEST_MOCHA],
     initial: 'mocha',
   },
   {
@@ -343,9 +181,9 @@ const questions = [
     name: 'repository',
     message: 'Choose Git Repository Manager',
     choices: [
-      { name: 'bitbucket', disabled: true },
-      { name: 'gitea', disabled: true },
-      { name: 'gitee', disabled: true },
+      {name: 'bitbucket', disabled: true},
+      {name: 'gitea', disabled: true},
+      {name: 'gitee', disabled: true},
       'github',
       'gitlab',
     ],
@@ -369,7 +207,7 @@ const questions = [
     type: 'select',
     name: 'to',
     message: 'Write configs to',
-    choices: [{ name: 'rc', message: 'Separate Files' }, { name: 'package' }],
+    choices: [{name: 'rc', message: 'Separate Files'}, {name: 'package'}],
     initial: ['rc'],
   },
 ];
@@ -380,20 +218,17 @@ const init = (answers) => {
   languagerc(answers, package);
 
   // .eslintrc
-  answers.to === 'rc'
-    ? to_rc(eslintrc(answers), '.eslintrc')
-    : to_package(eslintrc(answers), package, 'eslint');
+  answers.to === 'rc' ? to_rc(eslintrc(answers, package), '.eslintrc') : to_package(eslintrc(answers, package), package, 'eslint');
 
   // .prettierrc
-  to_rc(prettierrc(answers), '.prettierrc');
+  to_rc(prettierrc(answers, package), '.prettierrc');
 
   // src & test
   srcCode(answers);
-  testCode(answers);
 
   // testing
   mocharc(answers, package);
-  // jestrc(answers);
+  jestrc(answers, package);
 
   // .jscpd
   jscpd(answers);
