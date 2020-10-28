@@ -7,8 +7,8 @@ const testCode = (answers) => {
   fs.mkdirSync('test', {recursive: true});
 
   let template = `
-// import {expect} from 'jest';
 import {hello} from '../src';
+
 `;
   let ext = 'js';
 
@@ -17,7 +17,6 @@ import {hello} from '../src';
       // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
       ext = 'coffee';
       template = `
-{describe, expect, it} = require 'jest'
 {hello} = require '../src'
 
 describe "hello", ->
@@ -70,8 +69,9 @@ const jestrc = (answers, package) => {
   const template = {
     clearMocks: true,
     coverageDirectory: 'coverage',
-    moduleFileExtensions: ['js', 'json', 'ts'],
-    rootDir: '.',
+    moduleFileExtensions: ['js', 'json', 'jsx'],
+    // rootDir: '.',
+    roots: [ "test" ],
     transform: {},
     testEnvironment: 'node',
   };
@@ -80,11 +80,40 @@ const jestrc = (answers, package) => {
   switch (answers.language) {
     case LANG_COFFEE:
       ext = 'coffee';
-      // template.require.unshift('coffeescript/register');
+      template.moduleFileExtensions.push('coffee')
+      // template.roots = [ "test" ]
+      template.moduleDirectories = [ 'node_modules', answers.src ]
+      template.transform = {
+        ".*": "<rootDir>/test/preprocessor.js"
+      }
+
+      fs.writeFileSync('./test/preprocessor.js', `
+// preprocessor.js
+
+const coffee = require('coffeescript');
+const babelJest = require('babel-jest');
+
+module.exports = {
+  process: (src, path, config) => {
+    if (!/node_modules/.test(path)) {
+      // CoffeeScript files need to be compiled by CoffeeScript
+      // before being processed by babel
+      if (coffee.helpers.isCoffee(path)) {
+        src = coffee.compile(src, { bare: true });
+      }
+      return babelJest.process(src, path, config);
+    }
+    return src;
+  }
+};
+
+`);
       break;
     case LANG_TS:
       ext = 'ts';
       template.transform["^.+\\.(t|j)s$"] = "ts-jest"
+      template.moduleFileExtensions.push('ts')
+      template.moduleFileExtensions.push('tsx')
       package.devDependencies = Object.assign({}, package.devDependencies || {}, {
         'ts-jest': '^26.4.3',
       });

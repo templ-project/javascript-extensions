@@ -51,14 +51,14 @@ function do_test() {
 
 }
 
-# do_test coffee src dist $1 github rc eslint
-# node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
-# npm i
-# npm run prettier
-# # npm run lint # having troubles linting
-# npm run jscpd
-# npm test
-# do_clean
+do_test coffee src dist $1 github rc eslint
+node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
+npm i
+npm run prettier
+npm run lint
+npm run jscpd
+npm test
+do_clean
 
 do_test flow src dist $1 github rc eslint
 node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'

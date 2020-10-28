@@ -13,9 +13,7 @@ const eslintrc = (answers, package) => {
     root: true,
     rules: {
       'consistent-return': 2,
-      indent: [1, 2],
       'no-else-return': 1,
-      // semi: [1, "always"],
       'space-unary-ops': 2,
     },
   };
@@ -37,6 +35,7 @@ const eslintrc = (answers, package) => {
   } else {
     template.rules = Object.assign({}, template.rules, {
       indent: [1, 2],
+      semi: [1, "always"],
     });
   }
 

@@ -3,9 +3,6 @@ os:
   - linux
   - osx
   - windows
-env:
-  - LANGUAGE=javascript
-  - LANGUAGE=typescript
 node_js: # a good example: https://github.com/pillarjs/router/blob/master/.travis.yml
   - "10"
   - "11"
@@ -22,7 +19,8 @@ before_script:
   - npm run change:language -- $LANGUAGE
 scripts:
   - set -e
-  - bash .scripts/travis-test.sh
+  - bash .scripts/travis-test.sh mocha
+  - bash .scripts/travis-test.sh jest
 after_script:
   - if [[ $TRAVIS_NODE_VERSION == '12' && $TRAVIS_OS_NAME == 'linux' ]]; then npm run docs;
     if [[ $LANGUAGE == 'typescript' ]]; then sonar-scanner; fi;
