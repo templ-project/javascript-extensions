@@ -19,6 +19,7 @@ const mocharc = require('./cl/mocharc');
 const jestrc = require('./cl/jestrc');
 const eslintrc = require('./cl/eslintrc');
 const prettierrc = require('./cl/prettierrc');
+const rollup = require('./cl/rollup');
 const {to_rc, to_package} = require('./cl/to');
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
@@ -111,36 +112,6 @@ const repository = (answers) => {
     .forEach((item) => rimraf.sync(repositories[item]));
 };
 
-// const jestrc = (answers) => {
-//   if (!answers.testing !== TEST_JEST) {
-//     return;
-//   }
-//   const template = {
-//     moduleFileExtensions: ['js', 'json', 'ts'],
-//     rootDir: 'src',
-//     testRegex: '.spec.ts$',
-//     transform: {
-//       '^.+\\.(t|j)s$': 'ts-jest',
-//     },
-//     coverageDirectory: '../coverage',
-//     testEnvironment: 'node',
-//   };
-//   //     answers.to === "rc"
-//   //       ? to_rc(configs[answers.language].jestrc, "jest.config")
-//   //       : to_package(configs[answers.language].jestrc, "jest");
-//   //     package.devDependencies = Object.assign({}, package.devDependencies, {
-//   //       "eslint-plugin-jest": "^23.18.0",
-//   //       jest: "^26.1.0",
-//   //       "ts-jest": "^26.1.1",
-//   //       "ts-loader": "^8.0.0",
-//   //     });
-//   //     if (answers.language === "typescript") {
-//   //       package.devDependencies = Object.assign({}, package.devDependencies, {
-//   //         "@types/jest": "^26.0.4",
-//   //       });
-//   //     }
-// };
-
 /****************************************************************************
  * Settings
  ****************************************************************************/
@@ -216,6 +187,7 @@ const init = (answers) => {
   console.log(answers);
 
   languagerc(answers, package);
+  rollup(answers, package);
 
   // .eslintrc
   answers.to === 'rc' ? to_rc(eslintrc(answers, package), '.eslintrc') : to_package(eslintrc(answers, package), package, 'eslint');
