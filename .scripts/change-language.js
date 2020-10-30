@@ -20,6 +20,8 @@ const jestrc = require('./cl/jestrc');
 const eslintrc = require('./cl/eslintrc');
 const prettierrc = require('./cl/prettierrc');
 const rollup = require('./cl/rollup');
+const jscpd = require('./cl/jscpd');
+const depcruise = require('./cl/depcruise');
 const {to_rc, to_package} = require('./cl/to');
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
@@ -27,55 +29,6 @@ const package = JSON.parse(fs.readFileSync('./package.json').toString());
 /****************************************************************************
  * Methods
  ****************************************************************************/
-
-
-
-
-
-// const depcruise = (answers) => {
-//   if (answers.inspectors.includes('dependency-cruiser')) {
-//     package.scripts = Object.assign({}, package.scripts, {
-//       depcruise: `depcruise --config .dependency-cruiser.js ${answers.src}`,
-//     });
-
-//     console.clear();
-//     console.log('Proceding to configuring `dependency-cruiser`');
-//     const program = require('commander');
-//     program.init = true;
-//     const cli = require('dependency-cruiser/src/cli');
-//     cli([], program);
-//   } else {
-//     package.devDependencies = removeKeys(package.devDependencies, ['dependency-cruiser']);
-//   }
-// };
-
-const jscpd = (answers) => {
-  if (!answers.inspectors.includes('jscpd')) {
-    return;
-  }
-
-  const template = {
-    absolute: true,
-    blame: true,
-    ignore: ['**/__snapshots__/**', '**/*.min.js', '**/*.map'],
-    output: '.jscpd',
-    reporters: ['console', 'badge'],
-    threshold: 0.1,
-  };
-
-  fs.writeFileSync('.jscpd.json', JSON.stringify(template, null, 2));
-
-  package.devDependencies = Object.assign({}, package.devDependencies, {
-    jscpd: '^2.0.16',
-    'jscpd-badge-reporter': '^1.1.3',
-  });
-  package.scripts = Object.assign({}, package.scripts, {
-    jscpd: `jscpd ./${answers.src} --blame --format ${
-      answers.language !== LANG_FLOW ? (answers.language === LANG_COFFEE ? 'coffeescript' : answers.language) : LANG_JS
-    }`,
-    'jscpd:html': 'npm run jscpd -- --reporters html',
-  });
-};
 
 const sortByKeys = (obj) => {
   let keys = Object.getOwnPropertyNames(obj).sort();
@@ -204,6 +157,7 @@ const init = (answers) => {
 
   // .jscpd
   jscpd(answers);
+  depcruise(answers);
 
   // .dependency-cruise.js
   // depcruise(answers);
