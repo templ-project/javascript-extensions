@@ -5,9 +5,9 @@ const fs = require('fs');
 module.exports = (answers, package) => {
   [LANG_COFFEE, LANG_FLOW, LANG_JS, LANG_TS]
     .filter(l => l !== answers.language)
-    .forEach(l => fs.unlinkSync(`rollup.${l}.js`))
+    .forEach(l => fs.unlinkSync(`rollup.config.${l}.js`))
 
-  fs.moveSync(`rollup.${answers.language}.js`, 'rollup.config.js')
+  fs.renameSync(`rollup.config.${answers.language}.js`, 'rollup.config.js')
 
   if (answers.language === LANG_COFFEE) {
     package.devDependencies = Object.assign({}, package.devDependencies, {

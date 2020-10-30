@@ -1,6 +1,7 @@
+const fs = require('fs');
+const {LANG_COFFEE, LANG_FLOW, LANG_JS, LANG_TS} = require('./const');
 
-
-module.exports = (answers) => {
+module.exports = (answers, package) => {
   if (!answers.inspectors.includes('jscpd')) {
     return;
   }

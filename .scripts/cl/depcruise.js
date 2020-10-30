@@ -1,5 +1,5 @@
 
-module.exports = (answers) => {
+module.exports = (answers, package) => {
   if (answers.inspectors.includes('dependency-cruiser')) {
     package.scripts = Object.assign({}, package.scripts, {
       depcruise: `depcruise --config .dependency-cruiser.js ${answers.src}`,
