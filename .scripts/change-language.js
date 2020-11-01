@@ -156,8 +156,8 @@ const init = (answers) => {
   jestrc(answers, package);
 
   // .jscpd
-  jscpd(answers);
-  depcruise(answers);
+  jscpd(answers, package);
+  depcruise(answers, package);
 
   // .dependency-cruise.js
   // depcruise(answers);
