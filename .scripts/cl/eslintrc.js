@@ -68,6 +68,7 @@ const eslintrc = (answers, package) => {
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'babel-eslint': '^10.1.0',
       'eslint-config-airbnb': '^1.0.2',
+      'eslint-plugin-react': '^7.21.5',
     });
   }
 
