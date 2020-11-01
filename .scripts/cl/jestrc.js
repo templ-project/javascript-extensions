@@ -17,7 +17,7 @@ import {hello} from '../src';
       // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
       ext = 'coffee';
       template = `
-{hello} = require '../src'
+{hello} = require '../${answers.src}'
 
 describe "hello", ->
   it 'hello("World") to return "Hello World!"', ->
@@ -29,6 +29,8 @@ describe "hello", ->
     case LANG_FLOW:
     default:
       template += `
+import {hello} from '../${answers.src}';
+
 describe('hello', function () {
   it('hello("World") to return "Hello World!"', function () {
     expect(hello('World')).toEqual('Hello World!');
