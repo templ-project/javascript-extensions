@@ -10,7 +10,7 @@ const testCode = (answers) => {
 import {expect} from 'chai';
 import {it, describe} from 'mocha';
 
-import {hello} from '../src';
+import {hello} from '../${answers.src}';
 `;
   let ext = 'js';
 
@@ -19,9 +19,7 @@ import {hello} from '../src';
       // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
       ext = 'coffee';
       template = `
-{expect} = require 'chai'
-{describe, it} = require 'mocha'
-{hello} = require '../src'
+{hello} = require '../${answers.src}';
 
 describe "hello", ->
   it 'hello("World") to return "Hello World!"', ->
