@@ -1,3 +1,4 @@
+const {removeKeys} = require('./utils')
 
 module.exports = (answers, package) => {
   if (answers.inspectors.includes('dependency-cruiser')) {

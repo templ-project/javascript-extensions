@@ -23,34 +23,13 @@ const rollup = require('./cl/rollup');
 const jscpd = require('./cl/jscpd');
 const depcruise = require('./cl/depcruise');
 const {to_rc, to_package} = require('./cl/to');
+const {removeKeys, sortByKeys} = require('./cl/utils')
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
 
 /****************************************************************************
  * Methods
  ****************************************************************************/
-
-const sortByKeys = (obj) => {
-  let keys = Object.getOwnPropertyNames(obj).sort();
-  const newObj = {};
-  for (key of keys) {
-    if (typeof obj[key] !== 'object' && !Array.isArray(obj[key])) {
-      newObj[key] = obj[key];
-    } else {
-      newObj[key] = sortByKeys(obj[key]);
-    }
-  }
-  return newObj;
-};
-
-const removeKeys = (obj, keys) => {
-  const newObj = {};
-  const okeys = Object.getOwnPropertyNames(obj).filter((key) => keys.find((lkey) => lkey === key));
-  for (const okey of okeys) {
-    newObj[okey] = obj[okey];
-  }
-  return newObj;
-};
 
 const repository = (answers) => {
   repositories = {
