@@ -153,6 +153,8 @@ const init = (answers) => {
     rimraf.sync('.scripts/change-language.js')
     rimraf.sync('.scripts/cl')
     rimraf.sync('.scripts/travis-test.sh')
+    rimraf.sync('javascript.svg')
+    rimraf.sync('typescript.svg')
   }
 };
 
