@@ -148,6 +148,12 @@ const init = (answers) => {
   package.scripts = sortByKeys(package.scripts || {});
 
   fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
+
+  if (!process.env.DEBUG) {
+    rimraf.sync('.scripts/change-language.js')
+    rimraf.sync('.scripts/cl')
+    rimraf.sync('.scripts/travis-test.sh')
+  }
 };
 
 console.clear();

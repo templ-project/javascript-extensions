@@ -17,35 +17,35 @@ function do_test() {
 \"inspectors\":[\"jscpd\"],\"repository\":\"$5\",\"to\":\"$6\",\"lintRules\":\"$7\"}" \
   node ./.scripts/change-language.js
 
-  if [ ! -f .eslintrc.js ]; then exit 1; fi
-  if [ ! -f .prettierrc.js ]; then exit 1; fi
+  if [[ ! -f .eslintrc.js ]]; then exit 1; fi
+  if [[ ! -f .prettierrc.js ]]; then exit 1; fi
 
   # src
   for d in $VAL_SRC; do
-    if [ $2 != $d ]; then
-      if [ -d $d ]; then exit 1; fi
+    if [[ $2 != $d ]]; then
+      if [[ -d $d ]]; then exit 1; fi
     else
-      if [ ! -d $d ]; then exit 1; fi
+      if [[ ! -d $d ]]; then exit 1; fi
     fi
   done
 
-  # # testing
-  # for f in $VAL_TEST; do
-  #   if [[ $f != *"$4"* ]]; then
-  #     if [ -f $f ]; then exit 1; fi
-  #   else
-  #     if [ ! -f $f ]; then exit 1; fi
-  #   fi
-  # done
+  # testing
+  for f in $VAL_TEST; do
+    if [[ $f != *"$4"* ]]; then
+      if [ -f $f ]; then exit 1; fi
+    else
+      if [ ! -f $f ]; then exit 1; fi
+    fi
+  done
 
   if [ ! -f .jscpd.json ]; then exit 1; fi
 
   # repository
   for d in $VAL_REPO; do
     if [[ $d != *"$5"* ]]; then
-      if [ -d $d ]; then exit 1; fi
+      if [[ -d $d ]]; then exit 1; fi
     else
-      if [ ! -d $d ]; then exit 1; fi
+      if [[ ! -d $d ]]; then exit 1; fi
     fi
   done
 
