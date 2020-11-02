@@ -3,7 +3,7 @@ set -xe
 
 function do_clean() {
   rm -rf .babelrc.js .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js
-  git checkout .github .gitlab package.json package-lock.json
+  git checkout .
 }
 
 VAL_SRC="src app"
