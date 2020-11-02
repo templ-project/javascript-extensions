@@ -12,7 +12,5 @@ module.exports = (answers, package) => {
     program.init = true;
     const cli = require('dependency-cruiser/src/cli');
     cli([], program);
-  } else {
-    package.devDependencies = removeKeys(package.devDependencies, ['dependency-cruiser']);
   }
 };
