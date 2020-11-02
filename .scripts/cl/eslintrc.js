@@ -19,7 +19,7 @@ const eslintrc = (answers, package) => {
   };
 
   let ext = '{js,jsx}';
-  template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb');
+  template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb/base');
 
   if (answers.language === LANG_COFFEE) {
     // https://www.npmjs.com/package/eslint-plugin-coffee
@@ -47,7 +47,7 @@ const eslintrc = (answers, package) => {
       sourceType: 'module',
     };
     template.plugins.push('flowtype');
-    template.extends.push(answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb');
+    template.extends.push(answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb/base');
     if (answers.lintRules === LINT_AIRBNB) {
       template.extends.push('eslint-config-airbnb-flow');
     }
@@ -56,6 +56,7 @@ const eslintrc = (answers, package) => {
       'eslint-config-airbnb': '^1.0.2',
       'eslint-config-airbnb-flow': '^1.0.2',
       'eslint-plugin-flowtype': '^5.2.0',
+      'eslint-plugin-react': '^7.21.5',
     });
   }
 
