@@ -2,7 +2,7 @@
 set -xe
 
 function do_clean() {
-  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js
+  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js
   git checkout .github .gitlab package.json package-lock.json
 }
 
