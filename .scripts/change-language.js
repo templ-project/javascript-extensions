@@ -175,25 +175,25 @@ const init = async (answers) => {
 
 console.clear();
 
-init({
-  // language: LANG_COFFEE,
-  // language: LANG_FLOW,
-  // language: LANG_JS,
-  language: LANG_TS,
-  lintRules: LINT_ESLINT,
-  // lintRules: LINT_AIRBNB,
-  // testing: TEST_MOCHA,
-  inspectors: ['jscpd', 'dependency-cruiser'],
-  // repository: 'github',
-  // src: 'src',
-  // dist: 'dist',
-  // to: 'rc'
-})
+// init({
+//   // language: LANG_COFFEE,
+//   // language: LANG_FLOW,
+//   // language: LANG_JS,
+//   language: LANG_TS,
+//   lintRules: LINT_ESLINT,
+//   // lintRules: LINT_AIRBNB,
+//   // testing: TEST_MOCHA,
+//   inspectors: ['jscpd', 'dependency-cruiser'],
+//   // repository: 'github',
+//   // src: 'src',
+//   // dist: 'dist',
+//   // to: 'rc'
+// })
 
-// if (process.env.TEMPLATE_ANSWERS) {
-//   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
-// } else {
-//   prompt(questions)
-//     .then((answers) => init(answers))
-//     .catch(console.error);
-// }
+if (process.env.TEMPLATE_ANSWERS) {
+  init(JSON.parse(process.env.TEMPLATE_ANSWERS));
+} else {
+  prompt(questions)
+    .then((answers) => init(answers))
+    .catch(console.error);
+}
