@@ -164,7 +164,11 @@ const init = async (answers) => {
   // .dependency-cruise.js
   depcruise(answers, package);
 
-  // repository(answers);
+  if (answers.repository === REPO_GITLAB) {
+    fse.removeSync('./.github')
+  } else {
+    fse.removeSync('./.gitlab')
+  }
 
   package.dependencies = sortByKeys(package.dependencies || {});
   package.devDependencies = sortByKeys(package.devDependencies || {});
