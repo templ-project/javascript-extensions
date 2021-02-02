@@ -16,6 +16,13 @@ module.exports = {
   LANG_JS,
   LANG_TS,
 
+  LANGS: {
+    LANG_COFFEE,
+    LANG_FLOW,
+    LANG_JS,
+    LANG_TS
+  },
+
   LINT_AIRBNB,
   LINT_ESLINT,
 

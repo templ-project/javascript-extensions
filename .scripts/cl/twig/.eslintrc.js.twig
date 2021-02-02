@@ -1,0 +1,20 @@
+// .babelrc.js
+
+module.exports = {
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+    mocha: true,
+  },
+  {% if eslint.parser %}
+  parser: '{{ eslint.parser }}',
+  {% endif %}
+  {% if eslint.parserOptions %}
+  parserOptions: {{ eslint.parserOptions|json_encode() }},
+  {% endif %}
+  extends: {{ eslint.extends|json_encode() }},
+  plugins: {{ eslint.plugins|json_encode() }},
+  root: true,
+  rules: {{ eslint.rules|json_encode() }},
+}

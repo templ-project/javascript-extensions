@@ -51,6 +51,7 @@
     "release-it": "^13.6.4",
     "rimraf": "^3.0.2",
     "rollup": "^2.32.1",
+    "twig": "^1.15.4",
     "yorkie": "^2.0.0"
   },
   "gitHooks": {

@@ -1,7 +1,10 @@
-const {prompt} = require('enquirer');
 const fs = require('fs');
-const path = require('path');
+const fse = require('fs-extra');
+
+const {prompt} = require('enquirer');
+const path = require('path')
 const rimraf = require('rimraf');
+
 const {
   LANG_COFFEE,
   LANG_FLOW,
@@ -13,19 +16,28 @@ const {
   TEST_JEST,
   TEST_MOCHA,
 } = require('./cl/const');
-const languagerc = require('./cl/languagerc');
-const srcCode = require('./cl/src-code');
-const mocharc = require('./cl/mocharc');
-const jestrc = require('./cl/jestrc');
+// const languagerc = require('./cl/languagerc');
+// const srcCode = require('./cl/src-code');
+// const mocharc = require('./cl/mocharc');
+// const jestrc = require('./cl/jestrc');
 const eslintrc = require('./cl/eslintrc');
-const prettierrc = require('./cl/prettierrc');
+// const prettierrc = require('./cl/prettierrc');
 const rollup = require('./cl/rollup');
-const jscpd = require('./cl/jscpd');
-const depcruise = require('./cl/depcruise');
-const {to_rc, to_package} = require('./cl/to');
-const {removeKeys, sortByKeys} = require('./cl/utils')
+// const jscpd = require('./cl/jscpd');
+// const depcruise = require('./cl/depcruise');
+// const {to_rc, to_package} = require('./cl/to');
+// const {removeKeys, sortByKeys} = require('./cl/utils')
+
+const args = process.argv.slice(2);
+const noUnlink =
+  args.filter((item) => item.toLowerCase() === "--no-unlink").length != 0;
+
+const language = process.argv[2];
 
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
+
+
+
 
 /****************************************************************************
  * Methods
@@ -115,46 +127,62 @@ const questions = [
   },
 ];
 
-const init = (answers) => {
+const init = async (answers) => {
   console.log(answers);
 
-  languagerc(answers, package);
+  // languagerc(answers, package);
   rollup(answers, package);
 
   // .eslintrc
-  answers.to === 'rc' ? to_rc(eslintrc(answers, package), '.eslintrc') : to_package(eslintrc(answers, package), package, 'eslint');
+  await eslintrc(answers, package)
 
-  // .prettierrc
-  to_rc(prettierrc(answers, package), '.prettierrc');
+  // // .prettierrc
+  // to_rc(prettierrc(answers, package), '.prettierrc');
 
-  // src & test
-  srcCode(answers);
+  // // src & test
+  // srcCode(answers);
 
-  // testing
-  mocharc(answers, package);
-  jestrc(answers, package);
+  // // testing
+  // mocharc(answers, package);
+  // jestrc(answers, package);
 
-  // .jscpd
-  jscpd(answers, package);
-  depcruise(answers, package);
+  // // .jscpd
+  // jscpd(answers, package);
+  // depcruise(answers, package);
 
-  // .dependency-cruise.js
-  // depcruise(answers);
+  // // .dependency-cruise.js
+  // // depcruise(answers);
 
-  repository(answers);
+  // repository(answers);
 
-  package.dependencies = sortByKeys(package.dependencies || {});
-  package.devDependencies = sortByKeys(package.devDependencies || {});
-  package.scripts = sortByKeys(package.scripts || {});
+  // package.dependencies = sortByKeys(package.dependencies || {});
+  // package.devDependencies = sortByKeys(package.devDependencies || {});
+  // package.scripts = sortByKeys(package.scripts || {});
 
-  fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
+  // fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
 
 console.clear();
-if (process.env.TEMPLATE_ANSWERS) {
-  init(JSON.parse(process.env.TEMPLATE_ANSWERS));
-} else {
-  prompt(questions)
-    .then((answers) => init(answers))
-    .catch(console.error);
-}
+
+init({
+  // language: LANG_COFFEE,
+  // language: LANG_FLOW,
+  // language: LANG_JS,
+  language: LANG_TS,
+  lintRules: LINT_ESLINT,
+  // lintRules: LINT_AIRBNB,
+  // testing: TEST_MOCHA,
+  // inspectors: [],
+  // repository: 'github',
+  // src: 'src',
+  // dist: 'dist',
+  // to: 'rc'
+})
+
+// if (process.env.TEMPLATE_ANSWERS) {
+//   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
+// } else {
+//   prompt(questions)
+//     .then((answers) => init(answers))
+//     .catch(console.error);
+// }

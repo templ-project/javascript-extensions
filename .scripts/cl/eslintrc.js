@@ -1,71 +1,89 @@
-const {LANG_COFFEE, LANG_FLOW, LANG_JS, LANG_TS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
+const fs = require('fs');
 
-const eslintrc = (answers, package) => {
-  const template = {
-    env: {
-      browser: true,
-      es6: true,
-      node: true,
-      mocha: true,
-    },
-    extends: [],
-    plugins: [],
-    root: true,
-    rules: {
-      'consistent-return': 2,
-      'no-else-return': 1,
-      'space-unary-ops': 2,
-    },
-  };
+const {LANGS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
+const twig = require('./twig');
 
+const eslintrc = async (answers, package) => {
   let ext = '{js,jsx}';
-  template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb/base');
 
-  if (answers.language === LANG_COFFEE) {
+  options = {
+    answers,
+    eslint: {
+      parser: '',
+      plugins: [],
+      extends: [],
+      rules: {
+        'consistent-return': 2,
+        'no-else-return': 1,
+        'space-unary-ops': 2,
+      },
+    },
+    LANGS,
+  }
+
+  options.eslint.extends = [
+    ...options.eslint.extends,
+    answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb/base'
+  ];
+
+  if (answers.language === LANGS.LANG_COFFEE) {
     // https://www.npmjs.com/package/eslint-plugin-coffee
     ext = 'coffee';
-    template.parser = 'eslint-plugin-coffee';
-    template.plugins.push('coffee');
-    template.extends.push(
+    options.eslint.parser = 'eslint-plugin-coffee';
+    options.eslint.plugins = [
+      ...options.eslint.plugins,
+      'coffee'
+    ];
+    options.eslint.extends = [
+      ...options.eslint.extends,
       answers.lintRules === LINT_ESLINT ? 'plugin:coffee/eslint-recommended' : 'plugin:coffee/airbnb-base',
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    ];
+
+    package.devDependencies = {
+      ...package.devDependencies,
       'eslint-plugin-coffee': '^0.1.13',
-    });
+    };
   } else {
-    template.rules = Object.assign({}, template.rules, {
+    options.eslint.rules = Object.assign({}, options.eslint.rules, {
       indent: [1, 2],
       semi: [1, "always"],
     });
   }
 
-  if (answers.language === LANG_FLOW) {
+  if (answers.language === LANGS.LANG_FLOW) {
     // https://www.npmjs.com/package/eslint-plugin-flowtype
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
+    options.eslint.parser = 'babel-eslint';
+    options.eslint.parserOptions = {
       ecmaVersion: 2018,
       sourceType: 'module',
     };
-    template.plugins.push('flowtype');
-    template.extends.push(answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb/base');
-    if (answers.lintRules === LINT_AIRBNB) {
-      template.extends.push('eslint-config-airbnb-flow');
-    }
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    options.eslint.plugins = [
+      ...options.eslint.plugins,
+      'flowtype'
+    ];
+    options.eslint.extends = [
+      ...options.eslint.extends,
+      answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb/base',
+      answers.lintRules === LINT_AIRBNB ? 'eslint-config-airbnb-flow' : '',
+    ].filter(a => a);
+
+    package.devDependencies = {
+      ...package.devDependencies,
       'babel-eslint': '^10.1.0',
       'eslint-config-airbnb': '^1.0.2',
       'eslint-config-airbnb-flow': '^1.0.2',
       'eslint-plugin-flowtype': '^5.2.0',
       'eslint-plugin-react': '^7.21.5',
-    });
+    };
   }
 
-  if (answers.language === LANG_JS) {
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
+  if (answers.language === LANGS.LANG_JS) {
+    options.eslint.parser = 'babel-eslint';
+    options.eslint.parserOptions = {
       ecmaVersion: 2018,
       sourceType: 'module',
     };
+
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'babel-eslint': '^10.1.0',
       'eslint-config-airbnb': '^1.0.2',
@@ -73,13 +91,18 @@ const eslintrc = (answers, package) => {
     });
   }
 
-  if (answers.language === LANG_TS) {
+  if (answers.language === LANGS.LANG_TS) {
     ext = '{ts,tsx}';
-    template.parser = '@typescript-eslint/parser';
-    template.plugins.push('@typescript-eslint');
-    template.extends.push(
+    options.eslint.parser = '@typescript-eslint/parser';
+    options.eslint.plugins = [
+      ...options.eslint.plugins,
+      '@typescript-eslint'
+    ];
+    options.eslint.extends = [
+      ...options.eslint.extends,
       answers.lintRules === LINT_ESLINT ? 'plugin:@typescript-eslint/recommended' : 'eslint-config-airbnb-typescript',
-    );
+    ];
+
     package.devDependencies = Object.assign({}, package.devDependencies, {
       '@typescript-eslint/eslint-plugin': '^2.30.0',
       '@typescript-eslint/parser': '^2.30.0',
@@ -89,13 +112,19 @@ const eslintrc = (answers, package) => {
   }
 
   if (answers.testing === TEST_MOCHA) {
-    template.extends.push('plugin:mocha/recommended');
-    template.plugins.push('mocha');
+    options.eslint.extends = [
+      ...options.eslint.extends,
+      'plugin:mocha/recommended',
+      'mocha'
+    ];
   }
 
   if (answers.testing === TEST_JEST) {
-    template.extends.push('plugin:jest/recommended');
-    template.plugins.push('jest');
+    options.eslint.extends = [
+      ...options.eslint.extends,
+      'plugin:jest/recommended',
+      'jest'
+    ];
   }
 
   package.scripts = Object.assign({}, package.scripts, {
@@ -103,7 +132,13 @@ const eslintrc = (answers, package) => {
     'lint:write': 'npm run lint -- --fix',
     'lint:watch': "nodemon --exec 'npm run lint'",
   });
-  return template;
+
+  const rendered = await twig('./.scripts/cl/twig/.eslintrc.js.twig', options)
+
+  try {
+    await fs.promises.unlink('./.eslintrc.js');
+  } catch (e) {}
+  return fs.promises.writeFile('./.eslintrc.js', rendered)
 };
 
 module.exports = eslintrc;
