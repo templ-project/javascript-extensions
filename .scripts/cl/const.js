@@ -10,6 +10,9 @@ const TEST_JASMINE = 'jasmine';
 const TEST_JEST = 'jest';
 const TEST_MOCHA = 'mocha';
 
+const SRC_APP = 'app'
+const SRC_SRC = 'src'
+
 module.exports = {
   LANG_COFFEE,
   LANG_FLOW,
@@ -25,6 +28,9 @@ module.exports = {
 
   LINT_AIRBNB,
   LINT_ESLINT,
+
+  SRC_APP,
+  SRC_SRC,
 
   TEST_JASMINE,
   TEST_JEST,

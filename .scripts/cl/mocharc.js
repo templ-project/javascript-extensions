@@ -1,103 +1,86 @@
 const fs = require('fs');
-const path = require('path');
-const {LANG_COFFEE, LANG_FLOW, LANG_TS, TEST_MOCHA} = require('./const');
-const {to_rc, to_package} = require('./to');
+const fse = require('fs-extra');
 
-const testCode = (answers) => {
-  fs.mkdirSync('test', {recursive: true});
+const {LANGS, LANG_COFFEE, LANG_FLOW, LANG_TS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
+const twig = require('./twig');
 
-  let template = `
-import {expect} from 'chai';
-import {it, describe} from 'mocha';
+const testCode = async (answers) => {
+  fse.removeSync('test');
 
-import {hello} from '../${answers.src}';
-`;
   let ext = 'js';
-
   switch (answers.language) {
     case LANG_COFFEE:
-      // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
       ext = 'coffee';
-      template = `
-{hello} = require '../${answers.src}';
-
-describe "hello", ->
-  it 'hello("World") to return "Hello World!"', ->
-    expect(hello("World")).to.equal "Hello World!"
-`;
       break;
     case LANG_TS:
       ext = 'ts';
-    case LANG_FLOW:
+      break;
     default:
-      template += `
-describe('hello', function () {
-  it('hello("World") to return "Hello World!"', function () {
-    expect(hello('World')).to.equal('Hello World!');
-  });
-});
-`;
   }
-  fs.writeFileSync(path.join('test', `index.test.${ext}`), template);
+
+  fs.mkdirSync('test', {recursive: true});
+
+  const options = {
+    answers,
+    LANGS,
+  }
 
   if (answers.language === LANG_TS) {
-    fs.writeFileSync(
-      path.join('test', `tsconfig.json`),
-      JSON.stringify(
-        {
-          extends: '../tsconfig',
-          compilerOptions: {
-            noEmit: true,
-          },
-          references: [
-            {
-              path: '..',
-            },
-          ],
-        },
-        null,
-        2,
-      ),
-    );
-  }
+    const rendered = await twig('./.scripts/cl/twig/.mocharc.tsconfig.json.twig', options)
+    await fs.promises.writeFile(`./test/tsconfig.json`, rendered
+  )}
+
+  const rendered = await twig('./.scripts/cl/twig/.mocharc.test.code.twig', options)
+  return fs.promises.writeFile(`./test/index.test.${ext}`, rendered)
+
+
 };
 
-const mocharc = (answers, package) => {
+const mocharc = async (answers, package) => {
   if (answers.testing !== TEST_MOCHA) {
     return;
   }
-  testCode(answers);
+  await testCode(answers);
 
-  const template = {
-    recursive: true,
-    reporter: 'spec',
-    timeout: 5000,
-    require: [
-      'chai/register-assert', // Using Assert style
-      'chai/register-expect', // Using Expect style
-      'chai/register-should', // Using Should style
-    ],
-  };
+  options = {
+    answers,
+    mocha: {
+      require: [
+        'chai/register-assert', // Using Assert style
+        'chai/register-expect', // Using Expect style
+        'chai/register-should', // Using Should style
+      ]
+    },
+    LANGS,
+  }
 
   let ext = 'js';
   switch (answers.language) {
     case LANG_COFFEE:
       ext = 'coffee';
-      template.require.unshift('coffeescript/register');
+      options.mocha.require = [
+        'coffeescript/register',
+        ...options.mocha.require,
+      ];
       break;
     case LANG_TS:
       ext = 'ts';
-      template.require.unshift('ts-node/register');
+      options.mocha.require = [
+        'ts-node/register',
+        ...options.mocha.require,
+      ];
       break;
     case LANG_FLOW:
     default:
-      template.require.unshift('@babel/register');
+      options.mocha.require = [
+        '@babel/register',
+        ...options.mocha.require,
+      ];
+
       package.devDependencies = Object.assign({}, package.devDependencies, {
         '@babel/register': '^7.12.1',
       });
   }
-
-  answers.to === 'rc' ? to_rc(template, '.mocharc') : to_package(template, package, 'mocha');
 
   package.devDependencies = Object.assign({}, package.devDependencies, {
     chai: '^4.2.0',
@@ -117,6 +100,13 @@ const mocharc = (answers, package) => {
     test: `npm run test:single -- './test/**/*.test.${ext}'`,
     'test:single': `cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text --extension .${ext} mocha --forbid-only`,
   });
+
+  const rendered = await twig('./.scripts/cl/twig/.mocharc.js.twig', options)
+
+  try {
+    await fs.promises.unlink('./.mocharc.js');
+  } catch (e) {}
+  return fs.promises.writeFile(`./.mocharc.js`, rendered)
 };
 
 module.exports = mocharc;

@@ -1,33 +1,31 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
-const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
+const {LANG_COFFEE, LANG_TS, LANGS, SRC_APP, SRC_SRC} = require('./const');
+const twig = require('./twig');
 
-const srcCode = (answers) => {
-  fs.mkdirSync(answers.src, {recursive: true});
+const srcCode = async (answers) => {
+  fse.removeSync(SRC_APP)
+  fse.removeSync(SRC_SRC)
 
-  let template = '';
-  let ext = 'js';
-  switch (answers.language) {
-    case LANG_COFFEE:
-      ext = 'coffee';
-      template = `hello = (name) -> "Hello " + name + "!"
-
-module.exports = {
-  hello
-}`;
-      break;
-    case LANG_TS:
-      ext = 'ts';
-      template = 'export const hello = (name: string): string => `Hello ${name}!`;';
-      break;
-    case LANG_FLOW:
-      template = `// @flow
-export const hello = (name: string): string => \`Hello \${name}!\`;`;
-      break;
-    default:
-      template = 'export const hello = (name) => `Hello ${name}!`;';
+  let ext = 'js'
+  if (answers.language === LANG_COFFEE) {
+    ext = 'coffee'
   }
-  fs.writeFileSync(path.join(answers.src, `index.${ext}`), template);
+  if (answers.language === LANG_TS) {
+    ext = 'ts'
+  }
+
+  options = {
+    answers,
+    ext,
+    LANGS
+  }
+
+  await fs.promises.mkdir(answers.src)
+
+  rendered = await twig('./.scripts/cl/twig/index.code.twig', options)
+  return fs.promises.writeFile(`${answers.src}/index.${ext}`, rendered)
 };
 
 module.exports = srcCode;

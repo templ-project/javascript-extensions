@@ -8,7 +8,7 @@ module.exports = {
     mocha: true,
   },
     parser: '@typescript-eslint/parser',
-      extends: ["eslint:recommended","plugin:@typescript-eslint/recommended"],
+      extends: ["eslint:recommended","plugin:@typescript-eslint/recommended","plugin:mocha/recommended","mocha"],
   plugins: ["@typescript-eslint"],
   root: true,
   rules: {"consistent-return":2,"no-else-return":1,"space-unary-ops":2,"indent":[1,2],"semi":[1,"always"]},
