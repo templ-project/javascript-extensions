@@ -2,7 +2,7 @@
 set -xe
 
 function do_clean() {
-  rm -rf .babelrc.js .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js
+  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js
   git checkout .github .gitlab package.json package-lock.json
 }
 
@@ -14,7 +14,7 @@ VAL_REPO=".github .gitlab"
 
 function do_test() {
   TEMPLATE_ANSWERS="{\"language\":\"$1\",\"src\":\"$2\",\"dist\":\"$3\",\"testing\":\"$4\",\
-\"inspectors\":[\"jscpd\"],\"repository\":\"$5\",\"to\":\"$6\",\"lintRules\":\"$7\"}" \
+\"inspectors\":[\"jscpd\"],\"repository\":\"$5\",\"lintRules\":\"$6\"}" \
   node ./.scripts/change-language.js
 
   if [ ! -f .eslintrc.js ]; then exit 1; fi
@@ -51,39 +51,19 @@ function do_test() {
 
 }
 
-do_test coffee src dist $1 github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "coffeescript") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-npm run jscpd
-npm test
-do_clean
+# for lang in coffee flow javascript typescript; do
+for lang in flow javascript typescript; do
+# for lint in eslint aribnb; do
+for lint in eslint; do
 
-do_test flow src dist $1 github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-npm run jscpd
-npm test
-do_clean
+  do_test $lang src dist $1 github $lint
+  # node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
+  npm i
+  npm run prettier
+  npm run lint
+  npm run jscpd
+  npm test
+  do_clean
 
-do_test javascript src dist $1 github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "babel") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-npm run jscpd
-npm test
-do_clean
-
-do_test typescript src dist $1 github rc eslint
-node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "typescript") process.exit(1);'
-npm i
-npm run prettier
-npm run lint
-npm run jscpd
-npm test
-do_clean
-
+done
+done

@@ -5,7 +5,11 @@ import {hello} from '../{{ answers.src }}';
 
 {% if answers.language == LANGS.LANG_COFFEE %}
 {# https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696 #}
-{hello} = require '../${answers.src}';
+# {hello} = require '../${answers.src}';
+hello = require '../${answers.src}';
+
+console.log hello
+
 describe "hello", ->
   it 'hello("World") to return "Hello World!"', ->
     expect(hello("World")).to.equal "Hello World!"

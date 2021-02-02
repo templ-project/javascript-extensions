@@ -115,7 +115,7 @@ const eslintrc = async (answers, package) => {
     options.eslint.extends = [
       ...options.eslint.extends,
       'plugin:mocha/recommended',
-      'mocha'
+      // 'mocha'
     ];
   }
 
