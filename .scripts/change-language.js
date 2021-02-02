@@ -27,7 +27,7 @@ const mocharc = require('./cl/mocharc');
 const prettierrc = require('./cl/prettierrc');
 const rollup = require('./cl/rollup');
 const srcCode = require('./cl/src-code');
-// const {removeKeys, sortByKeys} = require('./cl/utils')
+const {removeKeys, sortByKeys} = require('./cl/utils')
 
 const args = process.argv.slice(2);
 const noUnlink =
