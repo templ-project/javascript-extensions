@@ -48,10 +48,21 @@ module.exports = {
   LINT_AIRBNB,
   LINT_ESLINT,
 
+  LINTS: {
+    LINT_AIRBNB,
+    LINT_ESLINT,
+  },
+
   SRC_APP,
   SRC_SRC,
 
   TEST_JASMINE,
   TEST_JEST,
   TEST_MOCHA,
+
+  TESTS: {
+    TEST_JASMINE,
+    TEST_JEST,
+    TEST_MOCHA,
+  }
 };

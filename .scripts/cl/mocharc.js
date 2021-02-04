@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fse = require('fs-extra');
 
-const {LANGS, LANG_COFFEE, LANG_FLOW, LANG_TS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
+const {LANGS, LANG_COFFEE, LANG_FLOW, LANG_TS, LINTS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
 const twig = require('./twig');
 
 const testCode = async (answers) => {
@@ -23,6 +23,7 @@ const testCode = async (answers) => {
   const options = {
     answers,
     LANGS,
+    LINTS,
   }
 
   if (answers.language === LANG_TS) {
@@ -52,6 +53,7 @@ const mocharc = async (answers, package) => {
       ]
     },
     LANGS,
+    LINTS,
   }
 
   let ext = 'js';

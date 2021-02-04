@@ -51,16 +51,21 @@ function do_test() {
 
 }
 
-# for lang in coffee flow javascript typescript; do
-for lang in flow javascript typescript; do
-# for lint in eslint aribnb; do
-for lint in eslint; do
+for lang in coffee flow javascript typescript; do
+# for lang in coffee; do
+# for lang in flow; do
+# for lang in javascript; do
+# for lang in typescript; do
+for lint in airbnb eslint; do
+# for lint in airbnb; do
+# for lint in eslint; do
 
   do_test $lang src dist $1 github $lint
   # node -e 'var prettier = require("./.prettierrc.js"); if (prettier.parser != "flow") process.exit(1);'
-  npm i
-  npm run prettier
-  npm run lint
+  npm install
+  npm update
+  npm run prettier:write
+  npm run lint:write
   npm run jscpd
   npm test
   do_clean

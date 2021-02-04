@@ -19,6 +19,7 @@ const prettierrc = async (answers, package) => {
 
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'prettier-plugin-coffeescript': '^0.1.5',
+      prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
     });
   }
 

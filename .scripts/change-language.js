@@ -27,7 +27,7 @@ const {
 } = require('./cl/const');
 const depcruise = require('./cl/depcruise');
 const eslintrc = require('./cl/eslintrc');
-// const jestrc = require('./cl/jestrc');
+const jestrc = require('./cl/jestrc');
 const jscpd = require('./cl/jscpd');
 const languagerc = require('./cl/languagerc');
 const mocharc = require('./cl/mocharc');
@@ -153,10 +153,11 @@ const init = async (answers) => {
   // src & test
   await srcCode(answers)
 
-  // testing
+  // testing - mocha
   await mocharc(answers, package);
-  // TODO:
-  // await jestrc(answers, package);
+
+  // testing - jest
+  await jestrc(answers, package);
 
   // .jsc
   await jscpd(answers, package);
@@ -177,17 +178,18 @@ const init = async (answers) => {
   fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
 };
 
-console.clear();
+// console.clear();
 
 // init({
 //   // language: LANG_COFFEE,
 //   // language: LANG_FLOW,
 //   // language: LANG_JS,
-//   language: LANG_TS,
+//   // language: LANG_TS,
 //   lintRules: LINT_ESLINT,
 //   // lintRules: LINT_AIRBNB,
 //   // testing: TEST_MOCHA,
-//   inspectors: ['jscpd', 'dependency-cruiser'],
+//   testing: TEST_JEST,
+//   // inspectors: ['jscpd', 'dependency-cruiser'],
 //   // repository: 'github',
 //   // src: 'src',
 //   // dist: 'dist',
