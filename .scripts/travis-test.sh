@@ -69,7 +69,6 @@ for lint in airbnb eslint; do
   npm run jscpd
   npm test
   do_clean
-  exit -0
 
 done
 done
