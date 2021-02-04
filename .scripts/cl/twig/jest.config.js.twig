@@ -1,0 +1,17 @@
+// jest.config.js
+
+module.exports = {
+  clearMocks: true,
+  coverageDirectory: 'coverage',
+  {% if jest.moduleDirectories %}
+  moduleDirectories: {{ jest.moduleDirectories|json_encode() }},
+  {% endif %}
+  moduleFileExtensions: {{ jest.moduleFileExtensions|json_encode() }},
+  // rootDir: '.',
+  roots: [ "test" ],
+  testEnvironment: 'node',
+  {% if jest.testMatch %}
+  testMatch: {{ jest.testMatch|json_encode() }},
+  {% endif %}
+  transform: {{ jest.transform|json_encode() }},
+}

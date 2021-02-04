@@ -2,7 +2,7 @@
 set -xe
 
 function do_clean() {
-  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js
+  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js tsconfig.json tsconfig.eslint.json .jscpd
   git checkout .github .gitlab package.json package-lock.json
 }
 
@@ -69,6 +69,7 @@ for lint in airbnb eslint; do
   npm run jscpd
   npm test
   do_clean
+  exit -0
 
 done
 done
