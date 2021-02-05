@@ -1,31 +1,52 @@
-const {prompt} = require('enquirer');
 const fs = require('fs');
-const path = require('path');
+const fse = require('fs-extra');
+
+const {prompt} = require('enquirer');
+const path = require('path')
 const rimraf = require('rimraf');
+
 const {
   LANG_COFFEE,
   LANG_FLOW,
   LANG_JS,
+  LANG_REASON,
   LANG_TS,
+  REPO_BIT,
+  REPO_GITEA,
+  REPO_GITEE,
+  REPO_GITHUB,
+  REPO_GITLAB,
   LINT_AIRBNB,
   LINT_ESLINT,
   TEST_JASMINE,
   TEST_JEST,
   TEST_MOCHA,
+  SRC_APP,
+  SRC_SRC,
+  DIST_DIST,
+  DIST_LIB,
 } = require('./cl/const');
-const languagerc = require('./cl/languagerc');
-const srcCode = require('./cl/src-code');
-const mocharc = require('./cl/mocharc');
-const jestrc = require('./cl/jestrc');
+const depcruise = require('./cl/depcruise');
 const eslintrc = require('./cl/eslintrc');
+const jestrc = require('./cl/jestrc');
+const jscpd = require('./cl/jscpd');
+const languagerc = require('./cl/languagerc');
+const mocharc = require('./cl/mocharc');
 const prettierrc = require('./cl/prettierrc');
 const rollup = require('./cl/rollup');
-const jscpd = require('./cl/jscpd');
-const depcruise = require('./cl/depcruise');
-const {to_rc, to_package} = require('./cl/to');
+const srcCode = require('./cl/src-code');
 const {removeKeys, sortByKeys} = require('./cl/utils')
 
+const args = process.argv.slice(2);
+const noUnlink =
+  args.filter((item) => item.toLowerCase() === "--no-unlink").length != 0;
+
+const language = process.argv[2];
+
 const package = JSON.parse(fs.readFileSync('./package.json').toString());
+
+
+
 
 /****************************************************************************
  * Methods
@@ -49,28 +70,40 @@ const repository = (answers) => {
  ****************************************************************************/
 
 const questions = [
+  // {
+  //   type: 'input',
+  //   name: 'project',
+  //   message: 'What is your project name?'
+  // },
   {
     type: 'select',
     name: 'language',
     message: 'Choose JavaScript Flavor',
-    choices: [LANG_JS, LANG_TS, LANG_FLOW, LANG_COFFEE],
+    choices: [
+      { hint: 'https://262.ecma-international.org/', message: 'ECMAScript 6+ (using Babel)', name: LANG_JS, },
+      { hint: 'https://www.typescriptlang.org/', message: 'TypeScript', name: LANG_TS, },
+      { hint: 'https://flow.org/en/', message: 'ECMAScript 6+ with Flow (using Babel)', name: LANG_FLOW},
+      { hint: 'https://coffeescript.org/', message: 'CoffeeScript', name: LANG_COFFEE},
+      { disabled: true, hint: 'https://reasonml.github.io/', message: 'Reason', name: LANG_REASON, },
+      { disabled: true, hint: 'https://262.ecma-international.org/5.1/', message: 'ECMAScript 5 (deprecated)', name: LANG_JS, },
+    ],
   },
   {
     type: 'select',
     name: 'lintRules',
     message: 'Choose Linting Rules',
     choices: [
-      {name: 'airbnb', label: 'Airbnb'},
-      {name: 'eslint', label: 'ESLint Recommended'},
+      {name: LINT_AIRBNB, label: 'Airbnb'},
+      {name: LINT_ESLINT, label: 'ESLint Recommended'},
     ],
-    initial: 'eslint',
+    initial: LINT_ESLINT,
   },
   {
     type: 'select',
     name: 'testing',
     message: 'Choose Testing Framework',
-    choices: [/*{name: 'jasmine', disabled: true},*/TEST_JEST, TEST_MOCHA],
-    initial: 'mocha',
+    choices: [{name: TEST_JASMINE, disabled: true}, TEST_JEST, TEST_MOCHA],
+    initial: TEST_MOCHA,
   },
   {
     type: 'multiselect',
@@ -84,64 +117,72 @@ const questions = [
     name: 'repository',
     message: 'Choose Git Repository Manager',
     choices: [
-      {name: 'bitbucket', disabled: true},
-      {name: 'gitea', disabled: true},
-      {name: 'gitee', disabled: true},
-      'github',
-      'gitlab',
+      {name: REPO_BIT, disabled: true},
+      {name: REPO_GITEA, disabled: true},
+      {name: REPO_GITEE, disabled: true},
+      REPO_GITHUB,
+      REPO_GITLAB,
     ],
-    initial: ['github'],
+    initial: [REPO_GITHUB],
   },
   {
     type: 'select',
     name: 'src',
     message: 'Choose Src Folder',
-    choices: ['app', 'src'],
-    initial: 'src',
+    choices: [SRC_APP, SRC_SRC],
+    initial: SRC_SRC,
   },
   {
     type: 'select',
     name: 'dist',
     message: 'Choose Dist Folder',
-    choices: ['dist', 'lib'],
-    initial: 'dist',
-  },
-  {
-    type: 'select',
-    name: 'to',
-    message: 'Write configs to',
-    choices: [{name: 'rc', message: 'Separate Files'}, {name: 'package'}],
-    initial: ['rc'],
+    choices: [DIST_DIST, DIST_LIB],
+    initial: DIST_DIST,
   },
 ];
 
-const init = (answers) => {
-  console.log(answers);
+const init = async (answers) => {
+  answers = {
+    language: LANG_TS,
+    lintRules: LINT_ESLINT,
+    testing: TEST_MOCHA,
+    inspectors: [],
+    repository: 'github',
+    src: 'src',
+    dist: 'dist',
+    ...answers,
+  }
 
   languagerc(answers, package);
-  rollup(answers, package);
+
+  await rollup(answers, package);
 
   // .eslintrc
-  answers.to === 'rc' ? to_rc(eslintrc(answers, package), '.eslintrc') : to_package(eslintrc(answers, package), package, 'eslint');
+  await eslintrc(answers, package);
 
   // .prettierrc
-  to_rc(prettierrc(answers, package), '.prettierrc');
+  await prettierrc(answers, package);
 
   // src & test
-  srcCode(answers);
+  await srcCode(answers)
 
-  // testing
-  mocharc(answers, package);
-  jestrc(answers, package);
+  // testing - mocha
+  await mocharc(answers, package);
 
-  // .jscpd
-  jscpd(answers, package);
-  depcruise(answers, package);
+  // testing - jest
+  await jestrc(answers, package);
+
+  // .jsc
+  await jscpd(answers, package);
 
   // .dependency-cruise.js
-  // depcruise(answers);
+  depcruise(answers, package);
 
-  repository(answers);
+  if (answers.repository === REPO_GITLAB) {
+    fse.removeSync('./.github')
+  } else {
+    fse.removeSync('./.gitlab')
+  }
 
   package.dependencies = sortByKeys(package.dependencies || {});
   package.devDependencies = sortByKeys(package.devDependencies || {});
@@ -158,7 +199,24 @@ const init = (answers) => {
   }
 };
 
-console.clear();
+// console.clear();
+
+// init({
+//   // language: LANG_COFFEE,
+//   // language: LANG_FLOW,
+//   // language: LANG_JS,
+//   // language: LANG_TS,
+//   lintRules: LINT_ESLINT,
+//   // lintRules: LINT_AIRBNB,
+//   // testing: TEST_MOCHA,
+//   testing: TEST_JEST,
+//   // inspectors: ['jscpd', 'dependency-cruiser'],
+//   // repository: 'github',
+//   // src: 'src',
+//   // dist: 'dist',
+//   // to: 'rc'
+// })
+
 if (process.env.TEMPLATE_ANSWERS) {
   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
 } else {

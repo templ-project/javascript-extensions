@@ -1,0 +1,18 @@
+// .prettierrc.js
+{% if answers.language == LANGS.LANG_COFFEE %}
+// @see https://github.com/helixbass/prettier-plugin-coffeescript
+{% endif %}
+
+module.exports = {
+  parser: '{{ parser }}',
+  printWidth: 120,
+  {% if answers.language != LANGS.LANG_COFFEE %}
+  semi: true,
+  {% endif %}
+  singleQuote: true,
+  tabWidth: 2,
+  {% if answers.language != LANGS.LANG_COFFEE %}
+  trailingComma: 'all',
+  bracketSpacing: false,
+  {% endif %}
+};

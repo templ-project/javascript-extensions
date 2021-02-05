@@ -1,0 +1,19 @@
+{% if answers.language == LANGS.LANG_COFFEE %}
+{ hello } = require '../src'
+
+skipReturn = ->
+
+describe 'hello', ->
+  it 'hello("World") to return "Hello World!"', -> expect(hello 'World').toEqual 'Hello World!'
+  skipReturn()
+
+{% else %}
+import {hello} from '../{{ answers.src }}';
+
+describe('hello', function () {
+  it('hello("World") to return "Hello World!"', function () {
+    expect(hello('World')).toEqual('Hello World!');
+  });
+});
+
+{% endif %}

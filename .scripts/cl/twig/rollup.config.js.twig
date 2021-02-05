@@ -1,0 +1,110 @@
+{% if answers.language == LANGS.LANG_COFFEE or answers.language == LANGS.LANG_FLOW or answers.language == LANGS.LANG_JS %}
+import babel from "@rollup/plugin-babel";
+{% endif %}
+{% if answers.language == LANGS.LANG_COFFEE %}
+import coffee from 'rollup-plugin-coffee-script';
+{% endif %}
+{% if answers.language == LANGS.LANG_FLOW %}
+import flow from 'rollup-plugin-flow';
+{% endif %}
+{% if answers.language == LANGS.LANG_TS %}
+import dts from "rollup-plugin-dts";
+import typescript from "rollup-plugin-typescript2";
+{% endif %}
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const entryName = "index";
+{% if answers.language == LANGS.LANG_COFFEE %}
+
+const coffeeOptions = {transpile: {presets: ['@babel/env']}}
+
+{% endif %}
+/**
+ * Replace this with the name of your module
+ */
+const name = "javascript-template";
+
+{% if answers.language == LANGS.LANG_COFFEE or answers.language == LANGS.LANG_FLOW or answers.language == LANGS.LANG_JS %}
+const bab = () =>
+  babel({
+    // cacheRoot: '.rollupcache',
+    babelHelpers: "bundled",
+  });
+{% endif %}
+{% if answers.language == LANGS.LANG_TS %}
+const ts = (target = "es2015") =>
+  typescript({
+    cacheRoot: ".rollupcache",
+    // tsconfigDefaults: defaultCfg,
+    // tsconfig: undefined,
+    tsconfigOverride: {
+      compilerOptions: {
+        module: "es2015",
+        target: target,
+      },
+      exclude: [],
+      include: ["src"],
+    },
+    useTsconfigDeclarationDir: true,
+  });
+{% endif %}
+
+export default [
+  {
+    input: `src/${entryName}.{{ ext }}`,
+    {% if answers.language == LANGS.LANG_TS %}{% set ext = 'js' %}{% endif %}
+    output: [
+      {
+        file: `dist/es2015/${entryName}.{{ ext }}`,
+        format: "es",
+      },
+      {
+        file: `dist/umd-es2015/${entryName}.{{ ext }}`,
+        format: "umd",
+        name: name,
+      },
+    ],
+    plugins: [{{ plugins|join(', ') }}],
+  },
+  {% if answers.language == LANGS.LANG_TS %}
+  {
+    input: "./src/index.ts",
+    output: [{ file: "dist/index.d.ts", format: "es" }],
+    plugins: [dts()],
+  },
+  {% endif %}
+].concat(
+  !isProduction
+    ? []
+    : [
+        {
+          {% if answers.language == LANGS.LANG_TS %}{% set ext = 'ts' %}{% set plugins = ['ts("es2017")'] %}{% endif %}
+          input: `src/${entryName}.{{ ext }}`,
+          {% if answers.language == LANGS.LANG_TS %}{% set ext = 'js' %}{% endif %}
+          output: {
+            // @bab/ts-ignore
+            file: `dist/es2017/${entryName}.{{ ext }}`,
+            format: "es",
+          },
+          plugins: [{{ plugins|join(', ') }}],
+        },
+        {
+          {% if answers.language == LANGS.LANG_TS %}{% set ext = 'ts' %}{% endif %}
+          input: `src/${entryName}.{{ ext }}`,
+          {% if answers.language == LANGS.LANG_TS %}{% set ext = 'js' %}{% set plugins = ['ts("es5")'] %}{% endif %}
+          output: [
+            { file: `dist/commonjs/${entryName}.{{ ext }}`, format: "cjs" },
+            {
+              file: `dist/amd/${entryName}.{{ ext }}`,
+              format: "amd",
+              amd: { id: entryName },
+            },
+            { file: `dist/native-modules/${entryName}.{{ ext }}`, format: "es" },
+            { file: `dist/umd/${entryName}.{{ ext }}`, format: "umd", name: name },
+            { file: `dist/system/${entryName}.{{ ext }}`, format: "system" },
+          ],
+          plugins: [{{ plugins|join(', ') }}],
+        },
+      ]
+);

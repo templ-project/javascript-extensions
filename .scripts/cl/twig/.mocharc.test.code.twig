@@ -1,0 +1,20 @@
+{% if answers.language == LANGS.LANG_COFFEE %}{# https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696 #}
+{expect} = require 'chai'
+
+{hello} = require '../src'
+
+describe 'hello', -> it 'hello("World") to return "Hello World!"', -> expect(hello('World')).equal 'Hello World!'
+
+{% else %}
+import {expect} from 'chai';
+import {it, describe} from 'mocha';
+
+import {hello} from '../{{ answers.src }}';
+
+describe('hello', function () {
+  it('hello("World") to return "Hello World!"', function () {
+    expect(hello('World')).to.equal('Hello World!');
+  });
+});
+
+{% endif %}

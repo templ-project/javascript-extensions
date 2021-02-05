@@ -1,137 +1,114 @@
 const fs = require('fs');
-const path = require('path');
-const {LANG_COFFEE, LANG_FLOW, LANG_TS, TEST_JEST} = require('./const');
-const {to_rc, to_package} = require('./to');
+const fse = require('fs-extra');
+const {LANGS, LANG_COFFEE, LANG_FLOW, LANG_TS, TEST_JEST} = require('./const');
+const twig = require('./twig');
 
-const testCode = (answers) => {
-  fs.mkdirSync('test', {recursive: true});
+const testCode = async (answers) => {
+  fse.removeSync('test');
 
-  let template = `
-import {hello} from '../src';
-
-`;
   let ext = 'js';
 
   switch (answers.language) {
     case LANG_COFFEE:
       // https://code.tutsplus.com/tutorials/better-coffeescript-testing-with-mocha--net-24696
       ext = 'coffee';
-      template = `
-{hello} = require '../${answers.src}'
-
-describe "hello", ->
-  it 'hello("World") to return "Hello World!"', ->
-    expect(hello("World")).toEqual "Hello World!"
-`;
       break;
     case LANG_TS:
       ext = 'ts';
     case LANG_FLOW:
     default:
-      template += `
-import {hello} from '../${answers.src}';
-
-describe('hello', function () {
-  it('hello("World") to return "Hello World!"', function () {
-    expect(hello('World')).toEqual('Hello World!');
-  });
-});
-`;
   }
-  fs.writeFileSync(path.join('test', `index.test.${ext}`), template);
+
+  const options = {
+    answers,
+    ext,
+    LANGS,
+  }
+
+  fs.mkdirSync('test', {recursive: true});
+
+
+  if (answers.language === LANG_COFFEE) {
+    const rendered = await twig('./.scripts/cl/twig/jest.preprocessor.js.twig', options)
+      await fs.promises.writeFile(`./test/preprocessor.js`, rendered)
+  }
+
 
   if (answers.language === LANG_TS) {
-    fs.writeFileSync(
-      path.join('test', `tsconfig.json`),
-      JSON.stringify(
-        {
-          extends: '../tsconfig',
-          compilerOptions: {
-            noEmit: true,
-          },
-          references: [
-            {
-              path: '..',
-            },
-          ],
-        },
-        null,
-        2,
-      ),
-    );
-  }
+    const rendered = await twig('./.scripts/cl/twig/jest.tsconfig.json.twig', options)
+    await fs.promises.writeFile(`./test/tsconfig.json`, rendered
+  )}
+
+  const rendered = await twig('./.scripts/cl/twig/jest.test.code.twig', options)
+  return fs.promises.writeFile(`./test/index.test.${ext}`, rendered)
 };
 
-const jestrc = (answers, package) => {
+const jestrc = async (answers, package) => {
   if (answers.testing !== TEST_JEST) {
     return;
   }
-  testCode(answers);
+  await testCode(answers);
 
-  const template = {
-    clearMocks: true,
-    coverageDirectory: 'coverage',
-    moduleFileExtensions: ['js', 'json', 'jsx'],
-    // rootDir: '.',
-    roots: [ "test" ],
-    transform: {},
-    testEnvironment: 'node',
+  const options = {
+    answers,
+    jest: {
+      clearMocks: true,
+      coverageDirectory: 'coverage',
+      moduleFileExtensions: ['js', 'json', 'jsx'],
+      // rootDir: '.',
+      roots: [ "test" ],
+      transform: {},
+      testEnvironment: 'node',
+    },
+    LANGS,
   };
 
-  let ext = 'js';
   switch (answers.language) {
     case LANG_COFFEE:
-      ext = 'coffee';
-      template.moduleFileExtensions.push('coffee')
-      // template.roots = [ "test" ]
-      template.moduleDirectories = [ 'node_modules', answers.src ]
-      template.transform = {
-        ".*": "<rootDir>/test/preprocessor.js"
+      options.jest = {
+        ...options.jest,
+        moduleDirectories: [ 'node_modules', answers.src, 'test' ],
+        moduleFileExtensions: [...options.jest.moduleFileExtensions, 'coffee'],
+        // roots: [ "test" ]
+        testMatch: ["**/__tests__/**/*.coffee", "**/?(*.)+(spec|test).coffee"],
+        transform: {
+          ".*": "<rootDir>/test/preprocessor.js",
+        },
       }
 
-      fs.writeFileSync('./test/preprocessor.js', `
-// preprocessor.js
-
-const coffee = require('coffeescript');
-const babelJest = require('babel-jest');
-
-module.exports = {
-  process: (src, path, config) => {
-    if (!/node_modules/.test(path)) {
-      // CoffeeScript files need to be compiled by CoffeeScript
-      // before being processed by babel
-      if (coffee.helpers.isCoffee(path)) {
-        src = coffee.compile(src, { bare: true });
-      }
-      return babelJest.process(src, path, config);
-    }
-    return src;
-  }
-};
-
-`);
       break;
     case LANG_TS:
-      ext = 'ts';
-      template.transform["^.+\\.(t|j)s$"] = "ts-jest"
-      template.moduleFileExtensions.push('ts')
-      template.moduleFileExtensions.push('tsx')
-      package.devDependencies = Object.assign({}, package.devDependencies || {}, {
+      options.jest = {
+        ...options.jest,
+        moduleFileExtensions: [...options.jest.moduleFileExtensions, 'ts', 'tsx'],
+        transform: {
+          ...options.jest.transform,
+          ...{"^.+\\.(t|j)s$": "ts-jest"},
+        },
+      }
+
+      package.devDependencies = {
+        ...(package.devDependencies || {}),
         'ts-jest': '^26.4.3',
-      });
+      };
       break;
     case LANG_FLOW:
     default:
-      template.transform["\\.[jt]sx?$"] = "babel-jest"
-      // template.require.unshift('@babel/register');
-      package.devDependencies = Object.assign({}, package.devDependencies || {}, {
+      options.jest = {
+        ...options.jest,
+        // require: [...options.jest.require.filter(a => a !== '@babel/register')]
+        transform: {
+          ...options.jest.transform,
+          ...{"\\.[jt]sx?$": "babel-jest"},
+        },
+      }
+
+      package.devDependencies = {
+        ...(package.devDependencies || {}),
         '@babel/register': '^7.12.1',
         'babel-jest': '^26.6.1',
-      });
+      };
   }
-
-  template.testRegex = `.test.${ext}$`
-  answers.to === 'rc' ? to_rc(template, 'jest.config') : to_package(template, package, 'jest');
 
   package.devDependencies = Object.assign({}, package.devDependencies || {}, {
     jest: '^26.6.1',
@@ -148,6 +125,19 @@ module.exports = {
     test: 'cross-env NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose',
     'test:watch': 'npm run test -- --watch',
   });
+
+  // console.log(
+  //   // answers,
+  //   options,
+  //   // package,
+  // );
+  // process.exit(1)
+
+  const rendered = await twig('./.scripts/cl/twig/jest.config.js.twig', options)
+  try {
+    await fs.promises.unlink('./jest.config.js');
+  } catch (e) {}
+  return fs.promises.writeFile(`./jest.config.js`, rendered)
 };
 
 module.exports = jestrc;

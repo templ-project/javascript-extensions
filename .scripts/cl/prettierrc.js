@@ -1,39 +1,54 @@
-const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
+const fs = require('fs');
 
-const prettierrc = (answers, package) => {
-  const template = {
+const {LANGS, TEST_MOCHA, TEST_JEST} = require('./const');
+const twig = require('./twig');
+
+const prettierrc = async (answers, package) => {
+
+  const options = {
+    answers,
     parser: 'babel',
-    printWidth: 120,
-    semi: true,
-    singleQuote: true,
-    tabWidth: 2,
-    trailingComma: 'all',
-    bracketSpacing: false,
-  };
+    LANGS
+  }
+
   let ext = '{js,jsx}';
-  if (answers.language === LANG_COFFEE) {
+  if (answers.language === LANGS.LANG_COFFEE) {
     ext = 'coffee';
-    template.parser = 'coffeescript';
+
+    options.parser = 'coffeescript';
+
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'prettier-plugin-coffeescript': '^0.1.5',
+      prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
     });
   }
-  if (answers.language === LANG_FLOW) {
-    template.parser = 'flow';
+
+  if (answers.language === LANGS.LANG_FLOW) {
+    options.parser = 'flow';
+
     package.devDependencies = Object.assign({}, package.devDependencies, {
       'flow-parser': '^0.136.0',
     });
   }
-  if (answers.language === LANG_TS) {
+
+  if (answers.language === LANGS.LANG_TS) {
     ext = '{ts,tsx}';
-    template.parser = 'typescript';
+
+    options.parser = 'typescript';
   }
+
   package.scripts = Object.assign({}, package.scripts, {
     prettier: `prettier ./{${answers.src},test}/**/*.${ext}`,
     'prettier:check': 'npm run prettier -- --list-different',
     'prettier:write': 'npm run prettier -- --write',
   });
-  return template;
+
+  const rendered = await twig('./.scripts/cl/twig/.prettierrc.js.twig', options)
+
+  try {
+    await fs.promises.unlink('./.prettierrc.js');
+  } catch (e) {}
+  return fs.promises.writeFile('./.prettierrc.js', rendered)
 };
 
 module.exports = prettierrc;

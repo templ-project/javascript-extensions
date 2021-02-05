@@ -1,0 +1,18 @@
+{% if answers.language == LANGS.LANG_COFFEE %}
+hello = (name) -> "Hello #{name}!"
+
+module.exports = {
+  hello
+}
+{% endif %}
+{% if answers.language == LANGS.LANG_FLOW %}
+// @flow
+
+export const hello = (name: string): string => `Hello ${name}!`;
+{% endif %}
+{% if answers.language == LANGS.LANG_JS %}
+export const hello = (name) => `Hello ${name}!`;
+{% endif %}
+{% if answers.language == LANGS.LANG_TS %}
+export const hello = (name: string): string => `Hello ${name}!`;
+{% endif %}

@@ -1,109 +1,272 @@
-const {LANG_COFFEE, LANG_FLOW, LANG_JS, LANG_TS, LINT_ESLINT, LINT_AIRBNB, TEST_MOCHA, TEST_JEST} = require('./const');
+const fs = require('fs');
 
-const eslintrc = (answers, package) => {
-  const template = {
-    env: {
-      browser: true,
-      es6: true,
-      node: true,
-      mocha: true,
+const {LANG_COFFEE, LANGS, LINT_ESLINT, LINT_AIRBNB, LINTS, TEST_MOCHA, TEST_JEST, TESTS, LANG_TS} = require('./const');
+const twig = require('./twig');
+
+const eslintrc = async (answers, package) => {
+  let ext = 'js';
+
+  const options = {
+    answers,
+    eslint: {
+      parser: '',
+      plugins: [],
+      extends: [],
+      rules: {
+        'consistent-return': 2,
+        'no-else-return': 1,
+        'space-unary-ops': 2,
+      },
     },
-    extends: [],
-    plugins: [],
-    root: true,
-    rules: {
-      'consistent-return': 2,
-      'no-else-return': 1,
-      'space-unary-ops': 2,
-    },
+    LANGS,
+    LINTS,
+    TESTS,
   };
 
-  let ext = '{js,jsx}';
-  template.extends.push(answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : 'eslint-config-airbnb/base');
+  /**************************************************************************
+   * CoffeeScript
+   **************************************************************************/
 
-  if (answers.language === LANG_COFFEE) {
+  if (answers.language === LANGS.LANG_COFFEE) {
     // https://www.npmjs.com/package/eslint-plugin-coffee
     ext = 'coffee';
-    template.parser = 'eslint-plugin-coffee';
-    template.plugins.push('coffee');
-    template.extends.push(
+
+    // eslint settings for coffee
+    options.eslint.parser = 'eslint-plugin-coffee';
+    options.eslint.plugins = [...options.eslint.plugins, 'coffee'];
+    options.eslint.extends = [
+      ...options.eslint.extends,
       answers.lintRules === LINT_ESLINT ? 'plugin:coffee/eslint-recommended' : 'plugin:coffee/airbnb-base',
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    ];
+
+    // packages for coffee
+    package.devDependencies = {
+      ...package.devDependencies,
       'eslint-plugin-coffee': '^0.1.13',
-    });
-  } else {
-    template.rules = Object.assign({}, template.rules, {
+    };
+  }
+
+  /**************************************************************************
+   * non CoffeeScript
+   **************************************************************************/
+
+  if (answers.language !== LANG_COFFEE) {
+    // generic lint rules for non coffee
+    options.eslint.rules = Object.assign({}, options.eslint.rules, {
       indent: [1, 2],
-      semi: [1, "always"],
+      semi: [1, 'always'],
     });
   }
 
-  if (answers.language === LANG_FLOW) {
+  /**************************************************************************
+   * Flow
+   **************************************************************************/
+
+  if (answers.language === LANGS.LANG_FLOW) {
     // https://www.npmjs.com/package/eslint-plugin-flowtype
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
-      ecmaVersion: 2018,
-      sourceType: 'module',
+    options.eslint = {
+      ...options.eslint,
+      extends: [
+        ...options.eslint.extends,
+        'plugin:flowtype/recommended',
+        answers.lintRules === LINT_AIRBNB ? 'airbnb-base' : '',
+        // answers.lintRules === LINT_AIRBNB ? 'airbnb-flow' : '',
+        answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : '',
+      ].filter((a) => a),
+      parser: 'babel-eslint',
+      // parserOptions: {
+      //   ecmaVersion: 2018,
+      //   sourceType: 'module',
+      // },
+      plugins: [
+        ...options.eslint.plugins,
+        'flowtype',
+        // answers.lintRules === LINT_AIRBNB ? 'import' : '',
+      ].filter((a) => a),
+      rules: {
+        ...options.eslint.rules,
+        ...(answers.lintRules === LINT_AIRBNB
+          ? {
+              'import/prefer-default-export': 'off', // this is react ruled, not gonna happen
+              'import/no-extraneous-dependencies': 'off', // this is not a good idea when required packages are actually test packages
+            }
+          : {}),
+      },
     };
-    template.plugins.push('flowtype');
-    template.extends.push(answers.lintRules === LINT_ESLINT ? 'plugin:flowtype/recommended' : 'eslint-config-airbnb/base');
-    if (answers.lintRules === LINT_AIRBNB) {
-      template.extends.push('eslint-config-airbnb-flow');
-    }
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+
+    // packages for flow
+    package.devDependencies = {
+      ...package.devDependencies,
       'babel-eslint': '^10.1.0',
-      'eslint-config-airbnb': '^1.0.2',
-      'eslint-config-airbnb-flow': '^1.0.2',
       'eslint-plugin-flowtype': '^5.2.0',
-      'eslint-plugin-react': '^7.21.5',
-    });
-  }
-
-  if (answers.language === LANG_JS) {
-    template.parser = 'babel-eslint';
-    template.parserOptions = {
-      ecmaVersion: 2018,
-      sourceType: 'module',
+      // ...(answers.lintRules === LINT_AIRBNB
+      //   ? {
+      //       'eslint-config-airbnb-base': '^14.2.1',
+      //       'eslint-config-airbnb-flow': '^1.0.2',
+      //       'eslint-plugin-import': '^2.22.1',
+      //     }
+      //   : {}),
     };
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      'babel-eslint': '^10.1.0',
-      'eslint-config-airbnb': '^1.0.2',
-      'eslint-plugin-react': '^7.21.5',
-    });
   }
 
-  if (answers.language === LANG_TS) {
-    ext = '{ts,tsx}';
-    template.parser = '@typescript-eslint/parser';
-    template.plugins.push('@typescript-eslint');
-    template.extends.push(
-      answers.lintRules === LINT_ESLINT ? 'plugin:@typescript-eslint/recommended' : 'eslint-config-airbnb-typescript',
-    );
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      '@typescript-eslint/eslint-plugin': '^2.30.0',
-      '@typescript-eslint/parser': '^2.30.0',
-      'eslint-config-airbnb-typescript': '^12.0.0',
-      typescript: '^3.8.3',
-    });
+  /**************************************************************************
+   * JavaScript
+   **************************************************************************/
+
+  if (answers.language === LANGS.LANG_JS) {
+    options.eslint = {
+      ...options.eslint,
+      extends: [
+        ...options.eslint.extends,
+        answers.lintRules === LINT_AIRBNB ? 'airbnb-base' : '',
+        answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : '',
+      ].filter((a) => a),
+      parser: 'babel-eslint',
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: 'module',
+      },
+      plugins: [
+        ...options.eslint.plugins,
+        answers.lintRules === LINT_AIRBNB ? 'import' : '',
+      ].filter(a => a),
+      rules: {
+        ...options.eslint.rules,
+        'import/prefer-default-export': 'off', // this is react ruled, not gonna happen
+        'import/no-extraneous-dependencies': 'off', // this is not a good idea when required packages are actually test packages
+      },
+    };
+
+    // packages for js
+    package.devDependencies = {
+      ...package.devDependencies,
+      'babel-eslint': '^10.1.0',
+
+      ...(answers.lintRules === LINT_AIRBNB
+        ? {
+            'eslint-config-airbnb-base': '^14.2.1',
+            'eslint-plugin-import': '^2.22.1',
+          }
+        : {}),
+    };
   }
+
+  /**************************************************************************
+   * TypeScript
+   **************************************************************************/
+
+  if (answers.language === LANGS.LANG_TS) {
+    ext = 'ts';
+
+    options.eslint = {
+      ...options.eslint,
+      extends: [
+        ...options.eslint.extends,
+        // answers.lintRules === LINT_AIRBNB ? 'airbnb-base' : '',
+        'plugin:@typescript-eslint/recommended',
+        answers.lintRules === LINT_AIRBNB ? 'airbnb-typescript/base' : '',
+        // answers.lintRules === LINT_ESLINT ? 'eslint:recommended' : '',
+      ].filter((a) => a),
+      parser: '@typescript-eslint/parser',
+      plugins: [
+        ...options.eslint.plugins,
+        '@typescript-eslint',
+        answers.lintRules === LINT_AIRBNB ? 'import' : '',
+      ].filter(a => a),
+      rules: {
+        ...options.eslint.rules,
+        'import/prefer-default-export': 'off', // this is react ruled, not gonna happen
+        'import/no-extraneous-dependencies': 'off', // this is not a good idea when required packages are actually test packages
+      },
+
+      ...(answers.lintRules === LINT_AIRBNB
+        ? {
+            parserOptions: {
+              project: './tsconfig.eslint.json',
+            },
+          }
+        : {}),
+    };
+
+    // packages for ts
+    package.devDependencies = {
+      ...package.devDependencies,
+      typescript: '^4.1.3',
+      '@typescript-eslint/eslint-plugin': '^4.14.2',
+      '@typescript-eslint/parser': '^4.14.2',
+
+      ...(answers.lintRules === LINT_AIRBNB
+        ? {
+            // 'eslint-config-airbnb-base': '^14.2.1',
+            // 'eslint-plugin-import': '^2.22.1',
+            'eslint-config-airbnb-typescript': '^12.0.0',
+            'eslint-plugin-import': '^2.22.1',
+          }
+        : {}),
+    };
+
+    const rendered = await twig('./.scripts/cl/twig/.eslintrc.tsconfig.json.twig', options);
+
+    try {
+      await fs.promises.unlink('./tsconfig.eslint.json');
+    } catch (e) {}
+    await fs.promises.writeFile('./tsconfig.eslint.json', rendered);
+  }
+
+  /**************************************************************************
+   * non CoffeeScript / lint:airbnb
+   **************************************************************************/
+
+  if (answers.lintRules === LINT_AIRBNB && answers.language !== LANG_COFFEE && answers.language !== LANG_TS) {
+    options.eslint.extends = [...options.eslint.extends, 'prettier'];
+    options.eslint.plugins = [...options.eslint.plugins, 'prettier'];
+
+    package.devDependencies = {
+      ...package.devDependencies,
+      'eslint-config-prettier': '^7.2.0',
+      'eslint-plugin-prettier': '^3.3.1',
+    };
+  }
+
+  /**************************************************************************
+   * test:mocha
+   **************************************************************************/
 
   if (answers.testing === TEST_MOCHA) {
-    template.extends.push('plugin:mocha/recommended');
-    template.plugins.push('mocha');
+    options.eslint.extends = [...options.eslint.extends, 'plugin:mocha/recommended'];
   }
 
+  /**************************************************************************
+   * test:jest
+   **************************************************************************/
+
   if (answers.testing === TEST_JEST) {
-    template.extends.push('plugin:jest/recommended');
-    template.plugins.push('jest');
+    options.eslint.extends = [...options.eslint.extends, 'plugin:jest/recommended'];
   }
+
+  /**************************************************************************
+   * generic scripts
+   **************************************************************************/
 
   package.scripts = Object.assign({}, package.scripts, {
     lint: `eslint ./{${answers.src},test}/**/*.${ext}`,
     'lint:write': 'npm run lint -- --fix',
     'lint:watch': "nodemon --exec 'npm run lint'",
   });
-  return template;
+
+  // console.log(
+  //   // answers,
+  //   options,
+  //   // package,
+  // );
+  // process.exit(1)
+
+  const rendered = await twig('./.scripts/cl/twig/.eslintrc.js.twig', options);
+
+  try {
+    await fs.promises.unlink('./.eslintrc.js');
+  } catch (e) {}
+  return fs.promises.writeFile('./.eslintrc.js', rendered);
 };
 
 module.exports = eslintrc;
