@@ -5,6 +5,7 @@ const DIST_LIB = 'lib'
 const LANG_COFFEE = 'coffee';
 const LANG_FLOW = 'flow';
 const LANG_JS = 'javascript';
+const LANG_REASON = 'reason';
 const LANG_TS = 'typescript';
 
 const LINT_ESLINT = 'eslint';
@@ -30,12 +31,14 @@ module.exports = {
   LANG_COFFEE,
   LANG_FLOW,
   LANG_JS,
+  LANG_REASON,
   LANG_TS,
 
   LANGS: {
     LANG_COFFEE,
     LANG_FLOW,
     LANG_JS,
+    LANG_REASON,
     LANG_TS
   },
 

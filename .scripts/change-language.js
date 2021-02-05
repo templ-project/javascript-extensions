@@ -9,6 +9,7 @@ const {
   LANG_COFFEE,
   LANG_FLOW,
   LANG_JS,
+  LANG_REASON,
   LANG_TS,
   REPO_BIT,
   REPO_GITEA,
@@ -69,11 +70,23 @@ const repository = (answers) => {
  ****************************************************************************/
 
 const questions = [
+  // {
+  //   type: 'input',
+  //   name: 'project',
+  //   message: 'What is your project name?'
+  // },
   {
     type: 'select',
     name: 'language',
     message: 'Choose JavaScript Flavor',
-    choices: [LANG_JS, LANG_TS, LANG_FLOW, LANG_COFFEE],
+    choices: [
+      { hint: 'https://262.ecma-international.org/', message: 'ECMAScript 6+ (using Babel)', name: LANG_JS, },
+      { hint: 'https://www.typescriptlang.org/', message: 'TypeScript', name: LANG_TS, },
+      { hint: 'https://flow.org/en/', message: 'ECMAScript 6+ with Flow (using Babel)', name: LANG_FLOW},
+      { hint: 'https://coffeescript.org/', message: 'CoffeeScript', name: LANG_COFFEE},
+      { disabled: true, hint: 'https://reasonml.github.io/', message: 'Reason', name: LANG_REASON, },
+      { disabled: true, hint: 'https://262.ecma-international.org/5.1/', message: 'ECMAScript 5 (deprecated)', name: LANG_JS, },
+    ],
   },
   {
     type: 'select',
