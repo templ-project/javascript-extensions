@@ -1,5 +1,7 @@
 const fs = require('fs');
 const fse = require('fs-extra');
+const npm = require('npm');
+const npmInit = require('npm/lib/init');
 
 const {prompt} = require('enquirer');
 const path = require('path')
@@ -142,6 +144,12 @@ const questions = [
 ];
 
 const init = async (answers) => {
+  const cb = (...args) => console.log(args);
+  npm.config.load()
+  // await npm.commands.init([], cb)
+  await npmInit([], cb)
+  return
+
   answers = {
     language: LANG_TS,
     lintRules: LINT_ESLINT,
@@ -217,10 +225,11 @@ const init = async (answers) => {
 //   // to: 'rc'
 // })
 
-if (process.env.TEMPLATE_ANSWERS) {
-  init(JSON.parse(process.env.TEMPLATE_ANSWERS));
-} else {
-  prompt(questions)
-    .then((answers) => init(answers))
-    .catch(console.error);
-}
+init({})
+// if (process.env.TEMPLATE_ANSWERS) {
+//   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
+// } else {
+//   prompt(questions)
+//     .then((answers) => init(answers))
+//     .catch(console.error);
+// }
