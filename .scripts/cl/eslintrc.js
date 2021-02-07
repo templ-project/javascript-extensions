@@ -40,8 +40,8 @@ const eslintrc = async (answers, package) => {
     ];
 
     // packages for coffee
-    package.devDependencies = {
-      ...package.devDependencies,
+    package.newDevDependencies = {
+      ...package.newDevDependencies,
       'eslint-plugin-coffee': '?',
     };
   }
@@ -95,8 +95,8 @@ const eslintrc = async (answers, package) => {
     };
 
     // packages for flow
-    package.devDependencies = {
-      ...package.devDependencies,
+    package.newDevDependencies = {
+      ...package.newDevDependencies,
       'babel-eslint': '?',
       'eslint-plugin-flowtype': '?',
       // ...(answers.lintRules === LINT_AIRBNB
@@ -138,8 +138,8 @@ const eslintrc = async (answers, package) => {
     };
 
     // packages for js
-    package.devDependencies = {
-      ...package.devDependencies,
+    package.newDevDependencies = {
+      ...package.newDevDependencies,
       'babel-eslint': '?',
 
       ...(answers.lintRules === LINT_AIRBNB
@@ -189,8 +189,8 @@ const eslintrc = async (answers, package) => {
     };
 
     // packages for ts
-    package.devDependencies = {
-      ...package.devDependencies,
+    package.newDevDependencies = {
+      ...package.newDevDependencies,
       typescript: '?',
       '@typescript-eslint/eslint-plugin': '?',
       '@typescript-eslint/parser': '?',
@@ -221,8 +221,8 @@ const eslintrc = async (answers, package) => {
     options.eslint.extends = [...options.eslint.extends, 'prettier'];
     options.eslint.plugins = [...options.eslint.plugins, 'prettier'];
 
-    package.devDependencies = {
-      ...package.devDependencies,
+    package.newDevDependencies = {
+      ...package.newDevDependencies,
       'eslint-config-prettier': '?',
       'eslint-plugin-prettier': '?',
     };

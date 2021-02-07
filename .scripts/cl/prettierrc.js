@@ -17,7 +17,7 @@ const prettierrc = async (answers, package) => {
 
     options.parser = 'coffeescript';
 
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       'prettier-plugin-coffeescript': '^0.1.5',
       prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
     });
@@ -26,7 +26,7 @@ const prettierrc = async (answers, package) => {
   if (answers.language === LANGS.LANG_FLOW) {
     options.parser = 'flow';
 
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       'flow-parser': '^0.136.0',
     });
   }

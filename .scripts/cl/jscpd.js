@@ -7,7 +7,7 @@ module.exports = async (answers, package) => {
     return;
   }
 
-  package.devDependencies = Object.assign({}, package.devDependencies, {
+  package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
     jscpd: '^2.0.16',
     'jscpd-badge-reporter': '^1.1.3',
   });

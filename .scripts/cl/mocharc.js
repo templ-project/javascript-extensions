@@ -79,12 +79,12 @@ const mocharc = async (answers, package) => {
         ...options.mocha.require,
       ];
 
-      package.devDependencies = Object.assign({}, package.devDependencies, {
+      package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
         '@babel/register': '^7.12.1',
       });
   }
 
-  package.devDependencies = Object.assign({}, package.devDependencies, {
+  package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
     chai: '^4.2.0',
     'eslint-plugin-mocha': '^7.0.1',
     mocha: '^8.0.1',
@@ -92,7 +92,7 @@ const mocharc = async (answers, package) => {
   });
 
   if (answers.language === LANG_TS) {
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       '@types/chai': '^4.2.11',
       '@types/mocha': '^7.0.2',
     });

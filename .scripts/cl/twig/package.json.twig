@@ -14,7 +14,7 @@
     "url": "{{ package.repository }}/issues"
   },
   "homepage": "{{ package.repository }}#readme",
-  "devDependencies": {{ package.devDependencies|json_encode() }},
+  "devDependencies": {{ package.newDevDependencies|json_encode() }},
   "peerDependencies": {{ package.peerDependencies|json_encode() }},
   "husky": {{ package.husky|json_encode() }}
 }

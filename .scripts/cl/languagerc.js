@@ -3,11 +3,11 @@ const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
 
 const languagerc = (answers, package) => {
   if (answers.language === LANG_COFFEE) {
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       coffeescript: '^2.5.1 ',
     });
   } else if (answers.language === LANG_TS) {
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       '@types/node': '^13.13.4',
       '@typescript-eslint/eslint-plugin': '^2.30.0',
       '@typescript-eslint/parser': '^2.30.0',
@@ -26,7 +26,7 @@ const languagerc = (answers, package) => {
       presets: ['@babel/preset-env'],
     };
 
-    package.devDependencies = Object.assign({}, package.devDependencies, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
       '@babel/cli': '^7.8.4',
       '@babel/core': '^7.9.6',
       '@babel/node': '^7.8.7',
@@ -45,7 +45,7 @@ const languagerc = (answers, package) => {
     if (answers.language === LANG_FLOW) {
       template.plugins.push('@babel/plugin-transform-flow-strip-types');
 
-      package.devDependencies = Object.assign({}, package.devDependencies, {
+      package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
         '@babel/plugin-transform-flow-strip-types': '7.12.1',
       });
     }

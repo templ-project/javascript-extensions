@@ -87,8 +87,8 @@ const jestrc = async (answers, package) => {
         },
       }
 
-      package.devDependencies = {
-        ...(package.devDependencies || {}),
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
         'ts-jest': '^26.4.3',
       };
       break;
@@ -103,20 +103,20 @@ const jestrc = async (answers, package) => {
         },
       }
 
-      package.devDependencies = {
-        ...(package.devDependencies || {}),
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
         '@babel/register': '^7.12.1',
         'babel-jest': '^26.6.1',
       };
   }
 
-  package.devDependencies = Object.assign({}, package.devDependencies || {}, {
+  package.newDevDependencies = Object.assign({}, package.newDevDependencies || {}, {
     jest: '^26.6.1',
     'eslint-plugin-jest': '^24.1.0',
   });
 
   if (answers.language === LANG_TS) {
-    package.devDependencies = Object.assign({}, package.devDependencies || {}, {
+    package.newDevDependencies = Object.assign({}, package.newDevDependencies || {}, {
       '@types/jest': '^26.0.15',
     });
   }

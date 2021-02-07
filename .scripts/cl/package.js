@@ -22,13 +22,13 @@ const install = async (dependencies) => {
 }
 
 const syncPackage = async (package) => {
-  const dependencies = {...sortByKeys(package.dependencies || {})};
-  const devDependencies = {...sortByKeys(package.devDependencies || {})};
+  const dependencies = {...sortByKeys(package.newDependencies || {})};
+  const devDependencies = {...sortByKeys(package.newDevDependencies || {})};
   package.peerDependencies = {...sortByKeys(package.peerDependencies || {})};
   package.scripts = sortByKeys(package.scripts || {});
 
-  package.dependencies = {}
-  package.devDependencies = {}
+  package.dependencies = {...sortByKeys(package.dependencies || {})};
+  package.devDependencies = {...sortByKeys(package.devDependencies || {})};
 
   package.husky = {
     hooks: {
