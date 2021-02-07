@@ -27,14 +27,14 @@ const syncPagkage = async (package) => {
     }
   }
 
-  const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
-    package,
-  });
-  try {
-    await fs.remove("./package.json");
-    await fs.remove("./package-lock.json");
-  } catch (e) {}
-  await fs.promises.writeFile("./package.json", rendered);
+  // const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
+  //   package,
+  // });
+  // try {
+  //   await fs.remove("./package.json");
+  //   await fs.remove("./package-lock.json");
+  // } catch (e) {}
+  // await fs.promises.writeFile("./package.json", rendered);
 
   for (const dependency in dependencies) {
     console.log(withVersion`${dependency}${dependencies[dependency]}`)
