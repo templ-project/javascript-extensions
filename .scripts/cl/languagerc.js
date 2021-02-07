@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
 
-const languagerc = (answers, package) => {
+const languagerc = async (answers, package) => {
   if (answers.language === LANG_COFFEE) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),

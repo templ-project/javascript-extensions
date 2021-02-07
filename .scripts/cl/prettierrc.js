@@ -20,7 +20,7 @@ const prettierrc = async (answers, package) => {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       'prettier-plugin-coffeescript': '',
-      prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
+      // prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
     };
   }
 

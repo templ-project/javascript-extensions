@@ -6,7 +6,7 @@ const { prompt } = require("enquirer");
 const path = require("path");
 const rimraf = require("rimraf");
 
-const { LANG_TS, LINT_ESLINT, REPO_GITLAB, TEST_MOCHA } = require("./cl/const");
+const { LANG_TS, LINT_ESLINT, REPO_GITLAB, TEST_MOCHA, LANG_COFFEE } = require("./cl/const");
 const depcruise = require("./cl/depcruise");
 const { languageQuestions, projectPrompt } = require("./cl/enquirer");
 const eslintrc = require("./cl/eslintrc");
@@ -113,7 +113,11 @@ async function setupProject(answers) {
     ...answers,
   };
 
-  languagerc(answers, package);
+  if (answers.language === LANG_COFFEE) {
+    // dependency for prettier
+    await syncPackage.install(['prettier@github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg'])
+  }
+  await languagerc(answers, package);
 
   await rollup(answers, package);
 

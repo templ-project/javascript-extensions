@@ -82,4 +82,7 @@ const syncPackage = async (package) => {
 
 }
 
-module.exports = syncPackage
+module.exports = {
+  ...syncPackage,
+  ...{install}
+}
