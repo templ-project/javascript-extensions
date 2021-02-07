@@ -1,7 +1,7 @@
 #! /bin/bash
 set -xe
 
-DEBUG=1
+export DEBUG=1
 
 function do_clean() {
   rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js tsconfig.json tsconfig.eslint.json .jscpd
@@ -74,3 +74,6 @@ for lint in airbnb eslint; do
 
 done
 done
+
+
+export DEBUG=
