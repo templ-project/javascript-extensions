@@ -11,14 +11,22 @@ const withVersion = (strings, dependency, version) => {
 }
 
 const install = async (dependencies) => {
-  return npm.commands.install(dependencies, (er, data) => {
-    if (er) {
-      console.error(er)
-      process.exit(1)
-    }
+  try {
+    const result = npm.commands.install(dependencies, (er, data) => {
+      if (er) {
+        console.log(dependencies)
+        console.error(er)
+        process.exit(1)
+      }
 
-    console.log(data)
-  });
+      console.log(data)
+    });
+  } catch (e) {
+    console.log(dependencies)
+    console.error(e)
+    process.exit(1)
+  }
+  return result;
 }
 
 const syncPackage = async (package) => {
