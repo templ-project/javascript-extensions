@@ -155,7 +155,7 @@ async function setupProject(answers) {
     await fs.remove("./package.json");
     await fs.remove("./package-lock.json");
   } catch (e) {}
-  await fs.promises.writeFile("./.eslintrc.js", rendered);
+  await fs.promises.writeFile("./package.json", rendered);
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
