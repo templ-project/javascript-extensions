@@ -115,7 +115,7 @@ async function setupProject(answers) {
 
   if (answers.language === LANG_COFFEE) {
     // dependency for prettier
-    npm.load((er) => {
+    await npm.load(async (er) => {
       if (er) {
         console.error(er)
         process.exit(1)
