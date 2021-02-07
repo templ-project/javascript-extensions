@@ -36,7 +36,7 @@ const syncPagkage = async (package) => {
   } catch (e) {}
   await fs.promises.writeFile("./package.json", rendered);
 
-  for (const dependency of Object.keys(dependencies)) {
+  for (const dependency in dependencies) {
     console.log(withVersion`${dependency}${dependencies[dependency]}`)
   }
 
