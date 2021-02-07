@@ -61,7 +61,7 @@ const syncPackage = async (package) => {
       // console.log(message);
     });
 
-    fse.removeSync('node_modules')
+    // fse.removeSync('node_modules')
 
     // for (const dependency of Object.keys(dependencies)) {
     //   await install([withVersion`${dependency}${dependencies[dependency]}`])
