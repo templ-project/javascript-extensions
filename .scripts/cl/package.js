@@ -11,15 +11,6 @@ const withVersion = (strings, dependency, version) => {
 }
 
 const install = async (dependencies) => {
-  for (const dependency of dependencies) {
-    try {
-      const depPath = path.join('.', 'node_modules', dependency)
-      const stat = await fs.promises.stat(depPath)
-      if (stat.isDirectory()) {
-        fse.removeSync(depPath)
-      }
-    } catch (e) {}
-  }
   return npm.commands.install(dependencies, (er, data) => {
     if (er) {
       console.error(er)
@@ -65,6 +56,8 @@ const syncPackage = async (package) => {
       // log the progress of the installation
       // console.log(message);
     });
+
+    fse.removeSync('node_modules')
 
     for (const dependency of Object.keys(dependencies)) {
       await install([withVersion`${dependency}${dependencies[dependency]}`])
