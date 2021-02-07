@@ -3,7 +3,7 @@ const npm = require('npm');
 
 const twig = require('./cl/twig');
 
-export const syncPagkage = (package) => {
+const syncPagkage = (package) => {
   const dependencies = sortByKeys(package.dependencies || {});
   const devDependencies = sortByKeys(package.devDependencies || {});
   const peerDependencies = sortByKeys(package.peerDependencies || {});
