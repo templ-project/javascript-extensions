@@ -38,7 +38,7 @@ const syncPackage = async (package) => {
   // await fs.promises.writeFile("./package.json", rendered);
 
   for (const dependency in devDependencies) {
-    console.log(withVersion`${dependency}${dependencies[dependency]}`)
+    console.log(withVersion`${dependency}${devDependencies[dependency]}`)
   }
 
   // await npm.load(async (er) => {
