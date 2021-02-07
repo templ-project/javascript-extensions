@@ -148,7 +148,15 @@ async function setupProject(answers) {
   package.devDependencies = sortByKeys(package.devDependencies || {});
   package.scripts = sortByKeys(package.scripts || {});
 
-  fs.writeFileSync("package.json", JSON.stringify(package, null, 2));
+
+  const rendered = await twig('./.scripts/cl/twig/package.json.twig', {
+    package
+  });
+  try {
+    await fs.remove('./package.json')
+    await fs.remove('./package-lock.json')
+  } catch (e) {}
+  await fs.promises.writeFile('./.eslintrc.js', rendered);
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
