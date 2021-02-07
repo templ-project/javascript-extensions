@@ -1,5 +1,5 @@
 const fs = require("fs");
-const fse = require("fs-extend");
+const fse = require("fs-extra");
 const npm = require('npm');
 
 const twig = require('./twig');
