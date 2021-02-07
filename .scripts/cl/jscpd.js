@@ -9,8 +9,8 @@ module.exports = async (answers, package) => {
 
   package.newDevDependencies = {
     ...(package.newDevDependencies || {}),
-    jscpd: '^2.0.16',
-    'jscpd-badge-reporter': '^1.1.3',
+    jscpd: '?',
+    'jscpd-badge-reporter': '?',
   };
 
   package.scripts = {

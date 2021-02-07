@@ -81,23 +81,23 @@ const mocharc = async (answers, package) => {
 
       package.newDevDependencies = {
         ...(package.newDevDependencies || {}),
-        '@babel/register': '^7.12.1',
+        '@babel/register': '?',
       };
   }
 
   package.newDevDependencies = {
     ...(package.newDevDependencies || {}),
-    chai: '^4.2.0',
-    'eslint-plugin-mocha': '^7.0.1',
-    mocha: '^8.0.1',
-    'mocha-junit-reporter': '^2.0.0',
+    chai: '?',
+    'eslint-plugin-mocha': '?',
+    mocha: '?',
+    'mocha-junit-reporter': '?',
   };
 
   if (answers.language === LANG_TS) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      '@types/chai': '^4.2.11',
-      '@types/mocha': '^7.0.2',
+      '@types/chai': '?',
+      '@types/mocha': '?',
     };
   }
 

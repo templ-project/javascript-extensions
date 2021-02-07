@@ -19,7 +19,7 @@ const prettierrc = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'prettier-plugin-coffeescript': '^0.1.5',
+      'prettier-plugin-coffeescript': '?',
       prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
     };
   }
@@ -29,7 +29,7 @@ const prettierrc = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'flow-parser': '^0.136.0',
+      'flow-parser': '?',
     };
   }
 

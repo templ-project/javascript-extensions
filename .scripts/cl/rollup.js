@@ -22,7 +22,7 @@ module.exports = async (answers, package) => {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@zeekay/rollup-plugin-coffee
       'rollup-plugin-coffee-script': '2.0.0',
-      "@rollup/plugin-babel": "^5.0.2",
+      "@rollup/plugin-babel": "?",
     }
   }
 
@@ -37,14 +37,14 @@ module.exports = async (answers, package) => {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@rollup/plugin-sucrase
       'rollup-plugin-flow': '1.1.1',
-      "@rollup/plugin-babel": "^5.0.2",
+      "@rollup/plugin-babel": "?",
     }
   }
 
   if (answers.language === LANGS.LANG_JS) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      "@rollup/plugin-babel": "^5.0.2",
+      "@rollup/plugin-babel": "?",
     }
   }
 
@@ -55,8 +55,8 @@ module.exports = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      "rollup-plugin-dts": "^1.4.7",
-      "rollup-plugin-typescript2": "^0.27.1",
+      "rollup-plugin-dts": "?",
+      "rollup-plugin-typescript2": "?",
     }
   }
 
