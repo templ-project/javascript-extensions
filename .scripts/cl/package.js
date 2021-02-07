@@ -10,7 +10,7 @@ const withVersion = (strings, dependency, version) => {
   return `${dependency}${version}`
 }
 
-const syncPagkage = async (package) => {
+const syncPackage = async (package) => {
   const dependencies = sortByKeys(package.dependencies || {});
   const devDependencies = sortByKeys(package.devDependencies || {});
   const peerDependencies = sortByKeys(package.peerDependencies || {});
@@ -67,4 +67,4 @@ const syncPagkage = async (package) => {
 
 }
 
-module.exports = syncPagkage
+module.exports = syncPackage
