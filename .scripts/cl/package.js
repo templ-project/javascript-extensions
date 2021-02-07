@@ -2,6 +2,7 @@ const fs = require("fs");
 const npm = require('npm');
 
 const twig = require('./twig');
+const { removeKeys, sortByKeys } = require("./utils");
 
 const syncPagkage = async (package) => {
   const dependencies = sortByKeys(package.dependencies || {});
