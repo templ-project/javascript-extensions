@@ -6,6 +6,7 @@ const { removeKeys, sortByKeys } = require("./utils");
 
 const withVersion = (strings, dependency, version) => {
   // const dependency = strings[0];
+  console.log(dependency, version)
   version = (version && version !== '?') ? `@${version}` : ''
   return `${dependency}${version}`
 }
