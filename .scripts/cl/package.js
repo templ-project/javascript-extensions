@@ -11,6 +11,17 @@ const withVersion = (strings, dependency, version) => {
   return `${dependency}${version}`
 }
 
+const install = async (dependencies) => {
+  return npm.commands.install(dependencies, (er, data) => {
+    if (er) {
+      console.error(er)
+      process.exit(1)
+    }
+
+    console.log(data)
+  });
+}
+
 const syncPackage = async (package) => {
   const dependencies = {...sortByKeys(package.dependencies || {})};
   const devDependencies = {...sortByKeys(package.devDependencies || {})};
@@ -37,33 +48,27 @@ const syncPackage = async (package) => {
   // } catch (e) {}
   // await fs.promises.writeFile("./package.json", rendered);
 
-  for (const dependency in devDependencies) {
-    console.log(withVersion`${dependency}${devDependencies[dependency]}`)
-  }
+  await npm.load(async (er) => {
+    if (er) {
+      console.error(er)
+      process.exit(1)
+    }
 
-  // await npm.load(async (er) => {
-  //   if (er) {
-  //     console.error(er)
-  //     process.exit(1)
-  //   }
+    npm.on("log", function (message) {
+      // log the progress of the installation
+      console.log(message);
+    });
 
-  //   npm.on("log", function (message) {
-  //     // log the progress of the installation
-  //     console.log(message);
-  //   });
+    for (const dependency of Object.keys(dependencies)) {
+      console.log(dependency)
+      await install([withVersion`${dependency}${dependencies[dependency]}`])
+    }
 
-  //   for (const dependency of Object.keys(dependencies)) {
-  //     console.log(dependency)
-  //     await npm.commands.install([withVersion`${dependency}${dependencies[dependency]}`], (er, data) => {
-  //       if (er) {
-  //         console.error(er)
-  //         process.exit(1)
-  //       }
-
-  //       console.log(data)
-  //     });
-  //   }
-  // });
+    for (const dependency of Object.keys(devDependencies)) {
+      console.log(dependency)
+      await install([withVersion`${dependency}${devDependencies[dependency]}`, '-D'])
+    }
+  });
 
 
 }
