@@ -21,7 +21,7 @@ module.exports = async (answers, package) => {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@zeekay/rollup-plugin-coffee
-      'rollup-plugin-coffee-script': '2.0.0',
+      'rollup-plugin-coffee-script': '?',
       "@rollup/plugin-babel": "?",
     }
   }
@@ -36,7 +36,7 @@ module.exports = async (answers, package) => {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@rollup/plugin-sucrase
-      'rollup-plugin-flow': '1.1.1',
+      'rollup-plugin-flow': '?',
       "@rollup/plugin-babel": "?",
     }
   }
