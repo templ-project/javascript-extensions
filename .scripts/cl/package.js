@@ -31,14 +31,14 @@ const syncPagkage = async (package) => {
   await fs.promises.writeFile("./package.json", rendered);
 
 
-  for (const dependency of  Object.keys(dependencies)) {
+  for (const dependency of Object.keys(dependencies)) {
     console.log(`Installing package: ${dependency}`)
-    await npm.commands.install([dependency], (er) => {
-      if (er) {
-        console.error(er)
-        process.exit(1)
-      }
-    })
+    // await npm.commands.install([dependency], (er) => {
+    //   if (er) {
+    //     console.error(er)
+    //     process.exit(1)
+    //   }
+    // })
   }
 
 
