@@ -10,7 +10,7 @@ module.exports = async (answers, package) => {
   package.newDevDependencies = {
     ...(package.newDevDependencies || {}),
     jscpd: 'latest',
-    // 'jscpd-badge-reporter': '?',
+    // 'jscpd-badge-reporter': '',
   };
 
   package.scripts = {

@@ -6,7 +6,7 @@ const twig = require('./twig');
 const { removeKeys, sortByKeys } = require("./utils");
 
 const withVersion = (strings, dependency, version) => {
-  version = (version && version !== '?') ? `@${version}` : ''
+  version = version.length > 0 ? `@${version}` : ''
   return `${dependency}${version}`
 }
 

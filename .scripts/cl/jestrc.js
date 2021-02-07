@@ -89,7 +89,7 @@ const jestrc = async (answers, package) => {
 
       package.newDevDependencies = {
         ...(package.newDevDependencies || {}),
-        'ts-jest': '?',
+        'ts-jest': '',
       };
       break;
     case LANG_FLOW:
@@ -105,21 +105,21 @@ const jestrc = async (answers, package) => {
 
       package.newDevDependencies = {
         ...(package.newDevDependencies || {}),
-        '@babel/register': '?',
-        'babel-jest': '?',
+        '@babel/register': '',
+        'babel-jest': '',
       };
   }
 
   package.newDevDependencies = {
     ...(package.newDevDependencies || {}),
-    jest: '?',
-    'eslint-plugin-jest': '?',
+    jest: '',
+    'eslint-plugin-jest': '',
   };
 
   if (answers.language === LANG_TS) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      '@types/jest': '?',
+      '@types/jest': '',
     };
   }
 

@@ -42,7 +42,7 @@ const eslintrc = async (answers, package) => {
     // packages for coffee
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'eslint-plugin-coffee': '?',
+      'eslint-plugin-coffee': '',
     };
   }
 
@@ -98,13 +98,13 @@ const eslintrc = async (answers, package) => {
     // packages for flow
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'babel-eslint': '?',
-      'eslint-plugin-flowtype': '?',
+      'babel-eslint': '',
+      'eslint-plugin-flowtype': '',
       // ...(answers.lintRules === LINT_AIRBNB
       //   ? {
-      //       'eslint-config-airbnb-base': '?',
-      //       'eslint-config-airbnb-flow': '?',
-      //       'eslint-plugin-import': '?',
+      //       'eslint-config-airbnb-base': '',
+      //       'eslint-config-airbnb-flow': '',
+      //       'eslint-plugin-import': '',
       //     }
       //   : {}),
     };
@@ -141,12 +141,12 @@ const eslintrc = async (answers, package) => {
     // packages for js
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'babel-eslint': '?',
+      'babel-eslint': '',
 
       ...(answers.lintRules === LINT_AIRBNB
         ? {
-            'eslint-config-airbnb-base': '?',
-            'eslint-plugin-import': '?',
+            'eslint-config-airbnb-base': '',
+            'eslint-plugin-import': '',
           }
         : {}),
     };
@@ -192,16 +192,16 @@ const eslintrc = async (answers, package) => {
     // packages for ts
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      typescript: '?',
-      '@typescript-eslint/eslint-plugin': '?',
-      '@typescript-eslint/parser': '?',
+      typescript: '',
+      '@typescript-eslint/eslint-plugin': '',
+      '@typescript-eslint/parser': '',
 
       ...(answers.lintRules === LINT_AIRBNB
         ? {
-            // 'eslint-config-airbnb-base': '?',
-            // 'eslint-plugin-import': '?',
-            'eslint-config-airbnb-typescript': '?',
-            'eslint-plugin-import': '?',
+            // 'eslint-config-airbnb-base': '',
+            // 'eslint-plugin-import': '',
+            'eslint-config-airbnb-typescript': '',
+            'eslint-plugin-import': '',
           }
         : {}),
     };
@@ -224,8 +224,8 @@ const eslintrc = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'eslint-config-prettier': '?',
-      'eslint-plugin-prettier': '?',
+      'eslint-config-prettier': '',
+      'eslint-plugin-prettier': '',
     };
   }
 

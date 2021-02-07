@@ -10,14 +10,14 @@ const languagerc = (answers, package) => {
   } else if (answers.language === LANG_TS) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      '@types/node': '?',
-      '@typescript-eslint/eslint-plugin': '?',
-      '@typescript-eslint/parser': '?',
-      'rollup-plugin-dts': '?',
-      'rollup-plugin-typescript2': '?',
-      'ts-node': '?',
-      typedoc: '?',
-      typescript: '?',
+      '@types/node': '',
+      '@typescript-eslint/eslint-plugin': '',
+      '@typescript-eslint/parser': '',
+      'rollup-plugin-dts': '',
+      'rollup-plugin-typescript2': '',
+      'ts-node': '',
+      typedoc: '',
+      typescript: '',
     };
     package.scripts = {
       ...(package.scripts || {}),
@@ -31,14 +31,14 @@ const languagerc = (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      '@babel/cli': '?',
-      '@babel/core': '?',
-      '@babel/node': '?',
-      '@babel/preset-env': '?',
-      '@babel/register': '?',
-      '@rollup/plugin-babel': '?',
-      'babel-eslint': '?',
-      documentation: '?',
+      '@babel/cli': '',
+      '@babel/core': '',
+      '@babel/node': '',
+      '@babel/preset-env': '',
+      '@babel/register': '',
+      '@rollup/plugin-babel': '',
+      'babel-eslint': '',
+      documentation: '',
     };
 
     package.scripts = {
