@@ -42,28 +42,18 @@ const syncPagkage = async (package) => {
     });
 
     for (const dependency of Object.keys(dependencies)) {
-      // await npm.commands.install([dependency], (er) => {
-      //   if (er) {
-      //     console.error(er)
-      //     process.exit(1)
-      //   }
-      // })
-    }
-    // catch errors
-    npm.commands.install([dependency], (er, data) => {
-      if (er) {
-        console.error(er)
-        process.exit(1)
-      }
+      await npm.commands.install([dependency], (er, data) => {
+        if (er) {
+          console.error(er)
+          process.exit(1)
+        }
 
-      console.log(data)
-    });
+        console.log(data)
+      });
+    }
   });
 
 
 }
-
-
-
 
 module.exports = syncPagkage
