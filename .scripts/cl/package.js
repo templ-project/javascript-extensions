@@ -42,6 +42,7 @@ const syncPagkage = async (package) => {
     });
 
     for (const dependency of Object.keys(dependencies)) {
+      console.log(dependency)
       await npm.commands.install([dependency], (er, data) => {
         if (er) {
           console.error(er)
