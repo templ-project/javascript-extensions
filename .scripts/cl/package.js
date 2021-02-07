@@ -59,15 +59,15 @@ const syncPackage = async (package) => {
 
     fse.removeSync('node_modules')
 
-    for (const dependency of Object.keys(dependencies)) {
-      await install([withVersion`${dependency}${dependencies[dependency]}`])
-    }
+    // for (const dependency of Object.keys(dependencies)) {
+    //   await install([withVersion`${dependency}${dependencies[dependency]}`])
+    // }
 
-    npm.config.set('include', 'dev')
-    for (const dependency of Object.keys(devDependencies)) {
-      await install([withVersion`${dependency}${devDependencies[dependency]}`])
-    }
-    npm.config.set('include', '')
+    // npm.config.set('include', 'dev')
+    // for (const dependency of Object.keys(devDependencies)) {
+    //   await install([withVersion`${dependency}${devDependencies[dependency]}`])
+    // }
+    // npm.config.set('include', '')
   });
 
 
