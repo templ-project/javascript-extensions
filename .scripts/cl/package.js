@@ -82,7 +82,4 @@ const syncPackage = async (package) => {
 
 }
 
-module.exports = {
-  ...syncPackage,
-  ...{install}
-}
+module.exports = Object.assign(syncPackage, { install })
