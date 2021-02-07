@@ -32,7 +32,8 @@ const syncPagkage = async (package) => {
 
 
   for (const dependency of  Object.keys(dependencies)) {
-    npm.commands.install([dependency], (er) => {
+    console.log(`Installing package: ${dependency}`)
+    await npm.commands.install([dependency], (er) => {
       if (er) {
         console.error(er)
         process.exit(1)
