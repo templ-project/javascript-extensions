@@ -4,6 +4,12 @@ const npm = require('npm');
 const twig = require('./twig');
 const { removeKeys, sortByKeys } = require("./utils");
 
+const withVersion = (strings, dependency, version) => {
+  // const dependency = strings[0];
+  version = (version && version !== '?') ? `@{$version}` : ''
+  return `${dependency}${version}`
+}
+
 const syncPagkage = async (package) => {
   const dependencies = sortByKeys(package.dependencies || {});
   const devDependencies = sortByKeys(package.devDependencies || {});
@@ -43,7 +49,7 @@ const syncPagkage = async (package) => {
 
     for (const dependency of Object.keys(dependencies)) {
       console.log(dependency)
-      await npm.commands.install([dependency], (er, data) => {
+      await npm.commands.install([withVersion`${dependency}${dependencies[dependency]}`], (er, data) => {
         if (er) {
           console.error(er)
           process.exit(1)
