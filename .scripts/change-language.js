@@ -6,10 +6,9 @@ const { prompt } = require("enquirer");
 const path = require("path");
 const rimraf = require("rimraf");
 
-const { languageQuestions, projectPrompt } = require("./cl/enquirer");
-
-
+const { LANG_TS, LINT_ESLINT, REPO_GITLAB, TEST_MOCHA } = require("./cl/const");
 const depcruise = require("./cl/depcruise");
+const { languageQuestions, projectPrompt } = require("./cl/enquirer");
 const eslintrc = require("./cl/eslintrc");
 const jestrc = require("./cl/jestrc");
 const jscpd = require("./cl/jscpd");
@@ -18,6 +17,7 @@ const mocharc = require("./cl/mocharc");
 const prettierrc = require("./cl/prettierrc");
 const rollup = require("./cl/rollup");
 const srcCode = require("./cl/src-code");
+const twig = require('./cl/twig');
 const { removeKeys, sortByKeys } = require("./cl/utils");
 
 const args = process.argv.slice(2);
@@ -55,23 +55,23 @@ const repository = (answers) => {
 
 if (process.env.TEMPLATE_ANSWERS) {
   setupProject(JSON.parse(process.env.TEMPLATE_ANSWERS));
-// setupProject({
-//   // language: LANG_COFFEE,
-//   // language: LANG_FLOW,
-//   // language: LANG_JS,
-//   // language: LANG_TS,
-//   lintRules: LINT_ESLINT,
-//   // lintRules: LINT_AIRBNB,
-//   // testing: TEST_MOCHA,
-//   testing: TEST_JEST,
-//   // inspectors: ['jscpd', 'dependency-cruiser'],
-//   // repository: 'github',
-//   // src: 'src',
-//   // dist: 'dist',
-//   // to: 'rc'
-// })
+  // setupProject({
+  //   // language: LANG_COFFEE,
+  //   // language: LANG_FLOW,
+  //   // language: LANG_JS,
+  //   // language: LANG_TS,
+  //   lintRules: LINT_ESLINT,
+  //   // lintRules: LINT_AIRBNB,
+  //   // testing: TEST_MOCHA,
+  //   testing: TEST_JEST,
+  //   // inspectors: ['jscpd', 'dependency-cruiser'],
+  //   // repository: 'github',
+  //   // src: 'src',
+  //   // dist: 'dist',
+  //   // to: 'rc'
+  // })
 } else {
-  init()
+  init();
 }
 
 async function init() {
@@ -86,13 +86,13 @@ async function initProject() {
   await projectPrompt
     .run()
     .then((answers) => {
-        package = {
-            ...package,
-            ...JSON.parse(answers.result),
-          };
-          console.log(package);
-        })
-        .catch(console.error);
+      package = {
+        ...package,
+        ...JSON.parse(answers.result),
+      };
+      console.log(package);
+    })
+    .catch(console.error);
 }
 
 async function initLanguageSettings() {
@@ -148,15 +148,14 @@ async function setupProject(answers) {
   package.devDependencies = sortByKeys(package.devDependencies || {});
   package.scripts = sortByKeys(package.scripts || {});
 
-
-  const rendered = await twig('./.scripts/cl/twig/package.json.twig', {
-    package
+  const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
+    package,
   });
   try {
-    await fs.remove('./package.json')
-    await fs.remove('./package-lock.json')
+    await fs.remove("./package.json");
+    await fs.remove("./package-lock.json");
   } catch (e) {}
-  await fs.promises.writeFile('./.eslintrc.js', rendered);
+  await fs.promises.writeFile("./.eslintrc.js", rendered);
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
@@ -165,4 +164,4 @@ async function setupProject(answers) {
     rimraf.sync("javascript.svg");
     rimraf.sync("typescript.svg");
   }
-};
+}
