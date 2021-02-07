@@ -11,8 +11,6 @@ const withVersion = (strings, dependency, version) => {
 }
 
 const install = async (dependencies) => {
-  console.log(dependencies)
-  return
   return npm.commands.install(dependencies, (er, data) => {
     if (er) {
       console.error(er)
