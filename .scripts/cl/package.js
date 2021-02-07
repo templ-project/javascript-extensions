@@ -30,7 +30,7 @@ const syncPagkage = async (package) => {
   } catch (e) {}
   await fs.promises.writeFile("./package.json", rendered);
 
-  npm.load({
+  await npm.load({
     loaded: false
   }, (er) => {
     if (er) {
