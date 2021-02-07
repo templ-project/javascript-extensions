@@ -22,7 +22,7 @@ module.exports = async (answers, package) => {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@zeekay/rollup-plugin-coffee
       'rollup-plugin-coffee-script': '',
-      "@rollup/plugin-babel": "latest",
+      "@rollup/plugin-babel": '',
     }
   }
 
@@ -37,14 +37,14 @@ module.exports = async (answers, package) => {
       ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@rollup/plugin-sucrase
       'rollup-plugin-flow': '',
-      "@rollup/plugin-babel": "latest",
+      "@rollup/plugin-babel": '',
     }
   }
 
   if (answers.language === LANGS.LANG_JS) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      "@rollup/plugin-babel": "latest",
+      "@rollup/plugin-babel": '',
     }
   }
 
