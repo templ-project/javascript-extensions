@@ -10,6 +10,10 @@ const syncPagkage = async (package) => {
   const peerDependencies = sortByKeys(package.peerDependencies || {});
   package.scripts = sortByKeys(package.scripts || {});
 
+  package.dependencies = {}
+  package.devDependencies = {}
+  package.peerDependencies = {}
+
   package.husky = {
     hooks: {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
