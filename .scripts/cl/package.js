@@ -11,6 +11,8 @@ const withVersion = (strings, dependency, version) => {
 }
 
 const install = async (dependencies) => {
+  console.log(dependencies)
+  return
   return npm.commands.install(dependencies, (er, data) => {
     if (er) {
       console.error(er)
@@ -24,11 +26,13 @@ const install = async (dependencies) => {
 const syncPackage = async (package) => {
   const dependencies = {...sortByKeys(package.newDependencies || {})};
   const devDependencies = {...sortByKeys(package.newDevDependencies || {})};
-  package.peerDependencies = {...sortByKeys(package.peerDependencies || {})};
-  package.scripts = sortByKeys(package.scripts || {});
 
   package.dependencies = {...sortByKeys(package.dependencies || {})};
   package.devDependencies = {...sortByKeys(package.devDependencies || {})};
+  package.peerDependencies = {...sortByKeys(package.peerDependencies || {})};
+
+  package.scripts = sortByKeys(package.scripts || {});
+
 
   package.husky = {
     hooks: {
