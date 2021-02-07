@@ -14,10 +14,10 @@ const jestrc = require("./cl/jestrc");
 const jscpd = require("./cl/jscpd");
 const languagerc = require("./cl/languagerc");
 const mocharc = require("./cl/mocharc");
+const syncPackage = require("./cl/package");
 const prettierrc = require("./cl/prettierrc");
 const rollup = require("./cl/rollup");
 const srcCode = require("./cl/src-code");
-const twig = require('./cl/twig');
 const { removeKeys, sortByKeys } = require("./cl/utils");
 
 const args = process.argv.slice(2);
@@ -144,26 +144,7 @@ async function setupProject(answers) {
     fse.removeSync("./.gitlab");
   }
 
-  package.dependencies = sortByKeys(package.dependencies || {});
-  package.devDependencies = sortByKeys(package.devDependencies || {});
-  package.peerDependencies = sortByKeys(package.peerDependencies || {});
-  package.scripts = sortByKeys(package.scripts || {});
-
-  package.husky = {
-    hooks: {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run git-hook:pre-commit"
-    }
-  }
-
-  const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
-    package,
-  });
-  try {
-    await fs.remove("./package.json");
-    await fs.remove("./package-lock.json");
-  } catch (e) {}
-  await fs.promises.writeFile("./package.json", rendered);
+  syncPackage(package)
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
