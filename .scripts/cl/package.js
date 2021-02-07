@@ -5,10 +5,9 @@ const twig = require('./twig');
 const { removeKeys, sortByKeys } = require("./utils");
 
 const withVersion = (...args) => {
-  console.log(args[1], args[2])
-  // const dependency = strings[0];
-  // version = (version && version !== '?') ? `@{$version}` : ''
-  // return `${dependency}${version}`
+  const dependency = args[1];
+  const version = (args[2] && args[2] !== '?') ? `@{$version}` : ''
+  return `${dependency}${version}`
 }
 
 const syncPackage = async (package) => {
