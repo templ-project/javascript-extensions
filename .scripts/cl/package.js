@@ -2,6 +2,7 @@ const fs = require("fs");
 const fse = require("fs-extra");
 const npm = require('npm');
 
+const logger = require('./logger')
 const twig = require('./twig');
 const { removeKeys, sortByKeys } = require("./utils");
 
@@ -10,21 +11,25 @@ const withVersion = (strings, dependency, version) => {
   return `${dependency}${version}`
 }
 
+const errHandler = (er) => {
+  if (er) {
+    if (er.code === 'EPERM') {
+      logger.warn(`We were probably not able to properly install the following packages: '${dependencies.join("', ")}' `)
+    } else {
+      console.error(er)
+      process.exit(1)
+    }
+  }
+}
+
 const install = async (dependencies) => {
   try {
     return npm.commands.install(dependencies, (er, data) => {
-      if (er) {
-        console.log(dependencies)
-        console.error(er)
-        process.exit(1)
-      }
-
+      errHandler(er)
       console.log(data)
     });
-  } catch (e) {
-    console.log(dependencies)
-    console.error(e)
-    process.exit(1)
+  } catch (er) {
+    errHandler(er)
   }
 }
 
