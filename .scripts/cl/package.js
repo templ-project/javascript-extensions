@@ -11,9 +11,9 @@ const withVersion = (strings, dependency, version) => {
 }
 
 const syncPackage = async (package) => {
-  const dependencies = sortByKeys(package.dependencies || {});
-  const devDependencies = sortByKeys(package.devDependencies || {});
-  const peerDependencies = sortByKeys(package.peerDependencies || {});
+  const dependencies = {...sortByKeys(package.dependencies || {})};
+  const devDependencies = {...sortByKeys(package.devDependencies || {})};
+  const peerDependencies = {...sortByKeys(package.peerDependencies || {})};
   package.scripts = sortByKeys(package.scripts || {});
 
   package.dependencies = {}
