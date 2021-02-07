@@ -16,5 +16,5 @@
   "homepage": "{{ package.repository }}#readme",
   "devDependencies": {{ package.devDependencies|json_encode() }},
   "peerDependencies": {{ package.peerDependencies|json_encode() }},
-  "gitHooks": {{ package.gitHooks|json_encode() }}
+  "husky": {{ package.husky|json_encode() }}
 }
