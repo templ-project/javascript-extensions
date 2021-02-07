@@ -18,11 +18,12 @@ module.exports = async (answers, package) => {
       ...plugins
     ]
 
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@zeekay/rollup-plugin-coffee
       'rollup-plugin-coffee-script': '2.0.0',
       "@rollup/plugin-babel": "^5.0.2",
-    })
+    }
   }
 
   if (answers.language === LANGS.LANG_FLOW) {
@@ -32,17 +33,19 @@ module.exports = async (answers, package) => {
       ...plugins
     ]
 
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       // https://www.npmjs.com/package/@rollup/plugin-sucrase
       'rollup-plugin-flow': '1.1.1',
       "@rollup/plugin-babel": "^5.0.2",
-    })
+    }
   }
 
   if (answers.language === LANGS.LANG_JS) {
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       "@rollup/plugin-babel": "^5.0.2",
-    })
+    }
   }
 
   if (answers.language === LANGS.LANG_TS) {
@@ -50,10 +53,11 @@ module.exports = async (answers, package) => {
 
     plugins = ['ts()']
 
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       "rollup-plugin-dts": "^1.4.7",
       "rollup-plugin-typescript2": "^0.27.1",
-    })
+    }
   }
 
   const rendered = await twig('./.scripts/cl/twig/rollup.config.js.twig', {

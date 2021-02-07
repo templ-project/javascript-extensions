@@ -2,9 +2,10 @@ const {removeKeys} = require('./utils')
 
 module.exports = (answers, package) => {
   if (answers.inspectors.includes('dependency-cruiser')) {
-    package.scripts = Object.assign({}, package.scripts, {
+    package.scripts = {
+      ...(package.scripts || {}),
       depcruise: `depcruise --config .dependency-cruiser.js ${answers.src}`,
-    });
+    };
 
     console.clear();
     console.log('Proceding to configuring `dependency-cruiser`');

@@ -52,10 +52,11 @@ const eslintrc = async (answers, package) => {
 
   if (answers.language !== LANG_COFFEE) {
     // generic lint rules for non coffee
-    options.eslint.rules = Object.assign({}, options.eslint.rules, {
+    options.eslint.rules = {
+      ...(options.eslint.rules || {}),
       indent: [1, 2],
       semi: [1, 'always'],
-    });
+    };
   }
 
   /**************************************************************************
@@ -248,11 +249,12 @@ const eslintrc = async (answers, package) => {
    * generic scripts
    **************************************************************************/
 
-  package.scripts = Object.assign({}, package.scripts, {
+  package.scripts = {
+    ...(package.scripts || {}),
     lint: `eslint ./{${answers.src},test}/**/*.${ext}`,
     'lint:write': 'npm run lint -- --fix',
     'lint:watch': "nodemon --exec 'npm run lint'",
-  });
+  };
 
   // console.log(
   //   // answers,

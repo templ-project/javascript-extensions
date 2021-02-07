@@ -110,21 +110,24 @@ const jestrc = async (answers, package) => {
       };
   }
 
-  package.newDevDependencies = Object.assign({}, package.newDevDependencies || {}, {
+  package.newDevDependencies = {
+    ...(package.newDevDependencies || {}),
     jest: '^26.6.1',
     'eslint-plugin-jest': '^24.1.0',
-  });
+  };
 
   if (answers.language === LANG_TS) {
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies || {}, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       '@types/jest': '^26.0.15',
-    });
+    };
   }
 
-  package.scripts = Object.assign({}, package.scripts || {}, {
+  package.scripts = {
+    ...(package.scripts || {}),
     test: 'cross-env NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose',
     'test:watch': 'npm run test -- --watch',
-  });
+  };
 
   // console.log(
   //   // answers,

@@ -17,18 +17,20 @@ const prettierrc = async (answers, package) => {
 
     options.parser = 'coffeescript';
 
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       'prettier-plugin-coffeescript': '^0.1.5',
       prettier: 'github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg',
-    });
+    };
   }
 
   if (answers.language === LANGS.LANG_FLOW) {
     options.parser = 'flow';
 
-    package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
       'flow-parser': '^0.136.0',
-    });
+    };
   }
 
   if (answers.language === LANGS.LANG_TS) {
@@ -37,11 +39,12 @@ const prettierrc = async (answers, package) => {
     options.parser = 'typescript';
   }
 
-  package.scripts = Object.assign({}, package.scripts, {
+  package.scripts = {
+    ...(package.scripts || {}),
     prettier: `prettier ./{${answers.src},test}/**/*.${ext}`,
     'prettier:check': 'npm run prettier -- --list-different',
     'prettier:write': 'npm run prettier -- --write',
-  });
+  };
 
   const rendered = await twig('./.scripts/cl/twig/.prettierrc.js.twig', options)
 

@@ -7,17 +7,19 @@ module.exports = async (answers, package) => {
     return;
   }
 
-  package.newDevDependencies = Object.assign({}, package.newDevDependencies, {
+  package.newDevDependencies = {
+    ...(package.newDevDependencies || {}),
     jscpd: '^2.0.16',
     'jscpd-badge-reporter': '^1.1.3',
-  });
+  };
 
-  package.scripts = Object.assign({}, package.scripts, {
+  package.scripts = {
+    ...(package.scripts || {}),
     jscpd: `jscpd ./${answers.src} --blame --format ${
       answers.language !== LANG_FLOW ? (answers.language === LANG_COFFEE ? 'coffeescript' : answers.language) : LANG_JS
     }`,
     'jscpd:html': 'npm run jscpd -- --reporters html',
-  });
+  };
 
   const rendered = await twig('./.scripts/cl/twig/.jscpd.json.twig', options)
 
