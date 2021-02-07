@@ -12,7 +12,7 @@ const withVersion = (strings, dependency, version) => {
 
 const install = async (dependencies) => {
   try {
-    const result = npm.commands.install(dependencies, (er, data) => {
+    return npm.commands.install(dependencies, (er, data) => {
       if (er) {
         console.log(dependencies)
         console.error(er)
@@ -26,7 +26,6 @@ const install = async (dependencies) => {
     console.error(e)
     process.exit(1)
   }
-  return result;
 }
 
 const syncPackage = async (package) => {
