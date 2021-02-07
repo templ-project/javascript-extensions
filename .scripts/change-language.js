@@ -1,11 +1,10 @@
-const fs = require('fs');
-const fse = require('fs-extra');
-const npm = require('npm');
-const npmInit = require('npm/lib/init');
+const fs = require("fs");
+const fse = require("fs-extra");
+const npm = require("npm");
 
-const {prompt} = require('enquirer');
-const path = require('path')
-const rimraf = require('rimraf');
+const { prompt } = require("enquirer");
+const path = require("path");
+const rimraf = require("rimraf");
 
 const {
   LANG_COFFEE,
@@ -27,17 +26,17 @@ const {
   SRC_SRC,
   DIST_DIST,
   DIST_LIB,
-} = require('./cl/const');
-const depcruise = require('./cl/depcruise');
-const eslintrc = require('./cl/eslintrc');
-const jestrc = require('./cl/jestrc');
-const jscpd = require('./cl/jscpd');
-const languagerc = require('./cl/languagerc');
-const mocharc = require('./cl/mocharc');
-const prettierrc = require('./cl/prettierrc');
-const rollup = require('./cl/rollup');
-const srcCode = require('./cl/src-code');
-const {removeKeys, sortByKeys} = require('./cl/utils')
+} = require("./cl/const");
+const depcruise = require("./cl/depcruise");
+const eslintrc = require("./cl/eslintrc");
+const jestrc = require("./cl/jestrc");
+const jscpd = require("./cl/jscpd");
+const languagerc = require("./cl/languagerc");
+const mocharc = require("./cl/mocharc");
+const prettierrc = require("./cl/prettierrc");
+const rollup = require("./cl/rollup");
+const srcCode = require("./cl/src-code");
+const { removeKeys, sortByKeys } = require("./cl/utils");
 
 const args = process.argv.slice(2);
 const noUnlink =
@@ -45,10 +44,7 @@ const noUnlink =
 
 const language = process.argv[2];
 
-const package = JSON.parse(fs.readFileSync('./package.json').toString());
-
-
-
+const package = JSON.parse(fs.readFileSync("./package.json").toString());
 
 /****************************************************************************
  * Methods
@@ -56,14 +52,18 @@ const package = JSON.parse(fs.readFileSync('./package.json').toString());
 
 const repository = (answers) => {
   repositories = {
-    bitbucket: '',
-    gitea: '.github',
-    gitee: '',
-    github: '.github',
-    gitlab: '.gitlab',
+    bitbucket: "",
+    gitea: ".github",
+    gitee: "",
+    github: ".github",
+    gitlab: ".gitlab",
   };
   Object.getOwnPropertyNames(repositories)
-    .filter((item) => repositories[item] !== repositories[answers.repository] && repositories[item].length)
+    .filter(
+      (item) =>
+        repositories[item] !== repositories[answers.repository] &&
+        repositories[item].length
+    )
     .forEach((item) => rimraf.sync(repositories[item]));
 };
 
@@ -78,88 +78,149 @@ const questions = [
   //   message: 'What is your project name?'
   // },
   {
-    type: 'select',
-    name: 'language',
-    message: 'Choose JavaScript Flavor',
+    type: "select",
+    name: "language",
+    message: "Choose JavaScript Flavor",
     choices: [
-      { hint: 'https://262.ecma-international.org/', message: 'ECMAScript 6+ (using Babel)', name: LANG_JS, },
-      { hint: 'https://www.typescriptlang.org/', message: 'TypeScript', name: LANG_TS, },
-      { hint: 'https://flow.org/en/', message: 'ECMAScript 6+ with Flow (using Babel)', name: LANG_FLOW},
-      { hint: 'https://coffeescript.org/', message: 'CoffeeScript', name: LANG_COFFEE},
-      { disabled: true, hint: 'https://reasonml.github.io/', message: 'Reason', name: LANG_REASON, },
-      { disabled: true, hint: 'https://262.ecma-international.org/5.1/', message: 'ECMAScript 5 (deprecated)', name: LANG_JS, },
+      {
+        hint: "https://262.ecma-international.org/",
+        message: "ECMAScript 6+ (using Babel)",
+        name: LANG_JS,
+      },
+      {
+        hint: "https://www.typescriptlang.org/",
+        message: "TypeScript",
+        name: LANG_TS,
+      },
+      {
+        hint: "https://flow.org/en/",
+        message: "ECMAScript 6+ with Flow (using Babel)",
+        name: LANG_FLOW,
+      },
+      {
+        hint: "https://coffeescript.org/",
+        message: "CoffeeScript",
+        name: LANG_COFFEE,
+      },
+      {
+        disabled: true,
+        hint: "https://reasonml.github.io/",
+        message: "Reason",
+        name: LANG_REASON,
+      },
+      {
+        disabled: true,
+        hint: "https://262.ecma-international.org/5.1/",
+        message: "ECMAScript 5 (deprecated)",
+        name: LANG_JS,
+      },
     ],
   },
   {
-    type: 'select',
-    name: 'lintRules',
-    message: 'Choose Linting Rules',
+    type: "select",
+    name: "lintRules",
+    message: "Choose Linting Rules",
     choices: [
-      {name: LINT_AIRBNB, label: 'Airbnb'},
-      {name: LINT_ESLINT, label: 'ESLint Recommended'},
+      { name: LINT_AIRBNB, label: "Airbnb" },
+      { name: LINT_ESLINT, label: "ESLint Recommended" },
     ],
     initial: LINT_ESLINT,
   },
   {
-    type: 'select',
-    name: 'testing',
-    message: 'Choose Testing Framework',
-    choices: [{name: TEST_JASMINE, disabled: true}, TEST_JEST, TEST_MOCHA],
+    type: "select",
+    name: "testing",
+    message: "Choose Testing Framework",
+    choices: [{ name: TEST_JASMINE, disabled: true }, TEST_JEST, TEST_MOCHA],
     initial: TEST_MOCHA,
   },
   {
-    type: 'multiselect',
-    name: 'inspectors',
-    message: 'Choose Code Inspectors',
-    choices: ['jscpd', 'dependency-cruiser'],
-    initial: ['jscpd'],
+    type: "multiselect",
+    name: "inspectors",
+    message: "Choose Code Inspectors",
+    choices: ["jscpd", "dependency-cruiser"],
+    initial: ["jscpd"],
   },
   {
-    type: 'select',
-    name: 'repository',
-    message: 'Choose Git Repository Manager',
+    type: "select",
+    name: "repository",
+    message: "Choose Git Repository Manager",
     choices: [
-      {name: REPO_BIT, disabled: true},
-      {name: REPO_GITEA, disabled: true},
-      {name: REPO_GITEE, disabled: true},
+      { name: REPO_BIT, disabled: true },
+      { name: REPO_GITEA, disabled: true },
+      { name: REPO_GITEE, disabled: true },
       REPO_GITHUB,
       REPO_GITLAB,
     ],
     initial: [REPO_GITHUB],
   },
   {
-    type: 'select',
-    name: 'src',
-    message: 'Choose Src Folder',
+    type: "select",
+    name: "src",
+    message: "Choose Src Folder",
     choices: [SRC_APP, SRC_SRC],
     initial: SRC_SRC,
   },
   {
-    type: 'select',
-    name: 'dist',
-    message: 'Choose Dist Folder',
+    type: "select",
+    name: "dist",
+    message: "Choose Dist Folder",
     choices: [DIST_DIST, DIST_LIB],
     initial: DIST_DIST,
   },
 ];
 
 const init = async (answers) => {
-  const cb = (...args) => console.log(args);
-  npm.config.load()
-  // await npm.commands.init([], cb)
-  await npmInit([], cb)
-  return
+
+  await new Promise((resolve) => npm.load(async er => {
+    if (er) {
+      console.error(er)
+      process.exit(1)
+    }
+
+    await npm.commands.init([], (er) => {
+      if (er) {
+        console.error(er)
+        process.exit(1)
+      }
+    })
+
+    resolve()
+    // if (npm.config.get('version', 'cli')) {
+    //   console.log(npm.version)
+    //   return errorHandler.exit(0)
+    // }
+
+    // if (npm.config.get('versions', 'cli')) {
+    //   npm.argv = ['version']
+    //   npm.config.set('usage', false, 'cli')
+    // }
+
+    // npm.updateNotification = await updateNotifier(npm)
+
+    // const cmd = npm.argv.shift()
+    // const impl = npm.commands[cmd]
+    // if (impl)
+    //   impl(npm.argv, errorHandler)
+    // else {
+    //   npm.config.set('usage', false)
+    //   npm.argv.unshift(cmd)
+    //   npm.commands.help(npm.argv, errorHandler)
+    // }
+  }));
+  // await npm.commands.init([], cb);
+  // await npmInit([], cb)
+  return;
 
   answers = {
     language: LANG_TS,
     lintRules: LINT_ESLINT,
     testing: TEST_MOCHA,
     inspectors: [],
-    repository: 'github',
-    src: 'src',
-    dist: 'dist',
+    repository: "github",
+    src: "src",
+    dist: "dist",
     ...answers,
-  }
+  };
 
   languagerc(answers, package);
 
@@ -172,7 +233,7 @@ const init = async (answers) => {
   await prettierrc(answers, package);
 
   // src & test
-  await srcCode(answers)
+  await srcCode(answers);
 
   // testing - mocha
   await mocharc(answers, package);
@@ -187,23 +248,23 @@ const init = async (answers) => {
   depcruise(answers, package);
 
   if (answers.repository === REPO_GITLAB) {
-    fse.removeSync('./.github')
+    fse.removeSync("./.github");
   } else {
-    fse.removeSync('./.gitlab')
+    fse.removeSync("./.gitlab");
   }
 
   package.dependencies = sortByKeys(package.dependencies || {});
   package.devDependencies = sortByKeys(package.devDependencies || {});
   package.scripts = sortByKeys(package.scripts || {});
 
-  fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
+  fs.writeFileSync("package.json", JSON.stringify(package, null, 2));
 
   if (!process.env.DEBUG) {
-    rimraf.sync('.scripts/change-language.js')
-    rimraf.sync('.scripts/cl')
-    rimraf.sync('.scripts/travis-test.sh')
-    rimraf.sync('javascript.svg')
-    rimraf.sync('typescript.svg')
+    rimraf.sync(".scripts/change-language.js");
+    rimraf.sync(".scripts/cl");
+    rimraf.sync(".scripts/travis-test.sh");
+    rimraf.sync("javascript.svg");
+    rimraf.sync("typescript.svg");
   }
 };
 
@@ -225,7 +286,7 @@ const init = async (answers) => {
 //   // to: 'rc'
 // })
 
-init({})
+init({});
 // if (process.env.TEMPLATE_ANSWERS) {
 //   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
 // } else {
