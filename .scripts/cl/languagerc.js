@@ -5,7 +5,7 @@ const languagerc = (answers, package) => {
   if (answers.language === LANG_COFFEE) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      coffeescript: '?',
+      coffeescript: '^2.5.1',
     };
   } else if (answers.language === LANG_TS) {
     package.newDevDependencies = {
