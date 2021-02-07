@@ -25,12 +25,11 @@ const install = async (dependencies) => {
 const syncPackage = async (package) => {
   const dependencies = {...sortByKeys(package.dependencies || {})};
   const devDependencies = {...sortByKeys(package.devDependencies || {})};
-  const peerDependencies = {...sortByKeys(package.peerDependencies || {})};
+  package.peerDependencies = {...sortByKeys(package.peerDependencies || {})};
   package.scripts = sortByKeys(package.scripts || {});
 
   package.dependencies = {}
   package.devDependencies = {}
-  package.peerDependencies = {}
 
   package.husky = {
     hooks: {
@@ -39,14 +38,14 @@ const syncPackage = async (package) => {
     }
   }
 
-  // const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
-  //   package,
-  // });
-  // try {
-  //   await fs.remove("./package.json");
-  //   await fs.remove("./package-lock.json");
-  // } catch (e) {}
-  // await fs.promises.writeFile("./package.json", rendered);
+  const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
+    package,
+  });
+  try {
+    await fs.remove("./package.json");
+    await fs.remove("./package-lock.json");
+  } catch (e) {}
+  await fs.promises.writeFile("./package.json", rendered);
 
   await npm.load(async (er) => {
     if (er) {
@@ -56,7 +55,7 @@ const syncPackage = async (package) => {
 
     npm.on("log", function (message) {
       // log the progress of the installation
-      console.log(message);
+      // console.log(message);
     });
 
     for (const dependency of Object.keys(dependencies)) {
