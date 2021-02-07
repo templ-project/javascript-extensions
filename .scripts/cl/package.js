@@ -30,9 +30,7 @@ const syncPagkage = async (package) => {
   } catch (e) {}
   await fs.promises.writeFile("./package.json", rendered);
 
-  await npm.load({
-    loaded: false
-  }, (er) => {
+  await npm.load((er) => {
     if (er) {
       console.error(er)
       process.exit(1)
