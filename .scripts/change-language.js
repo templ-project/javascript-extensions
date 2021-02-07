@@ -6,27 +6,9 @@ const { prompt } = require("enquirer");
 const path = require("path");
 const rimraf = require("rimraf");
 
-const {
-  LANG_COFFEE,
-  LANG_FLOW,
-  LANG_JS,
-  LANG_REASON,
-  LANG_TS,
-  REPO_BIT,
-  REPO_GITEA,
-  REPO_GITEE,
-  REPO_GITHUB,
-  REPO_GITLAB,
-  LINT_AIRBNB,
-  LINT_ESLINT,
-  TEST_JASMINE,
-  TEST_JEST,
-  TEST_MOCHA,
-  SRC_APP,
-  SRC_SRC,
-  DIST_DIST,
-  DIST_LIB,
-} = require("./cl/const");
+const { languageQuestions, projectPrompt } = require("./cl/enquirer");
+
+
 const depcruise = require("./cl/depcruise");
 const eslintrc = require("./cl/eslintrc");
 const jestrc = require("./cl/jestrc");
@@ -44,7 +26,7 @@ const noUnlink =
 
 const language = process.argv[2];
 
-const package = JSON.parse(fs.readFileSync("./package.json").toString());
+let package = JSON.parse(fs.readFileSync("./package.json").toString());
 
 /****************************************************************************
  * Methods
@@ -71,152 +53,55 @@ const repository = (answers) => {
  * Settings
  ****************************************************************************/
 
-const questions = [
-  // {
-  //   type: 'input',
-  //   name: 'project',
-  //   message: 'What is your project name?'
-  // },
-  {
-    type: "select",
-    name: "language",
-    message: "Choose JavaScript Flavor",
-    choices: [
-      {
-        hint: "https://262.ecma-international.org/",
-        message: "ECMAScript 6+ (using Babel)",
-        name: LANG_JS,
-      },
-      {
-        hint: "https://www.typescriptlang.org/",
-        message: "TypeScript",
-        name: LANG_TS,
-      },
-      {
-        hint: "https://flow.org/en/",
-        message: "ECMAScript 6+ with Flow (using Babel)",
-        name: LANG_FLOW,
-      },
-      {
-        hint: "https://coffeescript.org/",
-        message: "CoffeeScript",
-        name: LANG_COFFEE,
-      },
-      {
-        disabled: true,
-        hint: "https://reasonml.github.io/",
-        message: "Reason",
-        name: LANG_REASON,
-      },
-      {
-        disabled: true,
-        hint: "https://262.ecma-international.org/5.1/",
-        message: "ECMAScript 5 (deprecated)",
-        name: LANG_JS,
-      },
-    ],
-  },
-  {
-    type: "select",
-    name: "lintRules",
-    message: "Choose Linting Rules",
-    choices: [
-      { name: LINT_AIRBNB, label: "Airbnb" },
-      { name: LINT_ESLINT, label: "ESLint Recommended" },
-    ],
-    initial: LINT_ESLINT,
-  },
-  {
-    type: "select",
-    name: "testing",
-    message: "Choose Testing Framework",
-    choices: [{ name: TEST_JASMINE, disabled: true }, TEST_JEST, TEST_MOCHA],
-    initial: TEST_MOCHA,
-  },
-  {
-    type: "multiselect",
-    name: "inspectors",
-    message: "Choose Code Inspectors",
-    choices: ["jscpd", "dependency-cruiser"],
-    initial: ["jscpd"],
-  },
-  {
-    type: "select",
-    name: "repository",
-    message: "Choose Git Repository Manager",
-    choices: [
-      { name: REPO_BIT, disabled: true },
-      { name: REPO_GITEA, disabled: true },
-      { name: REPO_GITEE, disabled: true },
-      REPO_GITHUB,
-      REPO_GITLAB,
-    ],
-    initial: [REPO_GITHUB],
-  },
-  {
-    type: "select",
-    name: "src",
-    message: "Choose Src Folder",
-    choices: [SRC_APP, SRC_SRC],
-    initial: SRC_SRC,
-  },
-  {
-    type: "select",
-    name: "dist",
-    message: "Choose Dist Folder",
-    choices: [DIST_DIST, DIST_LIB],
-    initial: DIST_DIST,
-  },
-];
+if (process.env.TEMPLATE_ANSWERS) {
+  setupProject(JSON.parse(process.env.TEMPLATE_ANSWERS));
+// setupProject({
+//   // language: LANG_COFFEE,
+//   // language: LANG_FLOW,
+//   // language: LANG_JS,
+//   // language: LANG_TS,
+//   lintRules: LINT_ESLINT,
+//   // lintRules: LINT_AIRBNB,
+//   // testing: TEST_MOCHA,
+//   testing: TEST_JEST,
+//   // inspectors: ['jscpd', 'dependency-cruiser'],
+//   // repository: 'github',
+//   // src: 'src',
+//   // dist: 'dist',
+//   // to: 'rc'
+// })
+} else {
+  init()
+}
 
-const init = async (answers) => {
+async function init() {
+  console.clear();
+  // await initProject();
 
-  [
-    'package.json',
-    'package-lock.json',
-    'README.md',
-  ].forEach(a => fse.removeSync(a))
+  console.clear();
+  await initLanguageSettings();
+}
 
-  await new Promise((resolve) => npm.load(async er => {
-    if (er) {
-      console.error(er)
-      process.exit(1)
-    }
+async function initProject() {
+  await projectPrompt
+    .run()
+    .then((answers) => {
+        package = {
+            ...package,
+            ...JSON.parse(answers.result),
+          };
+          console.log(package);
+        })
+        .catch(console.error);
+}
 
-    await npm.commands.init([], (er) => {
-      if (er) {
-        console.error(er)
-        process.exit(1)
-      }
-    })
+async function initLanguageSettings() {
+  await prompt(languageQuestions)
+    .then((answers) => setupProject(answers))
+    .catch(console.error);
+}
 
-    resolve()
-    // if (npm.config.get('version', 'cli')) {
-    //   console.log(npm.version)
-    //   return errorHandler.exit(0)
-    // }
-
-    // if (npm.config.get('versions', 'cli')) {
-    //   npm.argv = ['version']
-    //   npm.config.set('usage', false, 'cli')
-    // }
-
-    // npm.updateNotification = await updateNotifier(npm)
-
-    // const cmd = npm.argv.shift()
-    // const impl = npm.commands[cmd]
-    // if (impl)
-    //   impl(npm.argv, errorHandler)
-    // else {
-    //   npm.config.set('usage', false)
-    //   npm.argv.unshift(cmd)
-    //   npm.commands.help(npm.argv, errorHandler)
-    // }
-  }));
-  // await npm.commands.init([], cb);
-  // await npmInit([], cb)
-  return;
-
+async function setupProject(answers) {
   answers = {
     language: LANG_TS,
     lintRules: LINT_ESLINT,
@@ -273,30 +158,3 @@ const init = async (answers) => {
     rimraf.sync("typescript.svg");
   }
 };
-
-// console.clear();
-
-// init({
-//   // language: LANG_COFFEE,
-//   // language: LANG_FLOW,
-//   // language: LANG_JS,
-//   // language: LANG_TS,
-//   lintRules: LINT_ESLINT,
-//   // lintRules: LINT_AIRBNB,
-//   // testing: TEST_MOCHA,
-//   testing: TEST_JEST,
-//   // inspectors: ['jscpd', 'dependency-cruiser'],
-//   // repository: 'github',
-//   // src: 'src',
-//   // dist: 'dist',
-//   // to: 'rc'
-// })
-
-init({});
-// if (process.env.TEMPLATE_ANSWERS) {
-//   init(JSON.parse(process.env.TEMPLATE_ANSWERS));
-// } else {
-//   prompt(questions)
-//     .then((answers) => init(answers))
-//     .catch(console.error);
-// }
