@@ -146,7 +146,15 @@ async function setupProject(answers) {
 
   package.dependencies = sortByKeys(package.dependencies || {});
   package.devDependencies = sortByKeys(package.devDependencies || {});
+  package.peerDependencies = sortByKeys(package.peerDependencies || {});
   package.scripts = sortByKeys(package.scripts || {});
+
+  package.husky = {
+    hooks: {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run git-hook:pre-commit"
+    }
+  }
 
   const rendered = await twig("./.scripts/cl/twig/package.json.twig", {
     package,

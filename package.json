@@ -56,10 +56,5 @@
     "semver": "^7.3.4",
     "twig": "^1.15.4"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "echo precommit"
-    }
-  }
+  "husky": {}
 }
