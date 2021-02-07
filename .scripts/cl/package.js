@@ -1,7 +1,7 @@
 const fs = require("fs");
 const npm = require('npm');
 
-const twig = require('./cl/twig');
+const twig = require('./twig');
 
 const syncPagkage = async (package) => {
   const dependencies = sortByKeys(package.dependencies || {});
