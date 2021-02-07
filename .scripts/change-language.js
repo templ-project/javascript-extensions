@@ -171,6 +171,12 @@ const questions = [
 
 const init = async (answers) => {
 
+  [
+    'package.json',
+    'package-lock.json',
+    'README.md',
+  ].forEach(a => fse.removeSync(a))
+
   await new Promise((resolve) => npm.load(async er => {
     if (er) {
       console.error(er)
