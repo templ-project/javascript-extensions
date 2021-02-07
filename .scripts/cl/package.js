@@ -60,14 +60,14 @@ const syncPackage = async (package) => {
     });
 
     for (const dependency of Object.keys(dependencies)) {
-      console.log(dependency)
       await install([withVersion`${dependency}${dependencies[dependency]}`])
     }
 
+    npm.config.set('dev', true)
     for (const dependency of Object.keys(devDependencies)) {
-      console.log(dependency)
-      await install([withVersion`${dependency}${devDependencies[dependency]}`, '-D'])
+      await install([withVersion`${dependency}${devDependencies[dependency]}`])
     }
+    npm.config.set('dev', false)
   });
 
 
