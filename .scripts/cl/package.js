@@ -4,9 +4,9 @@ const npm = require('npm');
 const twig = require('./twig');
 const { removeKeys, sortByKeys } = require("./utils");
 
-const withVersion = (...args) => {
-  const dependency = args[1];
-  const version = (args[2] && args[2] !== '?') ? `@{$version}` : ''
+const withVersion = (strings, dependency, version) => {
+  // const dependency = strings[0];
+  version = (version && version !== '?') ? `@${version}` : ''
   return `${dependency}${version}`
 }
 
@@ -37,7 +37,7 @@ const syncPackage = async (package) => {
   // await fs.promises.writeFile("./package.json", rendered);
 
   for (const dependency in devDependencies) {
-    console.log(withVersion`${dependency}${devDependencies[dependency]}`)
+    console.log(withVersion`${dependency}${dependencies[dependency]}`)
   }
 
   // await npm.load(async (er) => {
