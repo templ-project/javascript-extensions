@@ -30,16 +30,37 @@ const syncPagkage = async (package) => {
   } catch (e) {}
   await fs.promises.writeFile("./package.json", rendered);
 
+  npm.load({
+    loaded: false
+  }, (er) => {
+    if (er) {
+      console.error(er)
+      process.exit(1)
+    }
 
-  for (const dependency of Object.keys(dependencies)) {
-    console.log(`Installing package: ${dependency}`)
-    // await npm.commands.install([dependency], (er) => {
-    //   if (er) {
-    //     console.error(er)
-    //     process.exit(1)
-    //   }
-    // })
-  }
+    npm.on("log", function (message) {
+      // log the progress of the installation
+      console.log(message);
+    });
+
+    for (const dependency of Object.keys(dependencies)) {
+      // await npm.commands.install([dependency], (er) => {
+      //   if (er) {
+      //     console.error(er)
+      //     process.exit(1)
+      //   }
+      // })
+    }
+    // catch errors
+    npm.commands.install([dependency], (er, data) => {
+      if (er) {
+        console.error(er)
+        process.exit(1)
+      }
+
+      console.log(data)
+    });
+  });
 
 
 }
