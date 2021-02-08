@@ -15,7 +15,7 @@ let epermDependencies = []
 
 const errHandler = (er, dependencies) => {
   if (er) {
-    if (er.code === 'EPERM') {
+    if (['EPERM', 'ENOTEMPTY'].includes(er.code)) {
       epermDependencies = [
         ...epermDependencies,
         ...dependencies,
