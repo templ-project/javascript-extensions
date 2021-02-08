@@ -114,16 +114,16 @@ async function setupProject(answers) {
     ...answers,
   };
 
-  if (answers.language === LANG_COFFEE) {
-    // dependency for prettier
-    await npm.load(async (er) => {
-      if (er) {
-        console.error(er)
-        process.exit(1)
-      }
-      await syncPackage.install(['prettier@github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg'])
-    })
-  }
+  // if (answers.language === LANG_COFFEE) {
+  //   // dependency for prettier
+  //   await npm.load(async (er) => {
+  //     if (er) {
+  //       console.error(er)
+  //       process.exit(1)
+  //     }
+  //     await syncPackage.install(['prettier@github:helixbass/prettier#prettier-v2.1.0-dev.100-gitpkg'])
+  //   })
+  // }
   await languagerc(answers, package);
 
   await rollup(answers, package);
