@@ -14,7 +14,7 @@ const withVersion = (strings, dependency, version) => {
 const errHandler = (er) => {
   if (er) {
     if (er.code === 'EPERM') {
-      logger.warn(`We were probably not able to properly install the following packages: '${dependencies.join("', ")}' `)
+      logger.warn(`We were probably not able to properly install the following packages: '${dependency.join("', ")}' `)
     } else {
       console.error(er)
       process.exit(1)
