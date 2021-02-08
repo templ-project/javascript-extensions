@@ -23,6 +23,9 @@ const errHandler = (er) => {
 }
 
 const install = async (dependencies) => {
+  if (!dependencies || !dependencies.length > 0) {
+    return
+  }
   try {
     return npm.commands.install(dependencies, (er, data) => {
       errHandler(er)
