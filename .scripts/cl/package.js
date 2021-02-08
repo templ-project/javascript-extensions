@@ -93,4 +93,4 @@ const syncPackage = async (package) => {
 
 }
 
-module.exports = Object.assign(syncPackage, { install, epermPackages: epermDependencies })
+module.exports = Object.assign(syncPackage, { install, epermDependencies })
