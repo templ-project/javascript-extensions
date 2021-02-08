@@ -11,10 +11,15 @@ const withVersion = (strings, dependency, version) => {
   return `${dependency}${version}`
 }
 
-const errHandler = (er) => {
+let epermDependencies = []
+
+const errHandler = (er, dependencies) => {
   if (er) {
     if (er.code === 'EPERM') {
-      logger.warn(`We were probably not able to properly install the following packages: '${dependency}' `)
+      epermDependencies = [
+        ...epermDependencies,
+        ...dependencies,
+      ]
     } else {
       console.error(er)
       process.exit(1)
@@ -28,7 +33,7 @@ const install = async (dependencies) => {
   }
   try {
     return npm.commands.install(dependencies, (er, data) => {
-      errHandler(er)
+      errHandler(er, dependencies)
       // console.log(data)
     });
   } catch (er) {
@@ -88,4 +93,4 @@ const syncPackage = async (package) => {
 
 }
 
-module.exports = Object.assign(syncPackage, { install })
+module.exports = Object.assign(syncPackage, { install, epermPackages: epermDependencies })

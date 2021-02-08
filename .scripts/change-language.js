@@ -13,6 +13,7 @@ const eslintrc = require("./cl/eslintrc");
 const jestrc = require("./cl/jestrc");
 const jscpd = require("./cl/jscpd");
 const languagerc = require("./cl/languagerc");
+const logger = require('./cl/logger')
 const mocharc = require("./cl/mocharc");
 const syncPackage = require("./cl/package");
 const prettierrc = require("./cl/prettierrc");
@@ -155,6 +156,11 @@ async function setupProject(answers) {
   }
 
   syncPackage(package)
+
+  if (syncPackage.epermDependencies.length > 0) {
+    logger.warn(`We're not sure we installed the following packages: '${syncPackage.epermDependencies.join("', ")}'.`)
+    logger.warn(`Please run 'npm i ${syncPackage.epermDependencies.join(" ")}' to make sure everything is OK. `)
+  }
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
