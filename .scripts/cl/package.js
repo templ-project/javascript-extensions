@@ -14,7 +14,7 @@ const withVersion = (strings, dependency, version) => {
 const errHandler = (er) => {
   if (er) {
     if (er.code === 'EPERM') {
-      logger.warn(`We were probably not able to properly install the following packages: '${dependency.join("', ")}' `)
+      logger.warn(`We were probably not able to properly install the following packages: '${dependency}' `)
     } else {
       console.error(er)
       process.exit(1)
@@ -29,7 +29,7 @@ const install = async (dependencies) => {
   try {
     return npm.commands.install(dependencies, (er, data) => {
       errHandler(er)
-      console.log(data)
+      // console.log(data)
     });
   } catch (er) {
     errHandler(er)
