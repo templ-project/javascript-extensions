@@ -45,9 +45,8 @@ const { removeKeys, sortByKeys } = require("./utils");
 // https://api-docs.npms.io/#api-Package
 const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${encodeURI(module)}`)
   .then(res => res.json())
-  // .then(res => res.collected || {})
-  // .then(res => res.metadata || {})
-  // .then(res => res.version);
+  .then(res => res.collected || {})
+  .then(res => res.error ? '' : res.collected.metadata.version);
 
   const getVersions = async (modules) => fetch(`https://api.npms.io/v2/package/mget`, {
     method: 'post',
@@ -62,8 +61,6 @@ const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${enc
     acc[moduleName] = modules[moduleName].error ? '' : modules[moduleName].collected.metadata.version
     return acc
   }, {}))
-  // .then(res => res.metadata || {})
-  // .then(res => res.version);
 
 const syncPackage = async (package) => {
   let dependencies = {...sortByKeys(package.newDependencies || {})};
@@ -81,7 +78,6 @@ const syncPackage = async (package) => {
   moduleNames = Object.keys(devDependencies).filter(key => !devDependencies[key])
   withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
 
-  console.log(package.devDependencies)
   package.devDependencies = sortByKeys({
     ...(package.devDependencies || {}),
     ...devDependencies,
