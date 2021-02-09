@@ -52,8 +52,9 @@ const syncPackage = async (package) => {
     if (devDependencies[module]) {
       continue;
     }
+    console.log(module)
     const version = await getVersion(module)
-    console.log(module, version)
+    console.log(version)
   }
 
   package.dependencies = {...sortByKeys(package.dependencies || {})};
