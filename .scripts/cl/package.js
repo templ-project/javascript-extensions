@@ -43,28 +43,50 @@ const { removeKeys, sortByKeys } = require("./utils");
 // }
 
 // https://api-docs.npms.io/#api-Package
-const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${module}`)
+const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${encodeURI(module)}`)
   .then(res => res.json())
-  .then(res => res.collected || {})
-  .then(res => res.metadata || {})
-  .then(res => res.version);
+  // .then(res => res.collected || {})
+  // .then(res => res.metadata || {})
+  // .then(res => res.version);
+
+  const getVersions = async (modules) => fetch(`https://api.npms.io/v2/package/mget`, {
+    method: 'post',
+    body:    JSON.stringify(modules),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+  .then(res => res.json())
+  .then(modules => Object.keys(modules).reduce((acc, moduleName) => {
+    acc[moduleName] = modules[moduleName].error ? '' : modules[moduleName].collected.metadata.version
+    return acc
+  }, {}))
+  // .then(res => res.metadata || {})
+  // .then(res => res.version);
 
 const syncPackage = async (package) => {
-  const dependencies = {...sortByKeys(package.newDependencies || {})};
-  const devDependencies = {...sortByKeys(package.newDevDependencies || {})};
+  let dependencies = {...sortByKeys(package.newDependencies || {})};
+  let devDependencies = {...sortByKeys(package.newDevDependencies || {})};
 
-  for (const module of Object.keys(devDependencies)) {
-    if (devDependencies[module]) {
-      continue;
-    }
-    console.log(module)
-    const version = await getVersion(module)
-    console.log(version)
-    process.exit(0)
-  }
+  let moduleNames = Object.keys(dependencies).filter(key => !dependencies[key])
+  let withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
 
-  package.dependencies = {...sortByKeys(package.dependencies || {})};
-  package.devDependencies = {...sortByKeys(package.devDependencies || {})};
+  package.dependencies = sortByKeys({
+    ...(package.dependencies || {}),
+    ...dependencies,
+    ...withVersions,
+  });
+
+  moduleNames = Object.keys(devDependencies).filter(key => !devDependencies[key])
+  withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
+
+  package.devDependencies = sortByKeys({
+    ...(package.devDependencies || {}),
+    ...devDependencies,
+    ...withVersions,
+  });
+
   package.peerDependencies = {...sortByKeys(package.peerDependencies || {})};
 
   package.scripts = sortByKeys(package.scripts || {});
