@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {LANG_COFFEE, LANG_FLOW, LANG_TS} = require('./const');
+const twig = require('./twig');
 
 const languagerc = async (answers, package) => {
   if (answers.language === LANG_COFFEE) {
@@ -19,10 +20,19 @@ const languagerc = async (answers, package) => {
       typedoc: '',
       typescript: '',
     };
+
     package.scripts = {
       ...(package.scripts || {}),
       docs: 'npx typedoc --out docs --json docs.json --readme none --theme minimal --mode file src',
     };
+
+    const rendered = await twig('./.scripts/cl/twig/tsconfig.json.twig', {
+      answers,
+    })
+    try {
+      await fs.promises.unlink('./tsconfig.json');
+    } catch (e) {}
+    return fs.promises.writeFile('./tsconfig.json', rendered)
   } else {
     const template = {
       plugins: [],
@@ -56,6 +66,7 @@ const languagerc = async (answers, package) => {
       };
     }
 
+    // TODO:
     fs.writeFileSync(
       `.babelrc.js`,
       `// .babelrc.js
