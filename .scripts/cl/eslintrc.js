@@ -100,13 +100,13 @@ const eslintrc = async (answers, package) => {
       ...(package.newDevDependencies || {}),
       'babel-eslint': '',
       'eslint-plugin-flowtype': '',
-      // ...(answers.lintRules === LINT_AIRBNB
-      //   ? {
-      //       'eslint-config-airbnb-base': '',
-      //       'eslint-config-airbnb-flow': '',
-      //       'eslint-plugin-import': '',
-      //     }
-      //   : {}),
+      ...(answers.lintRules === LINT_AIRBNB
+        ? {
+            'eslint-config-airbnb-base': '',
+            'eslint-config-airbnb-flow': '',
+            'eslint-plugin-import': '',
+          }
+        : {}),
     };
   }
 
