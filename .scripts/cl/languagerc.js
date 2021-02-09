@@ -57,18 +57,18 @@ const languagerc = async (answers, package) => {
       // esdocs: "esdoc; documentation build src/** -f json -o docs.json",
     };
 
-    // if (answers.language === LANG_FLOW) {
-    //   babel.plugins =
-    //   [...babel.plugins, '@babel/plugin-transform-flow-strip-types'];
+    if (answers.language === LANG_FLOW) {
+      babel.plugins =
+      [...babel.plugins, '@babel/plugin-transform-flow-strip-types'];
 
-    //   package.newDevDependencies = {
-    //     ...(package.newDevDependencies || {}),
-    //     '@babel/plugin-transform-flow-strip-types': '',
-    //   };
-    // }
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
+        '@babel/plugin-transform-flow-strip-types': '',
+      };
+    }
 
     const rendered = await twig('./.scripts/cl/twig/.babelrc.js.twig', {
-      answers,
+      babel,
     })
     try {
       await fs.promises.unlink('./.babelrc.js');
