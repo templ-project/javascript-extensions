@@ -1,7 +1,7 @@
 const fs = require("fs");
 const fse = require("fs-extra");
 // const npm = require('npm');
-const npmView = require('npmview');
+const fetch = require('node-fetch');
 
 const logger = require('./logger')
 const twig = require('./twig');
@@ -42,7 +42,12 @@ const { removeKeys, sortByKeys } = require("./utils");
 //   }
 // }
 
-const getVersion = async (module) => new Promise(resolve => npmView(module, (...args) => resolve(args)));
+// https://api-docs.npms.io/#api-Package
+const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${module}`)
+  .then(res => res.json())
+  .then(res => res.collected || {})
+  .then(res => res.metadata || {})
+  .then(res => res.version);
 
 const syncPackage = async (package) => {
   const dependencies = {...sortByKeys(package.newDependencies || {})};
@@ -55,6 +60,7 @@ const syncPackage = async (package) => {
     console.log(module)
     const version = await getVersion(module)
     console.log(version)
+    process.exit(0)
   }
 
   package.dependencies = {...sortByKeys(package.dependencies || {})};
