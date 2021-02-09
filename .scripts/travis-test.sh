@@ -15,6 +15,14 @@ VAL_TEST=".mocharc.js jest"
 VAL_REPO=".github .gitlab"
 
 function do_test() {
+  echo
+  echo "#################"
+  echo TEMPLATE_ANSWERS="{\"language\":\"$1\",\"src\":\"$2\",\"dist\":\"$3\",\"testing\":\"$4\",\
+\"inspectors\":[\"jscpd\"],\"repository\":\"$5\",\"lintRules\":\"$6\"}" \
+  node ./.scripts/change-language.js
+  echo "#################"
+  echo
+
   TEMPLATE_ANSWERS="{\"language\":\"$1\",\"src\":\"$2\",\"dist\":\"$3\",\"testing\":\"$4\",\
 \"inspectors\":[\"jscpd\"],\"repository\":\"$5\",\"lintRules\":\"$6\"}" \
   node ./.scripts/change-language.js

@@ -55,8 +55,8 @@ module.exports = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      "rollup-plugin-dts": "?",
-      "rollup-plugin-typescript2": "?",
+      "rollup-plugin-dts": "",
+      "rollup-plugin-typescript2": "",
     }
   }
 
