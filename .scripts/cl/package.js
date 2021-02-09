@@ -52,7 +52,7 @@ const syncPackage = async (package) => {
     if (devDependencies[module]) {
       continue;
     }
-    const version = await npmView(module)
+    const version = await getVersion(module)
     console.log(module, version)
   }
 
