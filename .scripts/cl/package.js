@@ -42,7 +42,7 @@ const { removeKeys, sortByKeys } = require("./utils");
 //   }
 // }
 
-const getVersion = async (module) => new Promise(resolve => npmView(module, resolve));
+const getVersion = async (module) => new Promise(resolve => npmView(module, (...args) => resolve(args)));
 
 const syncPackage = async (package) => {
   const dependencies = {...sortByKeys(package.newDependencies || {})};
