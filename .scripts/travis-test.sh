@@ -4,7 +4,7 @@ set -xe
 export DEBUG=1
 
 function do_clean() {
-  rm -rf .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js tsconfig.json tsconfig.eslint.json .jscpd
+  rm -rf .babelrc.js .eslintrc.js .jscpd.json .mocharc.js .prettierrc.js app dist lib src test jest.config.js rollup.config.js tsconfig.json tsconfig.eslint.json .jscpd
   git checkout .github .gitlab package.json package-lock.json
 }
 
