@@ -34,7 +34,7 @@ const languagerc = async (answers, package) => {
     } catch (e) {}
     return fs.promises.writeFile('./tsconfig.json', rendered)
   } else {
-    const template = {
+    const babel = {
       plugins: [],
       presets: ['@babel/preset-env'],
     };
@@ -58,20 +58,22 @@ const languagerc = async (answers, package) => {
     };
 
     if (answers.language === LANG_FLOW) {
-      template.plugins.push('@babel/plugin-transform-flow-strip-types');
+      babel.plugins =
+      [...babel.plugins, '@babel/plugin-transform-flow-strip-types'];
 
       package.newDevDependencies = {
         ...(package.newDevDependencies || {}),
-        '@babel/plugin-transform-flow-strip-types': '7.12.1',
+        '@babel/plugin-transform-flow-strip-types': '',
       };
     }
 
-    // TODO:
-    fs.writeFileSync(
-      `.babelrc.js`,
-      `// .babelrc.js
-module.exports = ${JSON.stringify(template, null, 2)};`,
-    );
+    const rendered = await twig('./.scripts/cl/twig/.babelrc.js.twig', {
+      answers,
+    })
+    try {
+      await fs.promises.unlink('./.babelrc.js');
+    } catch (e) {}
+    return fs.promises.writeFile('./.babelrc.js', rendered)
   }
 };
 
