@@ -157,10 +157,10 @@ async function setupProject(answers) {
 
   syncPackage(package)
 
-  if (syncPackage.epermDependencies.length > 0) {
-    logger.warn(`We're not sure we installed the following packages: '${syncPackage.epermDependencies.join("', ")}'.`)
-    logger.warn(`Please run 'npm i ${syncPackage.epermDependencies.join(" ")}' to make sure everything is OK. `)
-  }
+  // if (syncPackage.epermDependencies.length > 0) {
+  //   logger.warn(`We're not sure we installed the following packages: '${syncPackage.epermDependencies.join("', ")}'.`)
+  //   logger.warn(`Please run 'npm i ${syncPackage.epermDependencies.join(" ")}' to make sure everything is OK. `)
+  // }
 
   if (!process.env.DEBUG) {
     rimraf.sync(".scripts/change-language.js");
