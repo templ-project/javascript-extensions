@@ -78,6 +78,8 @@ const syncPackage = async (package) => {
   moduleNames = Object.keys(devDependencies).filter(key => !devDependencies[key])
   withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
 
+  console.log(devDependencies, withVersions)
+
   package.devDependencies = sortByKeys({
     ...(package.devDependencies || {}),
     ...devDependencies,
