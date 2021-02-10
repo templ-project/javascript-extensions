@@ -4,7 +4,7 @@
 {% endif %}
 
 module.exports = {
-  parser: '{{ parser }}',
+  parser: '{{ prettier.parser }}',
   printWidth: 120,
   {% if answers.language != LANGS.LANG_COFFEE %}
   semi: true,
