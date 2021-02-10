@@ -31,7 +31,6 @@ const prettierrc = async (answers, package) => {
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'flow-prettier.parser': '',
     };
   }
 
