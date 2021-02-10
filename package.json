@@ -61,5 +61,11 @@
     "twig": "^1.15.4",
     "winston": "^3.3.3"
   },
-  "husky": {}
+  "husky": {},
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "parser": "babylon",
+      "style": "module"
+    }
+  }
 }
