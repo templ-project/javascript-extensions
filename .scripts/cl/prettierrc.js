@@ -7,7 +7,9 @@ const prettierrc = async (answers, package) => {
 
   const options = {
     answers,
-    parser: 'babel',
+    prettier: {
+      parser: 'babel'
+    },
     LANGS
   }
 
@@ -15,7 +17,7 @@ const prettierrc = async (answers, package) => {
   if (answers.language === LANGS.LANG_COFFEE) {
     ext = 'coffee';
 
-    options.parser = 'coffeescript';
+    options.prettier.parser = 'coffeescript';
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
@@ -25,18 +27,20 @@ const prettierrc = async (answers, package) => {
   }
 
   if (answers.language === LANGS.LANG_FLOW) {
-    options.parser = 'flow';
+    options.prettier.parser = 'flow';
 
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      'flow-parser': '',
+      'flow-prettier.parser': '',
     };
   }
 
   if (answers.language === LANGS.LANG_TS) {
     ext = '{ts,tsx}';
 
-    options.parser = 'typescript';
+    options.prettier.parser = 'typescript';
+
+    package.importSort[".js, .jsx, .ts, .tsx"].parser = 'typescript'
   }
 
   package.scripts = {
