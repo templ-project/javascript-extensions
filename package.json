@@ -64,7 +64,6 @@
   "husky": {},
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
-      "parser": "babylon",
       "style": "module"
     }
   }
