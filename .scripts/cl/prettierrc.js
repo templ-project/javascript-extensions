@@ -51,6 +51,7 @@ const prettierrc = async (answers, package) => {
       '.js, .jsx, .ts, .tsx': {
         parser: answers.language === LANGS.LANG_TS ? 'typescript' : 'babylon',
         // style: 'eslint',
+        style: 'module',
       }
     }
   }
