@@ -87,9 +87,9 @@ const jestrc = async (answers, package) => {
         },
       }
 
-      package.devDependencies = {
-        ...(package.devDependencies || {}),
-        'ts-jest': '^26.4.3',
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
+        'ts-jest': '',
       };
       break;
     case LANG_FLOW:
@@ -103,28 +103,31 @@ const jestrc = async (answers, package) => {
         },
       }
 
-      package.devDependencies = {
-        ...(package.devDependencies || {}),
-        '@babel/register': '^7.12.1',
-        'babel-jest': '^26.6.1',
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
+        '@babel/register': '',
+        'babel-jest': '',
       };
   }
 
-  package.devDependencies = Object.assign({}, package.devDependencies || {}, {
-    jest: '^26.6.1',
-    'eslint-plugin-jest': '^24.1.0',
-  });
+  package.newDevDependencies = {
+    ...(package.newDevDependencies || {}),
+    jest: '',
+    'eslint-plugin-jest': '',
+  };
 
   if (answers.language === LANG_TS) {
-    package.devDependencies = Object.assign({}, package.devDependencies || {}, {
-      '@types/jest': '^26.0.15',
-    });
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
+      '@types/jest': '',
+    };
   }
 
-  package.scripts = Object.assign({}, package.scripts || {}, {
+  package.scripts = {
+    ...(package.scripts || {}),
     test: 'cross-env NODE_ENV=test NO_API_DOC=1 jest --coverage --runInBand --verbose',
     'test:watch': 'npm run test -- --watch',
-  });
+  };
 
   // console.log(
   //   // answers,

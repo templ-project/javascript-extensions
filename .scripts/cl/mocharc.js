@@ -79,29 +79,33 @@ const mocharc = async (answers, package) => {
         ...options.mocha.require,
       ];
 
-      package.devDependencies = Object.assign({}, package.devDependencies, {
-        '@babel/register': '^7.12.1',
-      });
+      package.newDevDependencies = {
+        ...(package.newDevDependencies || {}),
+        '@babel/register': '',
+      };
   }
 
-  package.devDependencies = Object.assign({}, package.devDependencies, {
-    chai: '^4.2.0',
-    'eslint-plugin-mocha': '^7.0.1',
-    mocha: '^8.0.1',
-    'mocha-junit-reporter': '^2.0.0',
-  });
+  package.newDevDependencies = {
+    ...(package.newDevDependencies || {}),
+    chai: '',
+    'eslint-plugin-mocha': '',
+    mocha: '',
+    'mocha-junit-reporter': '',
+  };
 
   if (answers.language === LANG_TS) {
-    package.devDependencies = Object.assign({}, package.devDependencies, {
-      '@types/chai': '^4.2.11',
-      '@types/mocha': '^7.0.2',
-    });
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
+      '@types/chai': '',
+      '@types/mocha': '',
+    };
   }
 
-  package.scripts = Object.assign({}, package.scripts, {
+  package.scripts = {
+    ...(package.scripts || {}),
     test: `npm run test:single -- './test/**/*.test.${ext}'`,
     'test:single': `cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text --extension .${ext} mocha --forbid-only`,
-  });
+  };
 
   const rendered = await twig('./.scripts/cl/twig/.mocharc.js.twig', options)
 

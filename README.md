@@ -24,14 +24,14 @@
 > **javascript** is a template project, designed by [Templ Project](http://templ-project.github.io).
 >
 > **javascript** includes instructions for initializing a new
-> **JavaScript/[TypeScript](https://www.typescriptlang.org/)** project, and configuring it for development, unit
+> **[CoffeeScript](https://coffeescript.org/)/JavaScript/[Flow Type](https://flow.org/)/[TypeScript](https://www.typescriptlang.org/)** project, and configuring it for development, unit
 > testing as well as code linting and analysis.
 >
 > **javascript** implements:
 >
 > - [jscpd](https://github.com/kucherenko/jscpd), [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) for code analisys
 > - [prettier](https://prettier.io/) for code formatting
-> - [eslint](https://eslint.org/) for linting
+> - [eslint](https://eslint.org/) (using either default rules or [airbnb](https://github.com/airbnb)'s one) for linting
 >
 > By default, this implementation uses [npm](https://www.npmjs.com/), but you can easily change it to [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.js.org/) or any other package manager.
 
@@ -41,21 +41,17 @@
 
 ##### For Windows
 
-- Please install [git-scm](https://git-scm.com/download/win) tool.
-- Please install a form of make
-  - Install [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm)
-  - Install [make](https://sourceforge.net/projects/ezwinports/files/) from [ezwinports](https://sourceforge.net/projects/ezwinports/files/)
-  - Install [chocolatey](https://chocolatey.org/), run `choco install make`
+- Please install [git-scm](https://git-scm.com/download/win) tool
 
 ##### For Linux/Unix/OSX
 
-- Please install `git` and `make`
+- Please install `git`
 
 ```bash
 # i.e debian
-sudo apt-get install git make -y
+sudo apt-get install git -y
 # i.e mac OS
-brew install make git
+brew install git
 ```
 
 <!-- #### Known Issues / Troubleshooting
@@ -73,12 +69,12 @@ git add remote origin https://url/to/your/project/repository
 git add .
 git commit -am "init"
 git push origin master
-npm run change:language -- javascript # to use javascript
+npm run change:language # to use javascript
 # or
 # npm run change:language -- typescript # to use typescript
 npm install
 # yarn install
-# pnpm install
+# pnpm instal
 ```
 
 ### Development

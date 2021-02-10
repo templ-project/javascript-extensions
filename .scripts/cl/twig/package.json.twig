@@ -1,0 +1,21 @@
+{
+  "name": "{{ package.name }}",
+  "version": "{{ package.version }}",
+  "description": "{{ package.description }}",
+  "main": "{{ package.main }}",
+  "scripts": {{ package.scripts|json_encode() }},
+  "repository": {
+    "type": "git",
+    "url": "{{ package.repository }}.git"
+  },
+  "author": "{{ package.author }}",
+  "license": "{{ package.license }}",
+  "bugs": {
+    "url": "{{ package.repository }}/issues"
+  },
+  "homepage": "{{ package.repository }}#readme",
+  "dependencies": {{ package.dependencies|json_encode() }},
+  "devDependencies": {{ package.devDependencies|json_encode() }},
+  "peerDependencies": {{ package.peerDependencies|json_encode() }},
+  "husky": {{ package.husky|json_encode() }}
+}
