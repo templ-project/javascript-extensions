@@ -38,13 +38,18 @@ const prettierrc = async (answers, package) => {
     ext = '{ts,tsx}';
 
     options.prettier.parser = 'typescript';
+  }
 
+  if (answers.languages !== LANGS.LANG_COFFEE) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       "prettier-plugin-import-sort": "",
     }
 
-    package.importSort[".js, .jsx, .ts, .tsx"].parser = 'typescript'
+    package.importSort[".js, .jsx, .ts, .tsx"] = {
+      parser: answers.language === LANGS.LANG_TS ? 'typescript' : 'babylon',
+      style: 'eslint',
+    }
   }
 
   package.scripts = {
