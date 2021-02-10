@@ -39,6 +39,11 @@ const prettierrc = async (answers, package) => {
 
     options.prettier.parser = 'typescript';
 
+    package.newDevDependencies = {
+      ...(package.newDevDependencies || {}),
+      "prettier-plugin-import-sort": "",
+    }
+
     package.importSort[".js, .jsx, .ts, .tsx"].parser = 'typescript'
   }
 
