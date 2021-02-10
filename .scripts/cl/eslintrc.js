@@ -192,7 +192,6 @@ const eslintrc = async (answers, package) => {
     // packages for ts
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
-      typescript: '',
       '@typescript-eslint/eslint-plugin': '',
       '@typescript-eslint/parser': '',
 

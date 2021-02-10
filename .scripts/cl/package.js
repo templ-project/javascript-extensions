@@ -66,7 +66,7 @@ const syncPackage = async (package) => {
   let dependencies = {...sortByKeys(package.newDependencies || {})};
   let devDependencies = {...sortByKeys(package.newDevDependencies || {})};
 
-  let moduleNames = Object.keys(dependencies).filter(key => !dependencies[key])
+  let moduleNames = Object.keys(dependencies).filter(key => dependencies[key].length === 0)
   let withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
 
   package.dependencies = sortByKeys({
@@ -75,10 +75,11 @@ const syncPackage = async (package) => {
     ...withVersions,
   });
 
-  moduleNames = Object.keys(devDependencies).filter(key => !devDependencies[key])
+  moduleNames = Object.keys(devDependencies).filter(key => devDependencies[key].length === 0)
   withVersions = moduleNames.length > 0 ? await getVersions(moduleNames) : {}
 
-  console.log(devDependencies, withVersions)
+  // console.log(devDependencies, moduleNames, withVersions)
+  // process.exit(1)
 
   package.devDependencies = sortByKeys({
     ...(package.devDependencies || {}),
