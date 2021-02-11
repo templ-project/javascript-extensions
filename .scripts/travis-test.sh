@@ -79,6 +79,7 @@ for lint in airbnb eslint; do
   npm run jscpd
   npm test
   do_clean
+  npm install
 
 done
 done

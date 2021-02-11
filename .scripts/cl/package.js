@@ -58,7 +58,7 @@ const getVersion = async (module) => fetch(`https://api.npms.io/v2/package/${enc
   })
   .then(res => res.json())
   .then(modules => Object.keys(modules).reduce((acc, moduleName) => {
-    acc[moduleName] = modules[moduleName].error ? '' : modules[moduleName].collected.metadata.version
+    acc[moduleName] = modules[moduleName].error ? '' : `^${modules[moduleName].collected.metadata.version}`
     return acc
   }, {}))
 
