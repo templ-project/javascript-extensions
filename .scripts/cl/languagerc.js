@@ -18,7 +18,7 @@ const languagerc = async (answers, package) => {
       'rollup-plugin-typescript2': '',
       'ts-node': '',
       typedoc: '',
-      typescript: '4.1.0',
+      typescript: '',
     };
 
     package.scripts = {

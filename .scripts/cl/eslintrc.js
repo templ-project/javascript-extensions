@@ -178,6 +178,8 @@ const eslintrc = async (answers, package) => {
         ...options.eslint.rules,
         'import/prefer-default-export': 'off', // this is react ruled, not gonna happen
         'import/no-extraneous-dependencies': 'off', // this is not a good idea when required packages are actually test packages
+        '@typescript-eslint/space-infix-ops': 'off', // @typescript-eslint/typescript-estree only supports up to typescript@4.1.0
+        '@typescript-eslint/object-curly-spacing': 'off', // @typescript-eslint/typescript-estree only supports up to typescript@4.1.0
       },
 
       ...(answers.lintRules === LINT_AIRBNB
