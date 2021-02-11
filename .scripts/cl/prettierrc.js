@@ -40,7 +40,7 @@ const prettierrc = async (answers, package) => {
     options.prettier.parser = 'typescript';
   }
 
-  if (answers.languages !== LANGS.LANG_COFFEE) {
+  if (answers.language !== LANGS.LANG_COFFEE) {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       "prettier-plugin-import-sort": "",
