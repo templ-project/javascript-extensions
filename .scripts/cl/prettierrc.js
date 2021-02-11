@@ -44,6 +44,7 @@ const prettierrc = async (answers, package) => {
     package.newDevDependencies = {
       ...(package.newDevDependencies || {}),
       "prettier-plugin-import-sort": "",
+      "import-sort-style-module": "",
     }
 
     package.importSort = {
