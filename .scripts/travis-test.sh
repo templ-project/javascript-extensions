@@ -61,11 +61,11 @@ function do_test() {
 
 }
 
-# for lang in coffee flow javascript typescript; do
+for lang in coffee flow javascript typescript; do
 # for lang in coffee; do
 # for lang in flow; do
 # for lang in javascript; do
-for lang in typescript; do
+# for lang in typescript; do
 for lint in airbnb eslint; do
 # for lint in airbnb; do
 # for lint in eslint; do
