@@ -51,7 +51,8 @@ const prettierrc = async (answers, package) => {
       ...(package.importSort || {}),
       '.js, .jsx, .ts, .tsx': {
         parser: answers.language === LANGS.LANG_TS ? 'typescript' : 'babylon',
-        style: answers.language === LANGS.LANG_TS ? 'module' : 'eslint',
+        // style: answers.language === LANGS.LANG_TS ? 'module' : 'eslint',
+        style: 'module',
       }
     }
   }
