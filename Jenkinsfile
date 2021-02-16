@@ -15,7 +15,6 @@ pipeline {
           bash ${env.NVM_DIR}/bash_completion;
 
           set -ex;
-          source ~/.bashrc;
           node --version;
           npm --version;
           """
