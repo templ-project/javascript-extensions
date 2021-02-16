@@ -10,7 +10,7 @@ function do_clean() {
 
 VAL_SRC="src app"
 
-VAL_TEST=".mocharc.js jest"
+VAL_TEST=".mocharc.js jest.config.ts"
 
 VAL_REPO=".github .gitlab"
 
