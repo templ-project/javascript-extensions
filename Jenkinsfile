@@ -39,8 +39,10 @@ pipeline {
     // }
     stage('Testing ...') {
       steps {
-        testing('flow', 'eslint', 'mocha')
-        testing('flow', 'airbnb', 'mocha')
+        script {
+          testing('flow', 'eslint', 'mocha')
+          testing('flow', 'airbnb', 'mocha')
+        }
       }
     }
     // stage('Test Jest') {
