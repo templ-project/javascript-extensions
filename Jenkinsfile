@@ -4,9 +4,10 @@ pipeline {
   stages {
     stage('Info') {
       steps {
-        sh 'set -ex'
-        sh 'node --version'
-        sh 'nvm --version'
+        sh '''set -ex;
+          source ~/.bashrc;
+          node --version;
+          nvm --version'''
       }
     }
     stage('Test Mocha') {
