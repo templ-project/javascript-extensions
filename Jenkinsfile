@@ -8,7 +8,9 @@ pipeline {
   stages {
     stage('Info') {
       steps {
-        sh '''
+        echo "NVM lies in ${NVM_DIR}"
+
+        sh """
           bash ${env.NVM_DIR}/nvm.sh;
           bash ${env.NVM_DIR}/bash_completion;
 
@@ -16,7 +18,7 @@ pipeline {
           source ~/.bashrc;
           node --version;
           nvm --version;
-          '''
+          """
       }
     }
     stage('Test Mocha') {
