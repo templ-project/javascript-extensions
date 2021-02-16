@@ -39,14 +39,14 @@ function do_test() {
     fi
   done
 
-  # testing
-  for f in $VAL_TEST; do
-    if [[ $f != *"$4"* ]]; then
-      if [[ -f $f ]]; then exit 1; fi
-    else
-      if [[ ! -f $f ]]; then exit 1; fi
-    fi
-  done
+  # # testing
+  # for f in $VAL_TEST; do
+  #   if [[ $f != *"$4"* ]]; then
+  #     if [[ -f $f ]]; then exit 1; fi
+  #   else
+  #     if [[ ! -f $f ]]; then exit 1; fi
+  #   fi
+  # done
 
   if [[ ! -f .jscpd.json ]]; then exit 1; fi
 
