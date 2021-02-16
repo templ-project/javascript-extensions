@@ -10,24 +10,22 @@ pipeline {
       steps {
         echo "NVM lies in ${NVM_DIR}"
 
-        sh """
-          . ~/.bashrc;
-
+        sh """#!/bin/bash -el
           set -ex;
           node --version;
           npm --version;
           """
       }
     }
-    stage('Test Mocha') {
-      steps {
-        sh 'bash ./.scripts/travis-test.sh mocha'
-      }
-    }
-    stage('Test Jest') {
-      steps {
-        sh 'bash ./.scripts/travis-test.sh jest'
-      }
-    }
+    // stage('Test Mocha') {
+    //   steps {
+    //     sh 'bash ./.scripts/travis-test.sh mocha'
+    //   }
+    // }
+    // stage('Test Jest') {
+    //   steps {
+    //     sh 'bash ./.scripts/travis-test.sh jest'
+    //   }
+    // }
   }
 }
