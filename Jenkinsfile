@@ -23,7 +23,7 @@ pipeline {
       steps {
         sh '''
           . ~/.bashrc > /dev/null;
-          set -eq;
+          set -ex;
           bash ./.scripts/travis-test.sh coffee eslint mocha
           '''
       }
@@ -32,7 +32,7 @@ pipeline {
       steps {
         sh '''
           . ~/.bashrc > /dev/null;
-          set -eq;
+          set -ex;
           bash ./.scripts/travis-test.sh coffee airbnb mocha
           '''
       }
