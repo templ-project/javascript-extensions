@@ -10,7 +10,9 @@ pipeline {
       steps {
         echo "NVM lies in ${NVM_DIR}"
 
-        sh """#!/bin/bash -el
+        sh """
+          . ~/.bashrc;
+
           set -ex;
           node --version;
           npm --version;
