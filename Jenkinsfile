@@ -4,10 +4,12 @@ pipeline {
   stages {
     stage('Info') {
       steps {
-        sh '''set -ex;
-          source ~/.bashrc;
+        sh '''
+          set -ex;
+          bash ~/.bashrc;
           node --version;
-          nvm --version'''
+          nvm --version;
+          '''
       }
     }
     stage('Test Mocha') {
