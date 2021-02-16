@@ -19,24 +19,24 @@ pipeline {
           """
       }
     }
-    stage('Testing CoffeeScript, EsLint, Mocha') {
-      steps {
-        sh '''
-          . ~/.bashrc > /dev/null;
-          set -ex;
-          bash ./.scripts/travis-test.sh coffee eslint mocha
-          '''
-      }
-    }
-    stage('Testing CoffeeScript, EsLint/Airbnb, Mocha') {
-      steps {
-        sh '''
-          . ~/.bashrc > /dev/null;
-          set -ex;
-          bash ./.scripts/travis-test.sh coffee airbnb mocha
-          '''
-      }
-    }
+    // stage('Testing CoffeeScript, EsLint, Mocha') {
+    //   steps {
+    //     sh '''
+    //       . ~/.bashrc > /dev/null;
+    //       set -ex;
+    //       bash ./.scripts/travis-test.sh coffee eslint mocha
+    //       '''
+    //   }
+    // }
+    // stage('Testing CoffeeScript, EsLint/Airbnb, Mocha') {
+    //   steps {
+    //     sh '''
+    //       . ~/.bashrc > /dev/null;
+    //       set -ex;
+    //       bash ./.scripts/travis-test.sh coffee airbnb mocha
+    //       '''
+    //   }
+    // }
     stage('Testing ...') {
       steps {
         testing('flow', 'eslint', 'mocha')
