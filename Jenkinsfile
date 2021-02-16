@@ -41,9 +41,10 @@ pipeline {
     stage('Testing ...') {
       steps {
         script {
-          modules.testing = load "Jenkinsfile-testing.groovy"
-          modules.testing('flow', 'eslint', 'mocha')
-          modules.testing('flow', 'airbnb', 'mocha')
+          testing('flow', 'eslint', 'mocha')
+          // modules.testing = load "Jenkinsfile-testing.groovy"
+          // modules.testing('flow', 'eslint', 'mocha')
+          // modules.testing('flow', 'airbnb', 'mocha')
         }
       }
     }
@@ -55,21 +56,10 @@ pipeline {
   }
 }
 
-
 def testing(def lang, def lint, def test) {
-  pipeline {
-    agent any
-    stages {
-      stage('Testing ...') {
-        echo "Testing ${lang}, ${lint}, ${test}"
-        steps {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            bash ./.scripts/travis-test.sh ${lang} ${lint} ${test}
-            """
-        }
-      }
-    }
-  }
+  sh """
+    . ~/.bashrc > /dev/null;
+    set -ex;
+    bash ./.scripts/travis-test.sh ${lang} ${lint} ${test}
+    """
 }
