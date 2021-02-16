@@ -11,7 +11,7 @@ pipeline {
         echo "NVM lies in ${NVM_DIR}"
 
         sh """
-          . ${env.NVM_DIR}/nvm.sh;
+          . ~/.bashrc;
 
           set -ex;
           node --version;
