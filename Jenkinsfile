@@ -17,7 +17,7 @@ pipeline {
           set -ex;
           source ~/.bashrc;
           node --version;
-          nvm --version;
+          npm --version;
           """
       }
     }
