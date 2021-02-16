@@ -48,7 +48,7 @@ function do_test() {
     fi
   done
 
-  if [ ! -f .jscpd.json ]; then exit 1; fi
+  if [[ ! -f .jscpd.json ]]; then exit 1; fi
 
   # repository
   for d in $VAL_REPO; do
