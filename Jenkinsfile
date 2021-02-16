@@ -12,7 +12,6 @@ pipeline {
 
         sh """
           bash ${env.NVM_DIR}/nvm.sh;
-          bash ${env.NVM_DIR}/bash_completion;
 
           set -ex;
           node --version;
