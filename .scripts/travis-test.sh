@@ -72,6 +72,7 @@ for lang in $1; do
 # for lint in eslint; do
 for lint in $2; do
 
+  npm install
   # do_test $lang src dist $1 github $lint $lang
   do_test $lang src dist $3 github $lint $lang
 
