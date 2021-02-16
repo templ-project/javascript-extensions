@@ -1,3 +1,4 @@
+def modules = [:]
 pipeline {
   agent any
 
@@ -40,8 +41,9 @@ pipeline {
     stage('Testing ...') {
       steps {
         script {
-          testing('flow', 'eslint', 'mocha')
-          testing('flow', 'airbnb', 'mocha')
+          modules.testing = load "Jenkinsfile-testing.groovy"
+          modules.testing('flow', 'eslint', 'mocha')
+          modules.testing('flow', 'airbnb', 'mocha')
         }
       }
     }
