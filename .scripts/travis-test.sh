@@ -41,7 +41,7 @@ function do_test() {
 
   # testing
   for f in $VAL_TEST; do
-    if [[ $f != *"$4"* ]]; then
+    if [[ $f =~ "$4" ]]; then
       if [ -f $f ]; then exit 1; fi
     else
       if [ ! -f $f ]; then exit 1; fi
