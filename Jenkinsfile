@@ -4,12 +4,12 @@ pipeline {
   stages {
     stage('Test Mocha') {
       steps {
-        sh 'bash -c ./.scripts/travis-test.sh mocha'
+        sh 'bash ./.scripts/travis-test.sh mocha'
       }
     }
     stage('Test Jest') {
       steps {
-        sh 'bash -c ./.scripts/travis-test.sh jest'
+        sh 'bash ./.scripts/travis-test.sh jest'
       }
     }
   }
