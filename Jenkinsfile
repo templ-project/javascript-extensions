@@ -1,6 +1,6 @@
 def modules = [:]
 pipeline {
-  agent 'j-linux'
+  agent 'master'
 
   environment {
     NVM_DIR = "${HOME}/.nvm"
