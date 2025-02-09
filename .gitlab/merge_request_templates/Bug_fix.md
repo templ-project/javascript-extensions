@@ -57,4 +57,3 @@ If there is relevant follow-up work to this PR, please list any existing issues 
 | Bundler          |
 | Operating System |
 | NPM/Node/Yarn    |
-

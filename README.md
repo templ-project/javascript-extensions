@@ -4,6 +4,7 @@
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript/issues)
 [![TravisCI](https://travis-ci.org/templ-project/javascript.svg?branch=master)](https://travis-ci.org/templ-project/javascript)
 ![JSCPD](.jscpd/jscpd-badge.svg?raw=true)
+
 <!-- CI Badges -->
 <!-- [![CircleCI](https://circleci.com/gh/templ-project/javascript.svg?style=shield)](https://circleci.com/gh/templ-project/javascript) -->
 
@@ -13,13 +14,14 @@
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=templ-project_javascript)
 
 <!-- Donation Badges -->
+
 [![Donate to this project using Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/dragoscirjan)
 [![Donate to this project using Paypal](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QBP6DEBJDEMV2&source=url)
 
 <img alt="JavaScript Logo" src="https://github.com/templ-project/javascript/blob/master/javascript.svg?raw=true" width="20%" align="right" />
 <img alt="TypeScript Logo" src="https://github.com/templ-project/javascript/blob/master/typescript.svg?raw=true" width="20%" align="right" />
 
-> *Any fool can write code that a computer can understand. Good programmers write code that humans can understand.* – Martin Fowler
+> _Any fool can write code that a computer can understand. Good programmers write code that humans can understand._ – Martin Fowler
 
 > **javascript** is a template project, designed by [Templ Project](http://templ-project.github.io).
 >
@@ -92,7 +94,6 @@ npm install
   - [Vim](https://www.vim.org/) with [neoclide/coc.nvim](https://github.com/neoclide/coc.nvim) and [HerringtonDarkholme/yats.vim](https://github.com/HerringtonDarkholme/yats.vim) extensions.
   - Any other IDE you trust.
 
-
 ### Testing
 
 Run unit tests using `npm run test`.
@@ -117,7 +118,7 @@ npm run release
 
 ## Authors
 
-* [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work
+- [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work
 
 ## Issues / Support
 
@@ -139,19 +140,6 @@ Also see this tool for automatically generating them: https://www.npmjs.com/pack
 > Remove Everything above this line
 
 <hr />
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Project Title
 
@@ -185,8 +173,8 @@ One Paragraph of project description goes here
 
 <!--
 Insert Table of Contents Here
-This can be done using [AlanWalk.markdown-toc](https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc) plugin, 
-which is also included in 
+This can be done using [AlanWalk.markdown-toc](https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc) plugin,
+which is also included in
 [itmcdev.generic-extension-pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.generic-extension-pack) extension pack.
 -->
 <!-- TOC -->
@@ -194,8 +182,8 @@ which is also included in
 - [Templ Javascript](#templ-javascript)
   - [Getting Started](#getting-started)
     - [Prerequisites / Dependencies](#prerequisites--dependencies)
-        - [For Windows](#for-windows)
-        - [For Linux/Unix/OSX](#for-linuxunixosx)
+      - [For Windows](#for-windows)
+      - [For Linux/Unix/OSX](#for-linuxunixosx)
     - [Installation](#installation)
     - [Development](#development)
       - [Requirements](#requirements)
@@ -231,14 +219,15 @@ which is also included in
 
 ### Prereqiusites / Dependencies
 
-What things you need to install the software and how to install them (based on each OS type). 
+What things you need to install the software and how to install them (based on each OS type).
 
 #### For Windows
+
 ```bash
 # Give Examples
 
 npm install -g node-gyp windows-build-tools
-# Warning: Please note windows-build-tools will install MSVS which takes a 
+# Warning: Please note windows-build-tools will install MSVS which takes a
 # LONG amount of time.
 ```
 
@@ -258,7 +247,6 @@ Describe a list of known issues, and how to bypass them.
 ### Installation
 
 A step by step series of examples that tell you how to get a development env running
-
 
 #### Say what the step will be
 
@@ -284,10 +272,10 @@ give examples
 
 ### Testing
 
-
 Explain how to run the automated tests for this system
 
 #### Break down into (at least) unit tests
+
 Explain what these tests test and why
 
 ```
@@ -295,6 +283,7 @@ Give an example
 ```
 
 #### and end to end tests
+
 Explain what these tests test and why
 
 ```
@@ -314,7 +303,8 @@ Give an example
 Add additional notes about how to deploy this on a live system
 
 ## Authors
-* [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [PurpleBooth](#link-to-change)
+
+- [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work - [PurpleBooth](#link-to-change)
 
 See also the list of contributors who participated in this project.
 

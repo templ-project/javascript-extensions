@@ -7,7 +7,9 @@ import yamlConfig from './rules/yaml.js';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { ignores: ['**/venv/**/*.*', '**/vitest.config.js', 'tmp.*', '**/tmp', '*.tmp'] },
+  {
+    ignores: ['**/venv/**/*.*', '**/vitest.config.js', 'tmp.*', '**/tmp', '*.tmp'],
+  },
   ...jsAndTsConfig,
   ...prettierConfig,
   ...yamlConfig,

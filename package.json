@@ -31,9 +31,16 @@
     "*.{js,ts,json,yaml}": [
       "npx eslint --fix",
       "git add"
-    ],
-    "packages/**/*.{js,ts}": [
-      "npx vitest related --run"
     ]
+  },
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
   }
 }
