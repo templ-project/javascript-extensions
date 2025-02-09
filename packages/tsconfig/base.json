@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": [
+    "${configDir}/src/**/*.ts"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "verbatimModuleSyntax": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "rootDir": "${configDir}/src",
+    "outDir": "${configDir}/dist"
+  }
+}

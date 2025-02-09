@@ -1,0 +1,31 @@
+{
+  "name": "@templ-project/vitest",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/index.js",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "npx tsc -p .",
+    "prebuild": "rimraf ./dist",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest"
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "description": "EsLint configuration for Templ Project",
+  "dependencies": {
+    "@templ-project/tsconfig": "^0.2.0",
+    "vitest": "^3.0.5"
+  },
+  "devDependencies": {
+    "@templ-project/eslint": "^1.0.0",
+    "rimraf": "^6.0.1"
+  }
+}

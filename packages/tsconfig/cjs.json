@@ -1,0 +1,10 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "types": [
+      "node"
+    ],
+    "module": "Node16",
+    "moduleResolution": "Node16"
+  }
+}
