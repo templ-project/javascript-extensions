@@ -1,6 +1,9 @@
 {
   "extends": "./cjs.json",
   "compilerOptions": {
-    "types": ["node", "vitest/default"]
+    "types": [
+      "node",
+      "vitest/default"
+    ]
   }
 }

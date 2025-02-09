@@ -1,3 +1,3 @@
 {
-  "extends": "packages/tsconfig/vitest.json"
+  "extends": "./packages/tsconfig/vitest.json"
 }

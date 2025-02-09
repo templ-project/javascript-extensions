@@ -1,7 +1,9 @@
 {
   "extends": "./base.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "module": "Node16",
     "moduleResolution": "Node16"
   }

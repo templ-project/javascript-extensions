@@ -1,6 +1,8 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
-  "include": ["${configDir}/src/**/*.ts"],
+  "include": [
+    "${configDir}/src/**/*.ts"
+  ],
   "exclude": [],
   "compilerOptions": {
     "declaration": false,
