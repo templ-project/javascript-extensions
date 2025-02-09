@@ -33,7 +33,7 @@
       "git add"
     ],
     "packages/**/*.{js,ts}": [
-      "npx vitest --bail --changed"
+      "npx vitest related --run"
     ]
   }
 }
