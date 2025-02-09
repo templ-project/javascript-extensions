@@ -3,7 +3,7 @@ import markdown from 'eslint-plugin-markdown';
 /** @type {const('eslint').Linter.Config[]} */
 export default markdown.configs.recommended.concat([
   {
-    name: 'clbt:markdown/code-blocks/js',
+    name: 'templ:markdown/code-blocks/js',
     files: ['**/*.md/*.js'],
     rules: {
       'no-console': 'off',

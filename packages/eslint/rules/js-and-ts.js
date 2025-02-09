@@ -15,7 +15,7 @@ const tsConfig = getTsConfig(esConfig, tsConfigGlobal);
 
 export default [
   {
-    name: 'clbt:global/node',
+    name: 'templ:global/node',
     files: ['**/*.{js,mjs,cjs,jsx}'],
     ...esConfig,
   },
@@ -25,7 +25,7 @@ export default [
     ...tsConfig,
   },
   {
-    name: 'clbt:globals/tests',
+    name: 'templ:globals/tests',
     files: ['**/*.{e2e,test,spec}.{js,cjs,mjs,ts,cts,mts}'],
     ...vitest.configs.recommended,
     languageOptions: {

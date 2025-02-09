@@ -10,7 +10,7 @@ export default [
     },
   },
   {
-    name: 'clbt:json/ignores',
+    name: 'templ:json/ignores',
     ignores: [
       'package-lock.json',
       '**/package-lock.json',
@@ -22,7 +22,7 @@ export default [
     ],
   },
   {
-    name: 'clbt:json/overrides',
+    name: 'templ:json/overrides',
     files: ['*.json', '**/*.json'],
     language: 'json/json',
     rules: {
@@ -30,7 +30,7 @@ export default [
     },
   },
   {
-    name: 'clbt:jsonc/overrides',
+    name: 'templ:jsonc/overrides',
     files: [
       '*.jsonc',
       '**/*.jsonc',
@@ -42,7 +42,7 @@ export default [
     },
   },
   {
-    name: 'clbt:json5/overrides',
+    name: 'templ:json5/overrides',
     files: ['*.json5', '**/*.json5'],
     language: 'json/json5',
     rules: {

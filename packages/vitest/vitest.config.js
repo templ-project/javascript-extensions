@@ -1,1 +1,3 @@
-export * from "./dist/index.js";
+import vitestConfig from "./dist/index.js";
+
+export default vitestConfig();

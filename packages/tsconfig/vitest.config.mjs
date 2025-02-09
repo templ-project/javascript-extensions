@@ -1,3 +1,3 @@
-import vitestConfig from "@templ-project/vitest";
+import vitestConfig from '@templ-project/vitest';
 
 export default vitestConfig();

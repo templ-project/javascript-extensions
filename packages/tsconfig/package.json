@@ -15,7 +15,10 @@
     "package.json"
   ],
   "scripts": {
-    "test": "vitest"
+    "build": "node build.js",
+    "pretest": "npm run build",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
@@ -32,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/tsconfig/bases/issues"
   },
-  "homepage": "https://github.com/tsconfig/bases#readme"
+  "homepage": "https://github.com/tsconfig/bases#readme",
+  "devDependencies": {
+    "@templ-project/eslint": "^1.0.0"
+  }
 }

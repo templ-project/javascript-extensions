@@ -4,7 +4,7 @@ import yaml from 'eslint-plugin-yml';
 export default [
   ...yaml.configs['flat/recommended'],
   {
-    name: 'clbt:yml/overrides',
+    name: 'templ:yml/overrides',
     files: ['*.yaml', '**/*.yaml', '*.yml', '**/*.yml'],
     rules: {
       indent: ['error', 2],

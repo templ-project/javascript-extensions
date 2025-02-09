@@ -1,29 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('node:fs');
 
-const nodeVersion = "node22";
-
-const baseConfig = JSON.parse(
-  fs.readFileSync(
-    path.join(
-      __dirname,
-      "..",
-      "..",
-      "node_modules",
-      "@tsconfig",
-      nodeVersion,
-      "tsconfig.json",
-    ),
-    "utf-8",
-  ),
-);
+const nodeVersion = 'node22';
 
 const tsconfig = {
   base: {
     extends: `@tsconfig/${nodeVersion}/tsconfig.json`,
     include: [
       /* what files in the rootDir participate in the type-check */
-      "${configDir}/src/**/*.ts",
+      '${configDir}/src/**/*.ts',
     ],
     exclude: [],
     compilerOptions: {
@@ -41,41 +25,41 @@ const tsconfig = {
       noUnusedLocals: true,
       noUnusedParameters: true,
 
-      rootDir: "${configDir}/src",
-      outDir: "${configDir}/dist",
+      rootDir: '${configDir}/src',
+      outDir: '${configDir}/dist',
     },
   },
   browser: {
-    extends: "./base.json",
+    extends: './base.json',
     compilerOptions: {
-      target: "ES2020",
-      module: "ES2020",
-      moduleResolution: "bundler",
+      target: 'ES2020',
+      module: 'ES2020',
+      moduleResolution: 'bundler',
     },
   },
   cjs: {
-    extends: "./base.json",
+    extends: './base.json',
     compilerOptions: {
-      types: ["node"],
-      module: "Node16",
-      moduleResolution: "Node16",
+      types: ['node'],
+      module: 'Node16',
+      moduleResolution: 'Node16',
     },
   },
   esm: {
-    extends: "./base.json",
+    extends: './base.json',
     compilerOptions: {
-      module: "ESNext",
-      moduleResolution: "Node",
+      module: 'ESNext',
+      moduleResolution: 'Node',
     },
   },
   test: {
-    extends: "./cjs.json",
+    extends: './cjs.json',
     compilerOptions: {
-      types: ["node", "vitest/default"],
+      types: ['node', 'vitest/default'],
     },
   },
 };
 
-["base", "browser", "cjs", "esm", "test"].forEach((key) =>
+['base', 'browser', 'cjs', 'esm', 'test'].forEach((key) =>
   fs.writeFileSync(`${key}.json`, JSON.stringify(tsconfig[key], null, 2)),
 );
