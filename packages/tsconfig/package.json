@@ -1,0 +1,36 @@
+{
+  "name": "@templ-project/tsconfig",
+  "version": "0.2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsconfig/bases.git",
+    "directory": "bases"
+  },
+  "files": [
+    "base.json",
+    "browser.json",
+    "cjs.json",
+    "esm.json",
+    "vitest.json",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
+  "license": "MIT",
+  "description": "TSConfig for Templ Project",
+  "dependencies": {
+    "@templ-project/vitest": "^0.1.0",
+    "@tsconfig/node22": "^22.0.0",
+    "execa": "^9.5.2"
+  },
+  "main": "build.js",
+  "directories": {
+    "test": "test"
+  },
+  "bugs": {
+    "url": "https://github.com/tsconfig/bases/issues"
+  },
+  "homepage": "https://github.com/tsconfig/bases#readme"
+}

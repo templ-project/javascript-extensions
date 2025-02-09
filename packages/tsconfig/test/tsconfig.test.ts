@@ -1,0 +1,93 @@
+import { execa } from "execa";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+describe("tsc compile", () => {
+  setupTest({
+    type: "browser",
+    expects: {
+      "should have browser output": () => {
+        const output = fs.readFileSync(
+          path.join(__dirname, "test-app", "dist", "index.js"),
+          "utf-8",
+        );
+        expect(output).toContain("export const hello");
+      },
+    },
+  });
+
+  setupTest({
+    type: "cjs",
+    expects: {
+      "should have cjs output": () => {
+        const output = fs.readFileSync(
+          path.join(__dirname, "test-app", "dist", "index.js"),
+          "utf-8",
+        );
+        expect(output).toContain("exports.hello = hello");
+      },
+    },
+  });
+
+  setupTest({
+    type: "esm",
+    expects: {
+      "should have esm output": () => {
+        const output = fs.readFileSync(
+          path.join(__dirname, "test-app", "dist", "index.js"),
+          "utf-8",
+        );
+        expect(output).toContain("export const hello");
+      },
+    },
+  });
+});
+
+type TestOptions = {
+  type: "browser" | "cjs" | "esm";
+  expects?: Record<string, () => void>;
+};
+
+function setupTest({ type = "browser", expects = {} }: TestOptions) {
+  describe("compiling for browser", () => {
+    let error: Error | null = null;
+
+    beforeAll(async () => {
+      fs.writeFileSync(
+        path.join(__dirname, "test-app", "tsconfig.json"),
+        JSON.stringify(
+          {
+            extends: `../../${type}.json`,
+          },
+          null,
+          2,
+        ),
+      );
+
+      try {
+        await execa({
+          preferLocal: true,
+          cwd: path.join(__dirname, "test-app"),
+        })`npx tsc -p .`;
+      } catch (e) {
+        error = e;
+      }
+    });
+
+    it("should not throw errors", () => {
+      expect(error).toBe(null);
+    });
+
+    if (Object.keys(expects).length) {
+      describe("custom tests", () => {
+        Object.entries(expects).forEach(([name, call]) => {
+          it(name, () => call());
+        });
+      });
+    }
+  });
+}
