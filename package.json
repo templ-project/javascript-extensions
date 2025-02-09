@@ -26,5 +26,14 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,ts,json}": [
+      "npx eslint --fix",
+      "git add"
+    ],
+    "packages/**/*.{js,ts}": [
+      "npx vitest --bail --changed"
+    ]
+  }
 }
