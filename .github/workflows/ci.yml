@@ -1,0 +1,22 @@
+name: "CI"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: "Release Tag"
+    outputs:
+      version: ${{ steps.new_releases.outputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Install Dependencies
+        run: |
+          npm i
