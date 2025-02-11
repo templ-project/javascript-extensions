@@ -35,6 +35,9 @@
     "*.{js,ts,json,yaml}": [
       "npx eslint --fix",
       "git add"
+    ],
+    "packages/**/*.{js,ts}": [
+      "echo npx vitest related --run"
     ]
   },
   "importSort": {
