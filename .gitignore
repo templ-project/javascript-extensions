@@ -76,3 +76,7 @@ typings/
 
 # documentation
 docs
+
+# lock files
+package-lock.json
+yarn.lock
