@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Javascript Project Template",
   "main": "dist/index.js",
+  "private": true,
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "lint": "eslint --fix .",
