@@ -22,5 +22,5 @@ jobs:
           node-version: 22.x
       - name: Install Dependencies
         run: |
-          npm
+          npm install
           npm run test
