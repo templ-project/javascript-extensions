@@ -12,6 +12,7 @@ const tsconfig = {
     exclude: [],
     compilerOptions: {
       // ...baseConfig.compilerOptions,
+      types: ['node'],
 
       // Best practices
       declaration: false,
@@ -40,7 +41,6 @@ const tsconfig = {
   cjs: {
     extends: './base.json',
     compilerOptions: {
-      types: ['node'],
       module: 'Node16',
       moduleResolution: 'Node16',
     },
@@ -52,14 +52,12 @@ const tsconfig = {
       moduleResolution: 'Node',
     },
   },
-  test: {
+  vitest: {
     extends: './cjs.json',
     compilerOptions: {
-      types: ['node', 'vitest/default'],
+      types: ['node', 'vitest/globals'],
     },
   },
 };
 
-['base', 'browser', 'cjs', 'esm', 'test'].forEach((key) =>
-  fs.writeFileSync(`${key}.json`, JSON.stringify(tsconfig[key], null, 2)),
-);
+Object.entries(tsconfig).forEach(([key, config]) => fs.writeFileSync(`${key}.json`, JSON.stringify(config, null, 2)));

@@ -22,5 +22,5 @@ jobs:
           node-version: 22.x
       - name: Install Dependencies
         run: |
-          yarn
-          yarn run test
+          npm
+          npm run test

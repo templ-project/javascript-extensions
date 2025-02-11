@@ -5,6 +5,9 @@
   ],
   "exclude": [],
   "compilerOptions": {
+    "types": [
+      "node"
+    ],
     "declaration": false,
     "declarationMap": false,
     "sourceMap": true,

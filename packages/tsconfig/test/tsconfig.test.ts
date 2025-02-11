@@ -10,7 +10,7 @@ describe('tsc compile', () => {
   setupTest({
     type: 'browser',
     expects: {
-      'should have browser output': () => {
+      'should have esm output': () => {
         const output = fs.readFileSync(path.join(__dirname, 'success', 'dist', 'index.js'), 'utf-8');
         expect(output).toContain('export const hello');
       },

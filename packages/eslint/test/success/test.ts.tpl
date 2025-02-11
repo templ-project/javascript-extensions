@@ -12,7 +12,7 @@ interface User {
  * @param id - The ID of the user.
  * @returns A promise that resolves to a User.
  */
-async function getUser(id: number): Promise<User> {
+export async function getUser(id: number): Promise<User> {
   // Simulate fetching user data
   return {
     id,
@@ -20,7 +20,3 @@ async function getUser(id: number): Promise<User> {
     email: 'john.doe@example.com',
   };
 }
-
-getUser(1).then((user) => {
-  console.log(`User: ${user.name}, Email: ${user.email}`);
-});

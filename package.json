@@ -6,8 +6,11 @@
   "private": true,
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "lint": "eslint --fix .",
-    "prepare": "husky",
+    "clear": "run-s clear:*",
+    "clear:node-modules": "find . -name \"node_modules\" -maxdepth 1 -exec rm -rf {} \\;",
+    "clear:lock-files": "rm -rf yarn.lock package-lock.json",
+    "lint": "cross-env DEBUG=eslint:eslint npx eslint --fix .",
+    "prepare": "npx husky",
     "test": "npm run test --workspaces --if-present"
   },
   "repository": {
@@ -32,9 +35,6 @@
     "*.{js,ts,json,yaml}": [
       "npx eslint --fix",
       "git add"
-    ],
-    "packages/**/*.{js,ts}": [
-      "npx vitest related --run"
     ]
   },
   "importSort": {
@@ -46,5 +46,8 @@
       "parser": "typescript",
       "style": "module"
     }
+  },
+  "dependencies": {
+    "npm-run-all2": "^7.0.2"
   }
 }
