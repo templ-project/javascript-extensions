@@ -23,8 +23,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm link
-          ls -la ./node_modules/@templ-project
+          npm run build
       - name: Run Tests
         run: |
           npm run test
