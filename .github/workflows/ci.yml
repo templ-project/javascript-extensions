@@ -39,7 +39,7 @@ jobs:
         run: |
           workspaces=(
             .:node
-            packages/esling:node
+            packages/eslint:node
             packages/prettier:node
             packages/tsconfig:node
             packages/vitest:node
