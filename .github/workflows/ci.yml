@@ -44,9 +44,9 @@ jobs:
             packages/tsconfig:node
             packages/vitest:node
           )
-          IFS=';' read -r -a workspaces <<< "${workspaces[*]}"
-          echo "workspaces=$workspaces"
-          echo "workspaces=$workspaces" >> $GITHUB_OUTPUT
+          workspaces_string=$(IFS=';'; echo "${workspaces[*]}")
+          echo "workspaces=$workspaces_string"
+          echo "workspaces=$workspaces_string" >> $GITHUB_OUTPUT
 
       - name: Version Update
         id: releases
