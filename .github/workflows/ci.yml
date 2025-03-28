@@ -44,7 +44,7 @@ jobs:
             "packages/tsconfig:node"
             "packages/vitest:node"
           )
-          workspaces_string=$(IFS=';'; echo "${workspaces[*]}")
+          workspaces_string=$(IFS=','; echo "${workspaces[*]}")
           echo "workspaces=$workspaces_string"
           echo "workspaces=$workspaces_string" >> $GITHUB_OUTPUT
 
