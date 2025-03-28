@@ -3,27 +3,65 @@ name: 'CI'
 on:
   workflow_call: {}
   workflow_dispatch: {}
-  push: {}
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  release:
-    name: 'Release Tag'
+  ci:
+    name: 'CI'
     outputs:
       version: ${{ steps.new_releases.outputs.version }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+
       - name: Install Dependencies
         run: |
           npm install
           npm run build
+
       - name: Run Tests
         run: |
           npm run test
+
+      - name: Workspaces List
+        id: workspaces
+        run: |
+          workspaces=(
+            .:node
+            packages/esling:node
+            packages/prettier:node
+            packages/tsconfig:node
+            packages/vitest:node
+          )
+          IFS=';' read -r -a workspaces <<< "${workspaces[*]}"
+          echo "workspaces=$workspaces"
+          echo "workspaces=$workspaces" >> $GITHUB_OUTPUT
+
+      - name: Version Update
+        id: releases
+        uses: dragoscops/version-update@v1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workspaces: ${{ steps.workspaces.outputs.workspaces }}
+
+      # - name: Create Release
+      #   if: ${{ steps.releases.outputs.tag != '' }}
+      #   run: |
+      #     find ./packages -type d -maxdepth 1 . | while read dir; do
+      #       if [ -d "$dir" ]; then
+      #         cd "$dir"
+      #         npm run release
+      #         cd -
+      #       fi
+      #     done
