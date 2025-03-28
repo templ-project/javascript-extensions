@@ -38,11 +38,11 @@ jobs:
         id: workspaces
         run: |
           workspaces=(
-            .:node
-            packages/eslint:node
-            packages/prettier:node
-            packages/tsconfig:node
-            packages/vitest:node
+            ".:node"
+            "packages/eslint:node"
+            "packages/prettier:node"
+            "packages/tsconfig:node"
+            "packages/vitest:node"
           )
           workspaces_string=$(IFS=';'; echo "${workspaces[*]}")
           echo "workspaces=$workspaces_string"
