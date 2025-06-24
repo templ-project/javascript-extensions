@@ -1,4 +1,4 @@
-name: 'CI'
+name: "CI"
 
 on:
   workflow_call: {}
@@ -10,7 +10,7 @@ on:
 
 jobs:
   ci:
-    name: 'CI'
+    name: "CI"
     outputs:
       version: ${{ steps.new_releases.outputs.version }}
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
 
       - name: Version Update
         id: releases
-        uses: dragoscops/version-update@v1.1
+        uses: dragoscops/version-update@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workspaces: ${{ steps.workspaces.outputs.workspaces }}
