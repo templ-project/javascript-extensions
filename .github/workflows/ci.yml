@@ -1,8 +1,18 @@
 name: "CI"
 
 on:
-  workflow_call: {}
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      skip-version-bump:
+        description: "Skip version bump"
+        type: boolean
+        required: false
+        default: false
+      force-publish:
+        description: "Force publish (even without version bump)"
+        type: boolean
+        required: false
+        default: false
   push:
     branches: [main]
   pull_request:
@@ -49,6 +59,7 @@ jobs:
           echo "workspaces=$workspaces_string" >> $GITHUB_OUTPUT
 
       - name: Version Update
+        if: ${{ inputs.skip-version-bump != true }}
         id: releases
         uses: dragoscops/version-update@v2
         with:
@@ -56,7 +67,7 @@ jobs:
           workspaces: ${{ steps.workspaces.outputs.workspaces }}
 
       - name: Publish Packages
-        if: ${{ steps.releases.outputs.tag != '' }}
+        if: ${{ steps.releases.outputs.tag != '' && inputs.skip-version-bump != true}}
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_W }}" > ~/.npmrc
           for pkg in packages/*; do
