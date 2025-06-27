@@ -52,8 +52,20 @@ jobs:
         id: releases
         uses: dragoscops/version-update@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           workspaces: ${{ steps.workspaces.outputs.workspaces }}
+
+      - name: Publish Packages
+        if: ${{ steps.releases.outputs.tag != '' }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_W }}" > ~/.npmrc
+          for pkg in packages/*; do
+            if [ -d "$pkg" ]; then
+              cd "$pkg"
+              npm publish --access public
+              cd -
+            fi
+          done
 
       # - name: Create Release
       #   if: ${{ steps.releases.outputs.tag != '' }}
