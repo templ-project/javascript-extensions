@@ -52,7 +52,7 @@ jobs:
         id: releases
         uses: dragoscops/version-update@v2
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workspaces: ${{ steps.workspaces.outputs.workspaces }}
 
       - name: Publish Packages
