@@ -3,6 +3,11 @@ name: "CI"
 on:
   workflow_dispatch:
     inputs:
+      skip-tests:
+        description: "Skip tests"
+        type: boolean
+        required: false
+        default: false
       skip-version-bump:
         description: "Skip version bump"
         type: boolean
@@ -41,6 +46,7 @@ jobs:
           npm run build
 
       - name: Run Tests
+        if: ${{ inputs.skip-tests != true }}
         run: |
           npm run test
 
@@ -67,7 +73,7 @@ jobs:
           workspaces: ${{ steps.workspaces.outputs.workspaces }}
 
       - name: Publish Packages
-        if: ${{ steps.releases.outputs.tag != '' && inputs.skip-version-bump != true}}
+        if: ${{ ( steps.releases.outputs.tag != '' && inputs.skip-version-bump != true ) || inputs.force-publish == true }}
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_W }}" > ~/.npmrc
           for pkg in packages/*; do
