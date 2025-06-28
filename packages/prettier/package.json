@@ -2,13 +2,14 @@
   "name": "@templ-project/prettier",
   "version": "1.0.2",
   "type": "module",
-  "main": "index.js",
+  "main": "index.cjs",
   "exports": {
     ".": "./index.mjs",
     "./package.json": "./package.json"
   },
   "files": [
-    "index.js",
+    "index.cjs",
+    "index.mjs",
     "package.json"
   ],
   "scripts": {

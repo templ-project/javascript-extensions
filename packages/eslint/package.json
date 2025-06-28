@@ -9,10 +9,7 @@
   },
   "files": [
     "index.js",
-    "rules/json.js",
-    "rules/markdown.js",
-    "rules/prettier.js",
-    "rules/yaml.js",
+    "rules/",
     "package.json"
   ],
   "scripts": {
