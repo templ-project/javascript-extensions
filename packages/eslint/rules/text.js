@@ -1,6 +1,6 @@
 export default [
   {
-    name: 'cblt:*.txt--eol-last',
+    name: 'templ:*.txt--eol-last',
     files: ['**/*.txt'], // Apply only to .txt files
     languageOptions: {
       parser: {

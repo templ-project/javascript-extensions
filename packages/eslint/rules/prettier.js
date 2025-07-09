@@ -4,7 +4,7 @@ import prettier from 'eslint-plugin-prettier';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    name: 'cblt:prettier',
+    name: 'templ:prettier',
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     plugins: {
       prettier,

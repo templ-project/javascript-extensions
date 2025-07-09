@@ -20,9 +20,9 @@ export default [
     ...esConfig,
   },
   {
-    name: 'cblt/global/ts',
     files: ['**/*.{ts,mts,cts,tsx}'],
     ...tsConfig,
+    name: 'templ:global/ts',
   },
   {
     name: 'templ:globals/tests',
