@@ -2,3 +2,5 @@
 npx lint-staged
 
 npm run build
+
+npm add .
