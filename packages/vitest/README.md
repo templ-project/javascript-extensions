@@ -78,7 +78,7 @@ This package is **ESM-only** and requires projects to use ES modules for the Vit
 Create a `vitest.config.js` file in your project root:
 
 ```javascript
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig();
 ```
@@ -90,12 +90,12 @@ This provides a complete Vitest configuration with sensible defaults for most pr
 Override specific settings while keeping the defaults:
 
 ```javascript
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
   // Custom test file patterns
-  include: ['src/**/*.{test,spec}.{js,ts}'],
-  
+  include: ["src/**/*.{test,spec}.{js,ts}"],
+
   // Custom coverage settings
   coverage: {
     threshold: {
@@ -106,11 +106,11 @@ export default defineConfig({
         statements: 80,
       },
     },
-    exclude: ['src/legacy/**/*'],
+    exclude: ["src/legacy/**/*"],
   },
-  
+
   // Custom reporter
-  reporters: ['default', 'junit'],
+  reporters: ["default", "junit"],
 });
 ```
 
@@ -119,29 +119,29 @@ export default defineConfig({
 Pass any Vitest configuration options:
 
 ```javascript
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
   // Custom environment
-  environment: 'jsdom',
-  
+  environment: "jsdom",
+
   // Setup files
-  setupFiles: ['./test/setup.ts'],
-  
+  setupFiles: ["./test/setup.ts"],
+
   // Custom test timeout
   testTimeout: 10000,
-  
+
   // Mock configuration
   server: {
     deps: {
-      inline: ['my-inline-dep'],
+      inline: ["my-inline-dep"],
     },
   },
-  
+
   // Custom include patterns
   include: [
-    'src/**/*.{test,spec}.{js,ts,jsx,tsx}',
-    'test/**/*.{test,spec}.{js,ts,jsx,tsx}',
+    "src/**/*.{test,spec}.{js,ts,jsx,tsx}",
+    "test/**/*.{test,spec}.{js,ts,jsx,tsx}",
   ],
 });
 ```
@@ -155,13 +155,13 @@ The configuration automatically includes the following test file patterns:
 ```javascript
 // Default patterns for JavaScript and TypeScript
 [
-  'src/**/*.spec.js',
-  'test/**/*.test.js', 
-  'test/**/*.e2e.js',
-  'src/**/*.spec.ts',
-  'test/**/*.test.ts',
-  'test/**/*.e2e.ts'
-]
+  "src/**/*.spec.js",
+  "test/**/*.test.js",
+  "test/**/*.e2e.js",
+  "src/**/*.spec.ts",
+  "test/**/*.test.ts",
+  "test/**/*.e2e.ts",
+];
 ```
 
 ### Coverage Settings
@@ -170,12 +170,12 @@ Default coverage configuration:
 
 ```javascript
 {
-  coverage: {
-    exclude: [
+  {
+    [
       // Vitest defaults plus custom exclusions
       ...configDefaults.exclude,
-      'src/test/**/*'  // Internal test utilities
-    ]
+      "src/test/**/*", // Internal test utilities
+    ];
   }
 }
 ```
@@ -190,11 +190,11 @@ Default coverage configuration:
 
 ### Core Settings
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `globals` | `true` | Enable global test utilities |
-| `include` | See patterns above | Test file inclusion patterns |
-| `reporters` | `['verbose']` | Test output reporters |
+| Option             | Default                  | Description                  |
+| ------------------ | ------------------------ | ---------------------------- |
+| `globals`          | `true`                   | Enable global test utilities |
+| `include`          | See patterns above       | Test file inclusion patterns |
+| `reporters`        | `['verbose']`            | Test output reporters        |
 | `coverage.exclude` | Vitest defaults + custom | Files excluded from coverage |
 
 ### File Inclusion Patterns
@@ -203,14 +203,11 @@ You can customize which files are considered test files:
 
 ```javascript
 export default defineConfig({
-  // Only unit tests
-  include: ['src/**/*.test.{js,ts}'],
-  
-  // Include additional patterns
+  // Include test patterns
   include: [
-    'src/**/*.{test,spec}.{js,ts}',
-    'tests/**/*.{js,ts}',
-    '**/__tests__/**/*.{js,ts}'
+    "src/**/*.{test,spec}.{js,ts}",
+    "tests/**/*.{js,ts}",
+    "**/__tests__/**/*.{js,ts}",
   ],
 });
 ```
@@ -228,20 +225,16 @@ export default defineConfig({
         branches: 90,
         functions: 90,
         lines: 90,
-        statements: 90
-      }
+        statements: 90,
+      },
     },
-    
+
     // Additional exclusions
-    exclude: [
-      'src/types/**/*',
-      'src/constants/**/*',
-      '**/*.d.ts'
-    ],
-    
+    exclude: ["src/types/**/*", "src/constants/**/*", "**/*.d.ts"],
+
     // Coverage reporters
-    reporter: ['text', 'html', 'lcov']
-  }
+    reporter: ["text", "html", "lcov"],
+  },
 });
 ```
 
@@ -252,13 +245,13 @@ Configure test output reporting:
 ```javascript
 export default defineConfig({
   // Multiple reporters
-  reporters: ['default', 'junit', 'json'],
-  
+  reporters: ["default", "junit", "json"],
+
   // Custom reporter configuration
   outputFile: {
-    junit: './test-results/junit.xml',
-    json: './test-results/results.json'
-  }
+    junit: "./test-results/junit.xml",
+    json: "./test-results/results.json",
+  },
 });
 ```
 
@@ -271,12 +264,7 @@ The package works seamlessly with TypeScript projects. Ensure your `tsconfig.jso
 ```json
 {
   "extends": "@templ-project/tsconfig/vitest.json",
-  "include": [
-    "src/**/*",
-    "test/**/*",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*", "test/**/*", "**/*.test.ts", "**/*.spec.ts"]
 }
 ```
 
@@ -303,7 +291,7 @@ The configuration works well in CI environments:
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig(); // Uses all defaults
 ```
@@ -312,12 +300,12 @@ export default defineConfig(); // Uses all defaults
 
 ```javascript
 // vitest.config.e2e.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
-  include: ['test/**/*.e2e.{js,ts}'],
+  include: ["test/**/*.e2e.{js,ts}"],
   testTimeout: 30000,
-  setupFiles: ['./test/e2e-setup.ts'],
+  setupFiles: ["./test/e2e-setup.ts"],
 });
 ```
 
@@ -325,12 +313,12 @@ export default defineConfig({
 
 ```javascript
 // packages/shared/vitest.config.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
-  include: ['src/**/*.{test,spec}.{js,ts}'],
+  include: ["src/**/*.{test,spec}.{js,ts}"],
   coverage: {
-    exclude: ['src/test-utils/**/*'],
+    exclude: ["src/test-utils/**/*"],
   },
 });
 ```
@@ -339,13 +327,13 @@ export default defineConfig({
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
   include: [
-    'src/**/__tests__/**/*.{js,ts}',
-    'src/**/*.{test,spec}.{js,ts}',
-    'integration/**/*.test.{js,ts}'
+    "src/**/__tests__/**/*.{js,ts}",
+    "src/**/*.{test,spec}.{js,ts}",
+    "integration/**/*.test.{js,ts}",
   ],
 });
 ```
@@ -354,25 +342,21 @@ export default defineConfig({
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
   coverage: {
-    reporter: ['text', 'html', 'lcov'],
+    reporter: ["text", "html", "lcov"],
     threshold: {
       global: {
         branches: 85,
         functions: 85,
         lines: 85,
-        statements: 85
-      }
+        statements: 85,
+      },
     },
-    exclude: [
-      'src/types/**/*',
-      'src/mocks/**/*',
-      '**/*.config.{js,ts}'
-    ]
-  }
+    exclude: ["src/types/**/*", "src/mocks/**/*", "**/*.config.{js,ts}"],
+  },
 });
 ```
 
@@ -412,7 +396,7 @@ The configuration supports these naming patterns:
 ### Configuration Factory
 
 ```typescript
-function defineConfig(options?: VitestOptions): VitestConfig
+function defineConfig(options?: VitestOptions): VitestConfig;
 ```
 
 The main export is a configuration factory that accepts Vitest options and returns a complete Vitest configuration.
@@ -430,7 +414,7 @@ The main export is a configuration factory that accepts Vitest options and retur
     exclude: [...configDefaults.exclude, 'src/test/**/*']
   },
   globals: true
-}
+};
 ```
 
 ## Build and Development
@@ -470,6 +454,7 @@ The package includes comprehensive tests that validate:
 - 🧪 **Integration**: Validates integration with Vitest runtime
 
 Run tests:
+
 ```bash
 npm test
 ```
@@ -482,11 +467,11 @@ npm test
 
 ```javascript
 // ✅ Correct
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 export default defineConfig();
 
 // ❌ Incorrect (CommonJS)
-const { defineConfig } = require('@templ-project/vitest');
+const { defineConfig } = require("@templ-project/vitest");
 module.exports = defineConfig();
 ```
 
@@ -503,24 +488,20 @@ For large projects, consider:
 ```javascript
 export default defineConfig({
   // Reduce file watching
-  include: ['src/**/*.test.{js,ts}'], // More specific patterns
-  
+  include: ["src/**/*.test.{js,ts}"], // More specific patterns
+
   // Optimize coverage
   coverage: {
-    exclude: [
-      'src/test/**/*',
-      '**/*.config.{js,ts}',
-      'src/types/**/*'
-    ]
+    exclude: ["src/test/**/*", "**/*.config.{js,ts}", "src/types/**/*"],
   },
-  
+
   // Faster test execution
-  pool: 'threads',
+  pool: "threads",
   poolOptions: {
     threads: {
-      singleThread: true
-    }
-  }
+      singleThread: true,
+    },
+  },
 });
 ```
 
