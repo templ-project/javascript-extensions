@@ -1,9 +1,31 @@
 {
-  "extends": "./cjs.json",
+  "extends": "./base.json",
+  "include": [
+    "${configDir}/src/**/*.ts",
+    "${configDir}/src/**/*.tsx",
+    "${configDir}/test/**/*.ts",
+    "${configDir}/test/**/*.tsx",
+    "${configDir}/**/*.test.ts",
+    "${configDir}/**/*.test.tsx",
+    "${configDir}/**/*.spec.ts",
+    "${configDir}/**/*.spec.tsx"
+  ],
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "types": [
       "node",
-      "vitest/globals"
-    ]
+      "vitest/globals",
+      "vitest/importMeta"
+    ],
+    "lib": [
+      "ES2022"
+    ],
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
   }
 }

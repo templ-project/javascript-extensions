@@ -1,0 +1,25 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": [
+      "ES2022"
+    ],
+    "types": [
+      "bun-types"
+    ],
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "verbatimModuleSyntax": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
+  }
+}

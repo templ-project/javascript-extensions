@@ -9,6 +9,7 @@
   "files": [
     "base.json",
     "browser.json",
+    "bun.json",
     "cjs.json",
     "esm.json",
     "vitest.json",
