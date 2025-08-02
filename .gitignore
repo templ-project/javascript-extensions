@@ -80,3 +80,8 @@ docs
 # lock files
 package-lock.json
 yarn.lock
+
+# ai
+.agents
+.openai
+agents
