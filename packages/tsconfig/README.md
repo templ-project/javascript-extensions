@@ -286,7 +286,7 @@ expect(output).toContain('exports.hello = hello'); // CJS output
 
 Create separate configurations for each output:
 
-```json
+```jsonc
 // tsconfig.esm.json
 {
   "extends": "@templ-project/tsconfig/esm.json",
@@ -296,7 +296,7 @@ Create separate configurations for each output:
 }
 ```
 
-```json
+```jsonc
 // tsconfig.cjs.json
 {
   "extends": "@templ-project/tsconfig/cjs.json",
@@ -308,7 +308,7 @@ Create separate configurations for each output:
 
 ### Testing Setup
 
-```json
+```jsonc
 // tsconfig.test.json
 {
   "extends": "@templ-project/tsconfig/vitest.json",
@@ -326,7 +326,7 @@ Create separate configurations for each output:
 
 ### Monorepo Configuration
 
-```json
+```jsonc
 // packages/shared/tsconfig.json
 {
   "extends": "@templ-project/tsconfig/base.json",
@@ -339,7 +339,7 @@ Create separate configurations for each output:
 }
 ```
 
-```json
+```jsonc
 // packages/app/tsconfig.json
 {
   "extends": "@templ-project/tsconfig/esm.json",
@@ -411,7 +411,7 @@ Choose the right configuration for your target environment:
 
 For production builds, consider these overrides:
 
-```json
+```jsonc
 {
   "extends": "@templ-project/tsconfig/base.json",
   "compilerOptions": {
@@ -446,7 +446,7 @@ If you encounter module resolution issues:
 2. **Verify imports**: Use appropriate import syntax for your target environment
 3. **Update dependencies**: Ensure TypeScript version compatibility
 
-```json
+```jsonc
 {
   "type": "module",  // For ESM projects
   "type": "commonjs" // For CJS projects (default)

@@ -170,8 +170,8 @@ Default coverage configuration:
 
 ```javascript
 {
-  coverage: {
-    exclude: [
+  {
+    [
       // Vitest defaults plus custom exclusions
       ...configDefaults.exclude,
       'src/test/**/*'  // Internal test utilities
@@ -203,10 +203,7 @@ You can customize which files are considered test files:
 
 ```javascript
 export default defineConfig({
-  // Only unit tests
-  include: ['src/**/*.test.{js,ts}'],
-  
-  // Include additional patterns
+  // Include test patterns
   include: [
     'src/**/*.{test,spec}.{js,ts}',
     'tests/**/*.{js,ts}',
@@ -411,25 +408,25 @@ The configuration supports these naming patterns:
 
 ### Configuration Factory
 
-```typescript
-function defineConfig(options?: VitestOptions): VitestConfig
+```text
+defineConfig(options?: VitestOptions): VitestConfig
 ```
 
 The main export is a configuration factory that accepts Vitest options and returns a complete Vitest configuration.
 
 ### Default Values
 
-```typescript
+```json
 {
-  include: [
-    'src/**/*.spec.js', 'test/**/*.test.js', 'test/**/*.e2e.js',
-    'src/**/*.spec.ts', 'test/**/*.test.ts', 'test/**/*.e2e.ts'
+  "include": [
+    "src/**/*.spec.js", "test/**/*.test.js", "test/**/*.e2e.js",
+    "src/**/*.spec.ts", "test/**/*.test.ts", "test/**/*.e2e.ts"
   ],
-  reporters: ['verbose'],
-  coverage: {
-    exclude: [...configDefaults.exclude, 'src/test/**/*']
+  "reporters": ["verbose"],
+  "coverage": {
+    "exclude": ["src/test/**/*"]
   },
-  globals: true
+  "globals": true
 }
 ```
 
@@ -481,10 +478,12 @@ npm test
 **Configuration not found**: Ensure you're using ES module syntax in your config file:
 
 ```javascript
-// ✅ Correct
+// ✅ Correct (ES Module)
 import { defineConfig } from '@templ-project/vitest';
 export default defineConfig();
+```
 
+```javascript
 // ❌ Incorrect (CommonJS)
 const { defineConfig } = require('@templ-project/vitest');
 module.exports = defineConfig();
