@@ -81,7 +81,4 @@ docs
 package-lock.json
 yarn.lock
 
-# ai
-.agents
-.openai
-agents
+__snapshots__
