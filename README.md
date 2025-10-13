@@ -1,6 +1,7 @@
 # Templ JavaScript Development Toolkit
 
 <!-- [![HitCount](http://hits.dwyl.com/templ-project/javascript.svg)](http://hits.dwyl.com/templ-project/javascript) -->
+
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript-extensions/issues)
 [![CI](https://github.com/templ-project/javascript-extensions/actions/workflows/ci.yml/badge.svg)](https://github.com/templ-project/javascript-extensions/actions/workflows/ci.yml)
 ![JSCPD](.jscpd/jscpd-badge.svg?raw=true)
@@ -19,10 +20,12 @@ A comprehensive monorepo providing **portable, opinionated configurations** for 
 
 ## 📦 Packages
 
-This monorepo contains four core configuration packages that work together to provide a complete development experience:
+This monorepo contains five core configuration packages that work together to provide a complete development experience:
 
 ### [@templ-project/eslint](./packages/eslint/)
+
 **Comprehensive ESLint configuration for multi-language projects**
+
 - ✅ JavaScript, TypeScript, JSON, YAML, Markdown, and text files
 - ✅ Modular rule sets with intelligent defaults
 - ✅ Prettier integration with conflict resolution
@@ -30,7 +33,9 @@ This monorepo contains four core configuration packages that work together to pr
 - ✅ Vitest testing framework support
 
 ### [@templ-project/prettier](./packages/prettier/)
+
 **Opinionated Prettier configuration with dual module support**
+
 - ✅ Consistent formatting across all supported file types
 - ✅ Import sorting with automatic organization
 - ✅ File-specific parsing and formatting rules
@@ -38,7 +43,9 @@ This monorepo contains four core configuration packages that work together to pr
 - ✅ Zero-config setup with extensibility
 
 ### [@templ-project/tsconfig](./packages/tsconfig/)
+
 **TypeScript configurations for different runtime environments**
+
 - ✅ **base.json** - Foundation configuration with strict settings
 - ✅ **browser.json** - Browser/frontend applications (ES2020, bundler)
 - ✅ **cjs.json** - Node.js CommonJS projects (Node16)
@@ -46,29 +53,44 @@ This monorepo contains four core configuration packages that work together to pr
 - ✅ **vitest.json** - Testing with Vitest framework
 
 ### [@templ-project/vitest](./packages/vitest/)
+
 **Flexible Vitest configuration factory with intelligent defaults**
+
 - ✅ Zero-config setup with sensible test patterns
 - ✅ Comprehensive coverage reporting
 - ✅ Multi-language support (JavaScript/TypeScript)
 - ✅ Configurable for unit, integration, and E2E tests
 - ✅ CI/CD ready with multiple reporter options
 
+### [@templ-project/commitlint](./packages/commitlint/)
+
+**Zero-configuration commitlint setup for conventional commits**
+
+- ✅ Built on `@commitlint/config-conventional` foundation
+- ✅ Flexible configuration factory with custom options
+- ✅ Dual module support (ESM and CommonJS)
+- ✅ Git hooks integration with Husky
+- ✅ Enforces Conventional Commits specification
+
 ## 🚀 Quick Start
 
 ### Complete Setup (Recommended)
+
 Get all packages for a fully configured development environment:
 
 ```bash
-npm install --save-dev @templ-project/eslint @templ-project/prettier @templ-project/tsconfig @templ-project/vitest
+npm install --save-dev @templ-project/eslint @templ-project/prettier @templ-project/tsconfig @templ-project/vitest @templ-project/commitlint
 ```
 
 **ESLint Configuration** (`eslint.config.mjs`):
+
 ```javascript
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 export default templEslintConfig;
 ```
 
 **Prettier Configuration** (`package.json`):
+
 ```json
 {
   "prettier": "@templ-project/prettier"
@@ -76,6 +98,7 @@ export default templEslintConfig;
 ```
 
 **TypeScript Configuration** (`tsconfig.json`):
+
 ```json
 {
   "extends": "@templ-project/tsconfig/base.json",
@@ -87,12 +110,21 @@ export default templEslintConfig;
 ```
 
 **Vitest Configuration** (`vitest.config.js`):
+
 ```javascript
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 export default defineConfig();
 ```
 
+**Commitlint Configuration** (`commitlint.config.js`):
+
+```javascript
+import commitlintConfig from "@templ-project/commitlint";
+export default commitlintConfig();
+```
+
 ### Individual Package Usage
+
 Each package can be used independently:
 
 ```bash
@@ -107,16 +139,20 @@ npm install --save-dev @templ-project/tsconfig
 
 # Just Vitest configuration
 npm install --save-dev @templ-project/vitest
+
+# Just Commitlint configuration
+npm install --save-dev @templ-project/commitlint
 ```
 
 ## 🎯 Use Cases
 
 ### New Project Setup
+
 Perfect for starting a new JavaScript/TypeScript project with all the best practices:
 
 ```bash
 # Install all configuration packages
-npm install --save-dev @templ-project/eslint @templ-project/prettier @templ-project/tsconfig @templ-project/vitest
+npm install --save-dev @templ-project/eslint @templ-project/prettier @templ-project/tsconfig @templ-project/vitest @templ-project/commitlint
 
 # Add package.json scripts
 {
@@ -131,6 +167,7 @@ npm install --save-dev @templ-project/eslint @templ-project/prettier @templ-proj
 ```
 
 ### Existing Project Migration
+
 Gradually adopt consistent tooling across your existing projects:
 
 ```bash
@@ -148,22 +185,23 @@ npm install --save-dev @templ-project/vitest
 ```
 
 ### Monorepo Configuration
+
 Consistent configuration across multiple packages:
 
 ```javascript
 // Root eslint.config.mjs
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default [
   {
-    ignores: ['packages/*/dist/**', 'apps/*/build/**'],
+    ignores: ["packages/*/dist/**", "apps/*/build/**"],
   },
   ...templEslintConfig,
   {
-    files: ['packages/shared/**'],
+    files: ["packages/shared/**"],
     rules: {
       // Stricter rules for shared packages
-      'no-console': 'error',
+      "no-console": "error",
     },
   },
 ];
@@ -172,6 +210,7 @@ export default [
 ### Framework Integration
 
 #### Next.js Projects
+
 ```json
 {
   "extends": "@templ-project/tsconfig/browser.json",
@@ -185,6 +224,7 @@ export default [
 ```
 
 #### Node.js APIs
+
 ```json
 {
   "extends": "@templ-project/tsconfig/esm.json",
@@ -196,16 +236,17 @@ export default [
 ```
 
 #### React Applications
+
 ```javascript
 // vitest.config.js
-import { defineConfig } from '@templ-project/vitest';
+import { defineConfig } from "@templ-project/vitest";
 
 export default defineConfig({
-  environment: 'jsdom',
-  setupFiles: ['./src/test/setup.ts'],
+  environment: "jsdom",
+  setupFiles: ["./src/test/setup.ts"],
   coverage: {
-    exclude: ['src/components/**/*.stories.{js,ts,tsx}']
-  }
+    exclude: ["src/components/**/*.stories.{js,ts,tsx}"],
+  },
 });
 ```
 
@@ -213,14 +254,15 @@ export default defineConfig({
 
 ### Module Compatibility
 
-| Package | ESM | CommonJS | Notes |
-|---------|-----|----------|-------|
-| **@templ-project/eslint** | ✅ | ❌* | Use `.mjs` config file for CJS projects |
-| **@templ-project/prettier** | ✅ | ✅ | Dual exports provided |
-| **@templ-project/tsconfig** | ✅ | ✅ | JSON configs work in any environment |
-| **@templ-project/vitest** | ✅ | ❌* | Vitest config must be ESM |
+| Package                       | ESM | CommonJS | Notes                                   |
+| ----------------------------- | --- | -------- | --------------------------------------- |
+| **@templ-project/eslint**     | ✅  | ❌\*     | Use `.mjs` config file for CJS projects |
+| **@templ-project/prettier**   | ✅  | ✅       | Dual exports provided                   |
+| **@templ-project/tsconfig**   | ✅  | ✅       | JSON configs work in any environment    |
+| **@templ-project/vitest**     | ✅  | ❌\*     | Vitest config must be ESM               |
+| **@templ-project/commitlint** | ✅  | ✅       | Dual exports provided                   |
 
-*_Can be used in CommonJS projects with appropriate file extensions_
+\*_Can be used in CommonJS projects with appropriate file extensions_
 
 ### Integration Matrix
 
@@ -231,6 +273,7 @@ All packages are designed to work together seamlessly:
 - **ESLint + Vitest**: Test-specific rules and globals
 - **TypeScript + Vitest**: Optimized configs for testing environments
 - **Prettier + All**: Consistent formatting across all file types
+- **Commitlint + Git Hooks**: Automated commit message validation with Husky
 
 ## 📚 Documentation
 
@@ -240,6 +283,7 @@ Each package includes comprehensive documentation:
 - **[@templ-project/prettier](./packages/prettier/README.md)** - Prettier settings and usage
 - **[@templ-project/tsconfig](./packages/tsconfig/README.md)** - TypeScript configuration options
 - **[@templ-project/vitest](./packages/vitest/README.md)** - Testing configuration and patterns
+- **[@templ-project/commitlint](./packages/commitlint/README.md)** - Commit message linting and conventional commits
 
 ## 🛠️ Development
 
@@ -252,8 +296,8 @@ Each package includes comprehensive documentation:
 
 ```bash
 # Clone the repository
-git clone https://github.com/templ-project/javascript.git
-cd javascript
+git clone https://github.com/templ-project/javascript-extensions.git
+cd javascript-extensions
 
 # Install dependencies for all packages
 npm install

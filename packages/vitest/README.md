@@ -395,7 +395,7 @@ The configuration supports these naming patterns:
 
 ### Configuration Factory
 
-```typescript
+```text
 function defineConfig(options?: VitestOptions): VitestConfig;
 ```
 
@@ -413,8 +413,8 @@ The main export is a configuration factory that accepts Vitest options and retur
   "coverage": {
     "exclude": ["src/test/**/*"]
   },
-  globals: true
-};
+  "globals": true
+}
 ```
 
 ## Build and Development
