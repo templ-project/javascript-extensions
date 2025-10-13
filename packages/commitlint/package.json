@@ -24,6 +24,6 @@
     "@commitlint/config-conventional": "^20.0.0"
   },
   "devDependencies": {
-    "@templ-project/vitest": "^0.1.0"
+    "@templ-project/vitest": "^0.3.0"
   }
 }

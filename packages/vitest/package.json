@@ -22,11 +22,11 @@
   "license": "MIT",
   "description": "EsLint configuration for Templ Project",
   "dependencies": {
-    "@templ-project/tsconfig": "^0.2.0",
-    "vitest": "^3.0.5"
+    "@templ-project/tsconfig": "^0.4.0",
+    "vitest": "^3.2.4"
   },
   "devDependencies": {
-    "@templ-project/eslint": "^1.0.0",
+    "@templ-project/eslint": "^1.2.0",
     "rimraf": "^6.0.1"
   }
 }

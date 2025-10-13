@@ -21,12 +21,12 @@
   "description": "Prettier configuration for Templ Project",
   "dependencies": {
     "import-sort-style-module": "^6.0.0",
-    "prettier": "^3.5.0",
+    "prettier": "^3.6.2",
     "prettier-plugin-import-sort": "^0.0.7"
   },
   "devDependencies": {
-    "@templ-project/tsconfig": "^0.2.0",
-    "@templ-project/vitest": "^0.1.0",
+    "@templ-project/tsconfig": "^0.2.2",
+    "@templ-project/vitest": "^0.3.0",
     "rimraf": "^6.0.1"
   }
 }
