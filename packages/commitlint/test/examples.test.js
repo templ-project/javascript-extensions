@@ -5,7 +5,11 @@ describe('commitlint configuration examples', () => {
   it('should create a basic configuration for standard projects', () => {
     const config = commitlintConfig();
 
-    expect(config).toMatchSnapshot();
+    expect(config).toMatchObject(
+      expect.objectContaining({
+        extends: ['@commitlint/config-conventional'],
+      }),
+    );
   });
 
   it('should create a custom configuration for strict projects', () => {

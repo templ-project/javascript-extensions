@@ -403,15 +403,15 @@ The main export is a configuration factory that accepts Vitest options and retur
 
 ### Default Values
 
-```typescript
+```json
 {
-  include: [
-    'src/**/*.spec.js', 'test/**/*.test.js', 'test/**/*.e2e.js',
-    'src/**/*.spec.ts', 'test/**/*.test.ts', 'test/**/*.e2e.ts'
+  "include": [
+    "src/**/*.spec.js", "test/**/*.test.js", "test/**/*.e2e.js",
+    "src/**/*.spec.ts", "test/**/*.test.ts", "test/**/*.e2e.ts"
   ],
-  reporters: ['verbose'],
-  coverage: {
-    exclude: [...configDefaults.exclude, 'src/test/**/*']
+  "reporters": ["verbose"],
+  "coverage": {
+    "exclude": ["src/test/**/*"]
   },
   globals: true
 };
@@ -469,7 +469,9 @@ npm test
 // ✅ Correct
 import { defineConfig } from "@templ-project/vitest";
 export default defineConfig();
+```
 
+```javascript
 // ❌ Incorrect (CommonJS)
 const { defineConfig } = require("@templ-project/vitest");
 module.exports = defineConfig();

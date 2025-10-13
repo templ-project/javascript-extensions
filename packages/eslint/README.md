@@ -11,6 +11,8 @@ A comprehensive, modular ESLint configuration designed for JavaScript and TypeSc
   - [Usage](#usage)
     - [Basic Usage](#basic-usage)
     - [Extending the Configuration](#extending-the-configuration)
+    - [Factory Function API (Advanced Usage)](#factory-function-api-advanced-usage)
+    - [Individual Rule Set Functions](#individual-rule-set-functions)
     - [Adding Custom Ignores](#adding-custom-ignores)
   - [Supported File Types](#supported-file-types)
     - [JavaScript \& TypeScript](#javascript--typescript)
@@ -120,6 +122,91 @@ export default [
 ];
 ```
 
+### Factory Function API (Advanced Usage)
+
+For more control over the configuration, you can use the factory function approach:
+
+```javascript
+import { createEslintConfig } from '@templ-project/eslint';
+
+// Basic usage with all defaults
+export default createEslintConfig();
+```
+
+```javascript
+// Alternative: Selective feature toggles
+import { createEslintConfig } from '@templ-project/eslint';
+
+export default createEslintConfig({
+  enableTypeScript: true,    // Enable TypeScript rules (default: true)
+  enablePrettier: true,      // Enable Prettier integration (default: true)
+  enableYaml: false,         // Disable YAML linting (default: true)
+  enableJson: true,          // Enable JSON linting (default: true)
+  enableMarkdown: false,     // Disable Markdown linting (default: true)
+  enableText: true,          // Enable text file linting (default: true)
+  enableVitest: true,        // Enable Vitest test rules (default: true)
+});
+```
+
+```javascript
+// Alternative: Custom rules and overrides
+import { createEslintConfig } from '@templ-project/eslint';
+export default createEslintConfig({
+  rules: {
+    'no-console': 'warn',                    // Global rule override
+    'max-len': ['error', { code: 100 }],     // Custom line length
+    prettier: {                              // Prettier-specific rules
+      'prettier/prettier': ['error', { printWidth: 100 }],
+    },
+    typescript: {                            // TypeScript-specific rules
+      '@typescript-eslint/no-unused-vars': 'error',
+    },
+  },
+  ignores: ['dist/**', 'build/**'],          // Custom ignore patterns
+  languageOptions: {                         // Custom language options
+    ecmaVersion: 2022,
+  },
+});
+
+```
+
+```javascript
+// Alternative: Disable TypeScript but keep JavaScript
+import { createEslintConfig } from '@templ-project/eslint';
+
+export default createEslintConfig({
+  enableTypeScript: false,  // Only JavaScript rules will be applied
+});
+```
+
+### Individual Rule Set Functions
+
+You can also use individual rule set functions for granular control:
+
+```javascript
+import {
+  createJsAndTsConfig,
+  createPrettierConfig,
+  createYamlConfig,
+} from '@templ-project/eslint';
+
+export default [
+  // Global ignores
+  { ignores: ['dist/**'] },
+
+  // Only JavaScript/TypeScript and Prettier rules
+  ...createJsAndTsConfig({ enableTypeScript: true }),
+  ...createPrettierConfig(),
+
+  // Custom overrides
+  {
+    rules: {
+      'no-console': 'warn',
+    },
+  },
+];
+```
+
 ### Adding Custom Ignores
 
 ```javascript
@@ -220,7 +307,7 @@ The configuration loads rules in a specific order to ensure proper precedence:
 2. **JavaScript/TypeScript** - Core language rules
 3. **Prettier** - Code formatting integration
 4. **YAML** - YAML-specific rules
-5. **JSON** - JSON-specific rules  
+5. **JSON** - JSON-specific rules
 6. **Text** - Text file rules
 7. **Markdown** - Markdown-specific rules
 
@@ -309,7 +396,7 @@ export default templEslintConfig;
 ### Existing Project Migration
 
 ```javascript
-// eslint.config.mjs  
+// eslint.config.mjs
 import templEslintConfig from '@templ-project/eslint';
 
 export default [

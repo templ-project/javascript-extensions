@@ -10,6 +10,61 @@ import tsConfigGlobal from 'typescript-eslint';
  * Do not change the order of the config keys as hey will behave differently
  */
 
+/**
+ * Create JavaScript and TypeScript configurations
+ * @param {import('../types.js').RuleSetOptions & { enableVitest?: boolean, enableTypeScript?: boolean }} [options={}] - Configuration options
+ * @returns {import('eslint').Linter.Config[]} ESLint configuration array
+ */
+export function createJsAndTsConfig(options = {}) {
+  const {
+    rules: customRules = {},
+    plugins: customPlugins = {},
+    languageOptions: customLanguageOptions = {},
+    enableVitest = true,
+    enableTypeScript = true,
+  } = options;
+
+  const esConfig = getEsConfig(esConfigGlobal, {
+    customRules,
+    customPlugins,
+    customLanguageOptions,
+  });
+  const tsConfig = getTsConfig(esConfig, tsConfigGlobal, customRules);
+
+  const configs = [
+    {
+      name: 'templ:global/node',
+      files: ['**/*.{js,mjs,cjs,jsx}'],
+      ...esConfig,
+    },
+  ];
+
+  // Only add TypeScript config if enabled
+  if (enableTypeScript) {
+    configs.push({
+      files: ['**/*.{ts,mts,cts,tsx}'],
+      ...tsConfig,
+      name: 'templ:global/ts',
+    });
+  }
+
+  if (enableVitest) {
+    configs.push({
+      name: 'templ:globals/tests',
+      files: ['**/*.{e2e,test,spec}.{js,cjs,mjs,ts,cts,mts}'],
+      ...vitest.configs.recommended,
+      languageOptions: {
+        globals: {
+          ...vitest.environments.env.globals,
+        },
+      },
+    });
+  }
+
+  return configs;
+}
+
+// Export default for backward compatibility
 const esConfig = getEsConfig(esConfigGlobal);
 const tsConfig = getTsConfig(esConfig, tsConfigGlobal);
 
@@ -36,15 +91,17 @@ export default [
   },
 ];
 
-function getEsConfig(esConfig) {
+function getEsConfig(esConfigGlobal, options = {}) {
+  const { customRules = {}, customPlugins = {}, customLanguageOptions = {} } = options;
   return {
     plugins: {
       imports,
       'node-import': importNodeBuiltin,
       vitest,
+      ...customPlugins,
     },
     rules: {
-      ...esConfig.configs.recommended.rules,
+      ...esConfigGlobal.configs.recommended.rules,
 
       'node-import/prefer-node-protocol': 'error',
 
@@ -67,6 +124,9 @@ function getEsConfig(esConfig) {
           },
         },
       ],
+
+      // Merge custom rules
+      ...customRules,
     },
     languageOptions: {
       globals: {
@@ -74,14 +134,16 @@ function getEsConfig(esConfig) {
         // k6 globals
         __ENV: true,
       },
+      // Merge custom language options
+      ...customLanguageOptions,
     },
   };
 }
 
-function getTsConfig(esConfig, tsConfig) {
+function getTsConfig(esConfig, tsConfigGlobal, customRules = {}) {
   return mergeConfigs([
     esConfig,
-    ...tsConfig.configs.recommended,
+    ...tsConfigGlobal.configs.recommended,
     {
       rules: {
         '@typescript-eslint/ban-ts-comment': 'off',
@@ -93,6 +155,8 @@ function getTsConfig(esConfig, tsConfig) {
             allowTernary: true,
           },
         ],
+        // Merge custom TypeScript-specific rules
+        ...customRules,
       },
     },
   ]);
