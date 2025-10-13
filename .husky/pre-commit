@@ -1,6 +1,8 @@
 
 npx lint-staged
 
+npx jscpd ./packages/**/src
+
 npm run build
 
 npm add .

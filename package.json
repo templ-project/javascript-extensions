@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/templ-project/javascript#readme",
   "devDependencies": {
+    "@jscpd/badge-reporter": "^4.0.1",
     "@types/node": "^22.13.1",
     "cross-env": "^7.0.3",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "jscpd": "^4.0.5"
   },
   "workspaces": [
     "packages/*"
