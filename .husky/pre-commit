@@ -5,4 +5,4 @@ npx jscpd ./packages/**/src
 
 npm run build
 
-npm add .
+git add .

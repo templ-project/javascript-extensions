@@ -75,17 +75,15 @@ jobs:
           pr: true
           pr_auto_merge: true
 
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
       - name: Publish Packages
         if: ${{ ( steps.releases.outputs.tag != '' && inputs.skip-version-bump != true ) || inputs.force-publish == true }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_W }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_W }}" > ~/.npmrc
-          for pkg in packages/*; do
-            if [ -d "$pkg" ]; then
-              cd "$pkg"
-              npm publish --access public
-              cd -
-            fi
-          done
+          task publish
 
       # - name: Create Release
       #   if: ${{ steps.releases.outputs.tag != '' }}
