@@ -1,14 +1,14 @@
 # Templ JavaScript Development Toolkit
 
-[![HitCount](http://hits.dwyl.com/templ-project/javascript.svg)](http://hits.dwyl.com/templ-project/javascript)
-[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript/issues)
-[![TravisCI](https://travis-ci.org/templ-project/javascript.svg?branch=master)](https://travis-ci.org/templ-project/javascript)
+<!-- [![HitCount](http://hits.dwyl.com/templ-project/javascript.svg)](http://hits.dwyl.com/templ-project/javascript) -->
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/javascript-extensions/issues)
+[![CI](https://github.com/templ-project/javascript-extensions/actions/workflows/ci.yml/badge.svg)](https://github.com/templ-project/javascript-extensions/actions/workflows/ci.yml)
 ![JSCPD](.jscpd/jscpd-badge.svg?raw=true)
 
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=alert_status)](https://sonarcloud.io/dashboard?id=templ-project_javascript)
+<!-- [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=alert_status)](https://sonarcloud.io/dashboard?id=templ-project_javascript)
 [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=templ-project_javascript)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=templ-project_javascript)
-[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=templ-project_javascript)
+[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=templ-project_javascript&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=templ-project_javascript) -->
 
 [![Donate to this project using Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/dragoscirjan)
 [![Donate to this project using Paypal](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QBP6DEBJDEMV2&source=url)
@@ -99,7 +99,7 @@ Each package can be used independently:
 # Just ESLint configuration
 npm install --save-dev @templ-project/eslint
 
-# Just Prettier configuration  
+# Just Prettier configuration
 npm install --save-dev @templ-project/prettier
 
 # Just TypeScript configurations
@@ -287,7 +287,7 @@ npm run test:watch
 ### Scripts
 
 - `npm run build` - Build all packages
-- `npm run test` - Run tests for all packages  
+- `npm run test` - Run tests for all packages
 - `npm run lint` - Lint all files in the project
 - `npm run clear` - Clean up node_modules and lock files
 - `npm run prepare` - Set up git hooks with Husky
@@ -326,19 +326,19 @@ Future packages and improvements planned:
 
 ## ❓ FAQ
 
-**Q: Can I use these packages separately?**  
+**Q: Can I use these packages separately?**
 A: Yes! Each package is designed to work independently or together.
 
-**Q: Do these replace my existing configurations?**  
+**Q: Do these replace my existing configurations?**
 A: They can! You can also extend them with your own customizations.
 
-**Q: Are these configurations opinionated?**  
+**Q: Are these configurations opinionated?**
 A: Yes, but they're designed to be practical and widely applicable. You can always override specific settings.
 
-**Q: What Node.js versions are supported?**  
+**Q: What Node.js versions are supported?**
 A: Node.js 18+ is recommended. The configurations use modern features and tooling.
 
-**Q: Can I use these in a monorepo?**  
+**Q: Can I use these in a monorepo?**
 A: Absolutely! They're perfect for ensuring consistency across multiple packages.
 
 ## 📄 License
@@ -354,7 +354,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you find this toolkit useful, consider supporting the project:
 
 - ⭐ **Star the repository**
-- 🐛 **Report bugs and request features** 
+- 🐛 **Report bugs and request features**
 - 💝 **[Donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QBP6DEBJDEMV2&source=url)**
 - 💝 **[Support via Patreon](https://patreon.com/dragoscirjan)**
 
