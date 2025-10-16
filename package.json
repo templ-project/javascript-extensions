@@ -1,6 +1,6 @@
 {
   "name": "@templ-project/javascript",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Comprehensive JavaScript and TypeScript development toolkit with portable configurations for ESLint, Prettier, TSConfig, Vitest, and Commitlint",
   "main": "dist/index.js",
   "private": true,
