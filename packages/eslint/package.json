@@ -38,7 +38,7 @@
     "typescript-eslint": "^8.46.0"
   },
   "devDependencies": {
-    "@templ-project/vitest": "^0.1.0",
+    "@templ-project/vitest": "^0.3.2",
     "rimraf": "^6.0.1"
   }
 }
