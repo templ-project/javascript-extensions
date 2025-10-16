@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 tasks:
   publish:
@@ -23,7 +23,7 @@ tasks:
             echo "> Skipping $pkg; Version $latest_local_version already published"
           fi
         done
-    desc: "Publish all packages"
+    desc: 'Publish all packages'
     summary: |
       Run example:
         task publish NPM_TOKEN=token

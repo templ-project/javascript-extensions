@@ -1,145 +1,145 @@
 version: 2
 updates:
   # Root package.json
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 5
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # Commitlint package
-  - package-ecosystem: "npm"
-    directory: "/packages/commitlint"
+  - package-ecosystem: 'npm'
+    directory: '/packages/commitlint'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # ESLint package
-  - package-ecosystem: "npm"
-    directory: "/packages/eslint"
+  - package-ecosystem: 'npm'
+    directory: '/packages/eslint'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # Prettier package
-  - package-ecosystem: "npm"
-    directory: "/packages/prettier"
+  - package-ecosystem: 'npm'
+    directory: '/packages/prettier'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # TSConfig package
-  - package-ecosystem: "npm"
-    directory: "/packages/tsconfig"
+  - package-ecosystem: 'npm'
+    directory: '/packages/tsconfig'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # Vitest package
-  - package-ecosystem: "npm"
-    directory: "/packages/vitest"
+  - package-ecosystem: 'npm'
+    directory: '/packages/vitest'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
+      - 'dependencies'
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # GitHub Actions dependencies
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
     open-pull-requests-limit: 3
     assignees:
-      - "dragoscirjan"
+      - 'dragoscirjan'
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
-      - "github-actions"
+      - 'dependencies'
+      - 'github-actions'
