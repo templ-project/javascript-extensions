@@ -22,7 +22,7 @@
   "description": "EsLint configuration for Templ Project",
   "dependencies": {
     "@eslint/js": "^9.37.0",
-    "@eslint/json": "^0.13.2",
+    "@eslint/json": "^0.14.0",
     "@vitest/eslint-plugin": "^1.3.17",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
