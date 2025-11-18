@@ -23,7 +23,7 @@
   "description": "EsLint configuration for Templ Project",
   "dependencies": {
     "@templ-project/tsconfig": "^0.4.0",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.10"
   },
   "devDependencies": {
     "@templ-project/eslint": "^1.2.0",
