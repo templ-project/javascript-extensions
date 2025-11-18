@@ -1,5 +1,22 @@
 # Changelog
 
+
+## 0.3.0 (2025-11-18)
+
+### Child Workspaces
+
+The following workspaces are included in this release:
+
+- 🔄 `/home/runner/work/javascript-extensions/javascript-extensions/packages/eslint` - v1.3.0
+- 🔄 `/home/runner/work/javascript-extensions/javascript-extensions/packages/prettier` - v1.1.0
+
+
+### Features
+
+* added support for toml files ([#48](https://github.com/templ-project/javascript-extensions/issues/48)) ([5b04ce6](https://github.com/templ-project/javascript-extensions/commit/5b04ce6930bdc8f69eaaa1c19b8855eba5a4c010))
+
+# Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
@@ -398,4 +415,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
-

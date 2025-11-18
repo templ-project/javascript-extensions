@@ -21,11 +21,14 @@ A comprehensive, opinionated Prettier configuration designed for JavaScript and 
       - [JSON Files (`*.json`, `*.jsonc`, `*.json5`)](#json-files-json-jsonc-json5)
       - [JavaScript Files (`*.js`)](#javascript-files-js)
       - [Markdown Files (`*.md`)](#markdown-files-md)
+      - [YAML Files (`*.yaml`, `*.yml`)](#yaml-files-yaml-yml)
+      - [TOML Files (`*.toml`)](#toml-files-toml)
   - [Supported File Types](#supported-file-types)
     - [JavaScript \& TypeScript](#javascript--typescript)
     - [JSON Files](#json-files)
     - [Markdown Files](#markdown-files)
     - [YAML Files](#yaml-files)
+    - [TOML Files](#toml-files)
   - [Import Sorting](#import-sorting)
   - [Integration](#integration)
     - [VS Code Integration](#vs-code-integration)
@@ -45,7 +48,7 @@ A comprehensive, opinionated Prettier configuration designed for JavaScript and 
 ## Features
 
 - **Opinionated formatting**: Consistent, modern code style across all supported languages
-- **Multi-language support**: JavaScript, TypeScript, JSON, Markdown, and YAML files
+- **Multi-language support**: JavaScript, TypeScript, JSON, Markdown, YAML, and TOML files
 - **Import sorting**: Automatic import statement organization with `prettier-plugin-import-sort`
 - **File-specific parsing**: Optimized parsers for different file types
 - **Dual module support**: Both ESM and CommonJS compatible
@@ -65,26 +68,29 @@ This package includes Prettier and all necessary plugins, so you don't need to i
 This package provides **dual module support** with both ESM and CommonJS exports, making it compatible with any project setup:
 
 ### ESM Projects
+
 For projects using ES modules:
 
 ```javascript
 // prettier.config.js
-import prettierConfig from '@templ-project/prettier';
+import prettierConfig from "@templ-project/prettier";
 
 export default prettierConfig;
 ```
 
 ### CommonJS Projects
+
 For CommonJS projects:
 
 ```javascript
 // prettier.config.js
-const prettierConfig = require('@templ-project/prettier');
+const prettierConfig = require("@templ-project/prettier");
 
 module.exports = prettierConfig;
 ```
 
 ### Package.json Configuration
+
 The simplest approach for any project:
 
 ```json
@@ -98,6 +104,7 @@ The simplest approach for any project:
 ### Basic Usage
 
 #### Option 1: Package.json (Recommended)
+
 Add to your `package.json`:
 
 ```json
@@ -107,15 +114,16 @@ Add to your `package.json`:
 ```
 
 #### Option 2: Configuration File
+
 Create a `prettier.config.js` file:
 
 ```javascript
 // ESM
-import prettierConfig from '@templ-project/prettier';
+import prettierConfig from "@templ-project/prettier";
 export default prettierConfig;
 
 // CommonJS
-module.exports = require('@templ-project/prettier');
+module.exports = require("@templ-project/prettier");
 ```
 
 ### Extending the Configuration
@@ -124,7 +132,7 @@ You can extend the base configuration with your own overrides:
 
 ```javascript
 // prettier.config.js
-import baseConfig from '@templ-project/prettier';
+import baseConfig from "@templ-project/prettier";
 
 export default {
   ...baseConfig,
@@ -134,9 +142,9 @@ export default {
   overrides: [
     ...baseConfig.overrides,
     {
-      files: '*.vue',
+      files: "*.vue",
       options: {
-        parser: 'vue',
+        parser: "vue",
       },
     },
   ],
@@ -162,58 +170,84 @@ npx prettier --write src/**/*.{js,ts,json,md}
 
 ### Core Settings
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| `printWidth` | `120` | Maximum line length before wrapping |
-| `tabWidth` | `2` | Number of spaces per indentation level |
-| `semi` | `true` | Always add semicolons |
-| `singleQuote` | `true` | Use single quotes instead of double quotes |
-| `trailingComma` | `"all"` | Add trailing commas wherever possible |
-| `bracketSpacing` | `false` | No spaces inside object literals |
-| `parser` | `"typescript"` | Default parser for most files |
+| Setting          | Value          | Description                                |
+| ---------------- | -------------- | ------------------------------------------ |
+| `printWidth`     | `120`          | Maximum line length before wrapping        |
+| `tabWidth`       | `2`            | Number of spaces per indentation level     |
+| `semi`           | `true`         | Always add semicolons                      |
+| `singleQuote`    | `true`         | Use single quotes instead of double quotes |
+| `trailingComma`  | `"all"`        | Add trailing commas wherever possible      |
+| `bracketSpacing` | `true`         | Add spaces inside object literals          |
+| `parser`         | `"typescript"` | Default parser for most files              |
 
 ### File-Specific Overrides
 
 The configuration includes specialized settings for different file types:
 
 #### JSON Files (`*.json`, `*.jsonc`, `*.json5`)
+
 - **Parser**: Specific JSON parsers for each variant
 - **Quotes**: Double quotes (JSON standard)
 - **Comments**: Supported in JSONC files
 
 #### JavaScript Files (`*.js`)
+
 - **Parser**: Babel parser for modern JavaScript features
 - **Quotes**: Single quotes (following core settings)
 
 #### Markdown Files (`*.md`)
+
 - **Parser**: Markdown parser
 - **Quotes**: Double quotes for readability
 - **Prose Wrap**: `"preserve"` - maintains original line breaks
 
+#### YAML Files (`*.yaml`, `*.yml`)
+
+- **Parser**: YAML parser (built-in Prettier support)
+- **Quotes**: Single quotes (aligned with ESLint)
+- **Indentation**: 2 spaces (consistent with global settings)
+
+#### TOML Files (`*.toml`)
+
+- **Parser**: TOML parser (via `prettier-plugin-toml`)
+- **Indentation**: 2 spaces (consistent with global settings)
+- **Alignment**: No automatic comment or entry alignment for readability
+
 ## Supported File Types
 
 ### JavaScript & TypeScript
+
 - **Extensions**: `.js`, `.jsx`, `.ts`, `.tsx`, `.mjs`, `.cjs`
 - **Parser**: TypeScript parser (handles both JS and TS)
 - **Features**: Modern syntax support, JSX formatting
 
 ### JSON Files
+
 - **Extensions**: `.json`, `.jsonc`, `.json5`
-- **Parsers**: 
+- **Parsers**:
   - `json` for standard JSON files
   - `jsonc` for JSON with comments
   - `json5` for JSON5 enhanced syntax
 - **Features**: Proper quote handling, comment preservation
 
 ### Markdown Files
+
 - **Extensions**: `.md`, `.markdown`
 - **Parser**: Markdown parser
 - **Features**: Code block formatting, prose wrapping control
 
 ### YAML Files
+
 - **Extensions**: `.yml`, `.yaml`
 - **Parser**: YAML parser (via Prettier's built-in support)
 - **Features**: Consistent indentation and structure
+
+### TOML Files
+
+- **Extensions**: `.toml`
+- **Parser**: TOML parser (via `prettier-plugin-toml`)
+- **Features**: Configuration file formatting, consistent structure
+- **Options**: No automatic alignment for better readability
 
 ## Import Sorting
 
@@ -225,18 +259,19 @@ This configuration includes automatic import sorting via `prettier-plugin-import
 - **Automatic**: Runs as part of Prettier formatting
 
 Example of sorted imports:
+
 ```javascript
 // Built-in Node.js modules
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 // External packages
-import express from 'express';
-import lodash from 'lodash';
+import express from "express";
+import lodash from "lodash";
 
 // Internal modules
-import { config } from './config.js';
-import { utils } from '../utils/index.js';
+import { config } from "./config.js";
+import { utils } from "../utils/index.js";
 ```
 
 ## Integration
@@ -264,7 +299,7 @@ This configuration is designed to work seamlessly with `@templ-project/eslint`:
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default templEslintConfig; // Includes Prettier integration
 ```
@@ -276,9 +311,7 @@ Use with lint-staged for pre-commit formatting:
 ```json
 {
   "lint-staged": {
-    "**/*.{js,ts,json,md,yaml}": [
-      "prettier --write"
-    ]
+    "**/*.{js,ts,json,md,yaml}": ["prettier --write"]
   }
 }
 ```
@@ -293,11 +326,13 @@ The package includes a comprehensive test suite that validates:
 - 🧪 **Multi-format support**: All supported file extensions are tested
 
 Run tests:
+
 ```bash
 npm test
 ```
 
 Test files are organized as:
+
 - `test/success/` - Files that should format correctly
 - `test/failure/` - Files that should fail formatting (if any)
 
@@ -320,7 +355,7 @@ npx prettier --write .
 
 ```javascript
 // prettier.config.js - Gradual migration approach
-import baseConfig from '@templ-project/prettier';
+import baseConfig from "@templ-project/prettier";
 
 export default {
   ...baseConfig,
@@ -334,14 +369,14 @@ export default {
 
 ```javascript
 // prettier.config.js - Root configuration
-import baseConfig from '@templ-project/prettier';
+import baseConfig from "@templ-project/prettier";
 
 export default {
   ...baseConfig,
   overrides: [
     ...baseConfig.overrides,
     {
-      files: 'packages/legacy/**',
+      files: "packages/legacy/**",
       options: {
         // Different settings for legacy packages
         printWidth: 100,
@@ -349,9 +384,9 @@ export default {
       },
     },
     {
-      files: 'docs/**/*.md',
+      files: "docs/**/*.md",
       options: {
-        proseWrap: 'always',
+        proseWrap: "always",
       },
     },
   ],
