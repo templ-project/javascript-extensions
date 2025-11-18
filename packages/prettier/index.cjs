@@ -32,9 +32,24 @@ module.exports = {
       files: '*.md',
       options: {
         parser: 'markdown',
-        // Optional: You can add Markdown-specific options here
-        singleQuote: false, // Example option
-        proseWrap: 'preserve', // Options: 'always', 'never', 'preserve'
+        singleQuote: false,
+        proseWrap: 'preserve',
+      },
+    },
+    {
+      files: ['*.yaml', '*.yml'],
+      options: {
+        parser: 'yaml',
+        singleQuote: true,
+        bracketSpacing: true,
+      },
+    },
+    {
+      files: ['*.toml'],
+      options: {
+        parser: 'toml',
+        alignComments: false,
+        alignEntries: false,
       },
     },
   ],
@@ -44,4 +59,5 @@ module.exports = {
   singleQuote: true,
   tabWidth: 2,
   trailingComma: 'all',
+  plugins: ['prettier-plugin-toml'],
 };

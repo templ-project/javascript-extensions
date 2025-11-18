@@ -3,6 +3,7 @@ import { createJsonConfig as _createJsonConfig } from './rules/json.js';
 import { createMarkdownConfig as _createMarkdownConfig } from './rules/markdown.js';
 import { createPrettierConfig as _createPrettierConfig } from './rules/prettier.js';
 import { createTextConfig as _createTextConfig } from './rules/text.js';
+import { createTomlConfig as _createTomlConfig } from './rules/toml.js';
 import { createYamlConfig as _createYamlConfig } from './rules/yaml.js';
 
 /**
@@ -20,6 +21,7 @@ export function createEslintConfig(options = {}) {
     enableTypeScript = true,
     enablePrettier = true,
     enableYaml = true,
+    enableToml = true,
     enableJson = true,
     enableMarkdown = true,
     enableText = true,
@@ -73,6 +75,16 @@ export function createEslintConfig(options = {}) {
     );
   }
 
+  if (enableToml) {
+    configs.push(
+      ...createTomlConfig({
+        rules: rules.toml || {},
+        plugins,
+        languageOptions,
+      }),
+    );
+  }
+
   if (enableJson) {
     configs.push(
       ...createJsonConfig({
@@ -110,6 +122,7 @@ export function createEslintConfig(options = {}) {
 export const createJsAndTsConfig = _createJsAndTsConfig;
 export const createPrettierConfig = _createPrettierConfig;
 export const createYamlConfig = _createYamlConfig;
+export const createTomlConfig = _createTomlConfig;
 export const createJsonConfig = _createJsonConfig;
 export const createMarkdownConfig = _createMarkdownConfig;
 export const createTextConfig = _createTextConfig;

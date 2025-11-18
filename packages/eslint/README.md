@@ -18,6 +18,7 @@ A comprehensive, modular ESLint configuration designed for JavaScript and TypeSc
     - [JavaScript \& TypeScript](#javascript--typescript)
     - [JSON Files](#json-files)
     - [YAML Files](#yaml-files)
+    - [TOML Files](#toml-files)
     - [Markdown Files](#markdown-files)
     - [Text Files](#text-files)
   - [Rule Categories](#rule-categories)
@@ -44,10 +45,9 @@ A comprehensive, modular ESLint configuration designed for JavaScript and TypeSc
   - [Changelog](#changelog)
   - [License](#license)
 
-
 ## Features
 
-- **Multi-language support**: JavaScript, TypeScript, JSON, YAML, Markdown, and text files
+- **Multi-language support**: JavaScript, TypeScript, JSON, YAML, TOML, Markdown, and text files
 - **Modular architecture**: Organized rule sets for different file types
 - **Framework integration**: Built-in support for Vitest testing framework
 - **Prettier integration**: Seamless code formatting with conflict resolution
@@ -68,21 +68,23 @@ This package includes all necessary dependencies, so you don't need to install E
 This package is **ESM-only** (`"type": "module"`), but it can be used in both ESM and CommonJS projects:
 
 ### ESM Projects
+
 For projects using ES modules, use the standard `.js` extension:
 
 ```javascript
 // eslint.config.js
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default templEslintConfig;
 ```
 
 ### CommonJS Projects
+
 For CommonJS projects, use the `.mjs` extension for your ESLint configuration file:
 
 ```javascript
 // eslint.config.mjs (note the .mjs extension)
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default templEslintConfig;
 ```
@@ -98,7 +100,7 @@ The `.mjs` extension tells Node.js to treat the ESLint configuration file as an 
 Create an `eslint.config.mjs` file in your project root:
 
 ```javascript
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default templEslintConfig;
 ```
@@ -108,15 +110,15 @@ export default templEslintConfig;
 You can extend the base configuration with your own rules:
 
 ```javascript
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default [
   ...templEslintConfig,
   {
     // Your custom overrides
     rules: {
-      'no-console': 'warn',
-      '@typescript-eslint/no-unused-vars': 'error',
+      "no-console": "warn",
+      "@typescript-eslint/no-unused-vars": "error",
     },
   },
 ];
@@ -127,7 +129,7 @@ export default [
 For more control over the configuration, you can use the factory function approach:
 
 ```javascript
-import { createEslintConfig } from '@templ-project/eslint';
+import { createEslintConfig } from "@templ-project/eslint";
 
 // Basic usage with all defaults
 export default createEslintConfig();
@@ -135,47 +137,49 @@ export default createEslintConfig();
 
 ```javascript
 // Alternative: Selective feature toggles
-import { createEslintConfig } from '@templ-project/eslint';
+import { createEslintConfig } from "@templ-project/eslint";
 
 export default createEslintConfig({
-  enableTypeScript: true,    // Enable TypeScript rules (default: true)
-  enablePrettier: true,      // Enable Prettier integration (default: true)
-  enableYaml: false,         // Disable YAML linting (default: true)
-  enableJson: true,          // Enable JSON linting (default: true)
-  enableMarkdown: false,     // Disable Markdown linting (default: true)
-  enableText: true,          // Enable text file linting (default: true)
-  enableVitest: true,        // Enable Vitest test rules (default: true)
+  enableTypeScript: true, // Enable TypeScript rules (default: true)
+  enablePrettier: true, // Enable Prettier integration (default: true)
+  enableYaml: false, // Disable YAML linting (default: true)
+  enableJson: true, // Enable JSON linting (default: true)
+  enableMarkdown: false, // Disable Markdown linting (default: true)
+  enableText: true, // Enable text file linting (default: true)
+  enableVitest: true, // Enable Vitest test rules (default: true)
 });
 ```
 
 ```javascript
 // Alternative: Custom rules and overrides
-import { createEslintConfig } from '@templ-project/eslint';
+import { createEslintConfig } from "@templ-project/eslint";
 export default createEslintConfig({
   rules: {
-    'no-console': 'warn',                    // Global rule override
-    'max-len': ['error', { code: 100 }],     // Custom line length
-    prettier: {                              // Prettier-specific rules
-      'prettier/prettier': ['error', { printWidth: 100 }],
+    "no-console": "warn", // Global rule override
+    "max-len": ["error", { code: 100 }], // Custom line length
+    prettier: {
+      // Prettier-specific rules
+      "prettier/prettier": ["error", { printWidth: 100 }],
     },
-    typescript: {                            // TypeScript-specific rules
-      '@typescript-eslint/no-unused-vars': 'error',
+    typescript: {
+      // TypeScript-specific rules
+      "@typescript-eslint/no-unused-vars": "error",
     },
   },
-  ignores: ['dist/**', 'build/**'],          // Custom ignore patterns
-  languageOptions: {                         // Custom language options
+  ignores: ["dist/**", "build/**"], // Custom ignore patterns
+  languageOptions: {
+    // Custom language options
     ecmaVersion: 2022,
   },
 });
-
 ```
 
 ```javascript
 // Alternative: Disable TypeScript but keep JavaScript
-import { createEslintConfig } from '@templ-project/eslint';
+import { createEslintConfig } from "@templ-project/eslint";
 
 export default createEslintConfig({
-  enableTypeScript: false,  // Only JavaScript rules will be applied
+  enableTypeScript: false, // Only JavaScript rules will be applied
 });
 ```
 
@@ -184,15 +188,11 @@ export default createEslintConfig({
 You can also use individual rule set functions for granular control:
 
 ```javascript
-import {
-  createJsAndTsConfig,
-  createPrettierConfig,
-  createYamlConfig,
-} from '@templ-project/eslint';
+import { createJsAndTsConfig, createPrettierConfig, createYamlConfig } from "@templ-project/eslint";
 
 export default [
   // Global ignores
-  { ignores: ['dist/**'] },
+  { ignores: ["dist/**"] },
 
   // Only JavaScript/TypeScript and Prettier rules
   ...createJsAndTsConfig({ enableTypeScript: true }),
@@ -201,7 +201,7 @@ export default [
   // Custom overrides
   {
     rules: {
-      'no-console': 'warn',
+      "no-console": "warn",
     },
   },
 ];
@@ -210,11 +210,11 @@ export default [
 ### Adding Custom Ignores
 
 ```javascript
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default [
   {
-    ignores: ['custom-build/**', 'legacy-code/**'],
+    ignores: ["custom-build/**", "legacy-code/**"],
   },
   ...templEslintConfig,
 ];
@@ -223,6 +223,7 @@ export default [
 ## Supported File Types
 
 ### JavaScript & TypeScript
+
 - **Files**: `*.js`, `*.mjs`, `*.cjs`, `*.jsx`, `*.ts`, `*.mts`, `*.cts`, `*.tsx`
 - **Features**:
   - ES6+ syntax support
@@ -232,6 +233,7 @@ export default [
   - Vitest testing framework support
 
 ### JSON Files
+
 - **Files**: `*.json`, `*.jsonc`, `*.json5`, `tsconfig*.json`
 - **Features**:
   - JSON syntax validation
@@ -240,6 +242,7 @@ export default [
   - Automatic exclusion of lock files and build artifacts
 
 ### YAML Files
+
 - **Files**: `*.yaml`, `*.yml`
 - **Features**:
   - YAML syntax validation
@@ -247,7 +250,17 @@ export default [
   - Single quote preference
   - Empty document detection
 
+### TOML Files
+
+- **Files**: `*.toml`
+- **Features**:
+  - TOML syntax validation
+  - Consistent indentation (2 spaces)
+  - Configuration file linting
+  - Standard compliance checking
+
 ### Markdown Files
+
 - **Files**: `*.md`
 - **Features**:
   - Code block validation
@@ -255,6 +268,7 @@ export default [
   - JavaScript code block linting
 
 ### Text Files
+
 - **Files**: `*.txt`, and other text-based files
 - **Features**:
   - End-of-line consistency
@@ -263,12 +277,14 @@ export default [
 ## Rule Categories
 
 ### Code Quality Rules
+
 - **Import Management**: Automatic import ordering and validation
 - **TypeScript**: Strict type checking with practical exceptions
 - **Node.js**: Prefer Node.js protocol imports (`node:fs` vs `fs`)
 - **Testing**: Vitest-specific rules for test files
 
 ### Code Style Rules
+
 - **Quotes**: Single quotes preferred (except in JSON)
 - **Semicolons**: Always required
 - **Indentation**: 2 spaces consistently
@@ -277,6 +293,7 @@ export default [
 - **Object Spacing**: Consistent bracket spacing
 
 ### File-Specific Rules
+
 - **Test Files**: Relaxed rules for `*.test.*`, `*.spec.*`, `*.e2e.*` files
 - **Markdown Code Blocks**: Disabled import resolution and console warnings
 - **JSON**: No irregular whitespace rules
@@ -331,6 +348,7 @@ The package includes a comprehensive test suite that validates:
 - 🔧 **Rule application**: Correct rule application per file type
 
 Run tests:
+
 ```bash
 npm test
 ```
@@ -344,6 +362,7 @@ This configuration includes seamless Prettier integration:
 - **Consistent style**: Ensures formatting matches linting expectations
 
 Prettier settings:
+
 - Print width: 120 characters
 - Tab width: 2 spaces
 - Semicolons: Always
@@ -388,7 +407,7 @@ Special Node.js features:
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default templEslintConfig;
 ```
@@ -397,14 +416,14 @@ export default templEslintConfig;
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default [
   ...templEslintConfig,
   {
     // Gradually adopt stricter rules
     rules: {
-      'no-console': 'warn', // Start with warnings
+      "no-console": "warn", // Start with warnings
     },
   },
 ];
@@ -414,18 +433,18 @@ export default [
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from '@templ-project/eslint';
+import templEslintConfig from "@templ-project/eslint";
 
 export default [
   {
-    ignores: ['packages/*/dist/**', 'apps/*/build/**'],
+    ignores: ["packages/*/dist/**", "apps/*/build/**"],
   },
   ...templEslintConfig,
   {
-    files: ['packages/shared/**'],
+    files: ["packages/shared/**"],
     rules: {
       // Stricter rules for shared packages
-      'no-console': 'error',
+      "no-console": "error",
     },
   },
 ];
